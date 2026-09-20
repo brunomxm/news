@@ -26,7 +26,7 @@ function render(article) {
 
   const body = article.content_html
     ? article.content_html
-    : `<p>${escapeHtml(article.summary || "")}</p>`;
+    : `<p><strong>${escapeHtml(article.title)}</strong></p><p>${escapeHtml(article.summary || "")}</p>`;
 
   main.innerHTML = `
     <article class="reader-article">
