@@ -1,6 +1,30 @@
 {
-  "generated_at": "2026-09-20T17:14:52.200252+00:00",
+  "generated_at": "2026-09-20T18:35:15.244305+00:00",
   "articles": [
+    {
+      "id": "2cf80f5714007416",
+      "source": "New Yorker Books",
+      "subject": "Welcome to the What We’re Reading newsletter",
+      "date": "2026-09-20T17:14:54+00:00",
+      "title": "Welcome to the What We’re Reading newsletter",
+      "summary": "",
+      "link": "https://link.newyorker.com/view/6ab0147bc441e869170587896ab0148c93e27121a9699794/e01202c5",
+      "image": null,
+      "content_html": null,
+      "category": "Other"
+    },
+    {
+      "id": "09f0da05c58b0aa5",
+      "source": "The New Yorker",
+      "subject": "Welcome to Our Weekly Newsletter",
+      "date": "2026-09-20T17:14:36+00:00",
+      "title": "Welcome to Our Weekly Newsletter",
+      "summary": "",
+      "link": "https://link.newyorker.com/view/6ab0147bc441e869170587896ab0147b93e27121a969976f/e01202c5",
+      "image": null,
+      "content_html": null,
+      "category": "Other"
+    },
     {
       "id": "8180acbf0a145081",
       "source": "TLDR AI",
@@ -10,6 +34,7 @@
       "summary": "Google's family agent runs on its own cloud computer and Google account, turning the emails, files, and calendars your household shares into daily briefings and updated plans. It can fill out forms and coordinate activities for up to six people, asking permission before acting outside the group. The US experiment has a waitlist.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fblog.google%2Finnovation-and-ai%2Fmodels-and-research%2Fgoogle-labs%2Fcc-expanding-to-groups%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/6yLNHnknPB215QzTYi62cIzqAYJ-LA0AawedKhZ1HHs=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fblog.google%2Finnovation-and-ai%2Fmodels-and-research%2Fgoogle-labs%2Fcc-expanding-to-groups%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/6yLNHnknPB215QzTYi62cIzqAYJ-LA0AawedKhZ1HHs=452\">\n\n<strong>Google wants to give your family its own cloud computer (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Google's family agent runs on its own cloud computer and Google account, turning the emails, files, and calendars your household shares into daily briefings and updated plans. It can fill out forms and coordinate activities for up to six people, asking permission before acting outside the group. The US experiment has a waitlist.",
       "category": "AI"
     },
     {
@@ -21,6 +46,7 @@
       "summary": "Claude enhanced biomolecular modeling by optimizing over 30 models, achieving a 4x speed increase and creating a low-memory mode for predicting larger systems on a single NVIDIA GPU. These improvements, now open-sourced, allow for efficient protein design and structure prediction, potentially accelerating drug discovery. A protein design competition co-sponsored with Adaptyv Bio offers up to...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.anthropic.com%2Fresearch%2Fclaude-uplifts-biomolecular-modeling%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/LiaL2lOhxeUf3cHKMKBI7u1t_WOpZkxpz5zFzWLrrl0=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.anthropic.com%2Fresearch%2Fclaude-uplifts-biomolecular-modeling%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/LiaL2lOhxeUf3cHKMKBI7u1t_WOpZkxpz5zFzWLrrl0=452\">\n\n<strong>How Claude is uplifting biomolecular modeling (12 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Claude enhanced biomolecular modeling by optimizing over 30 models, achieving a 4x speed increase and creating a low-memory mode for predicting larger systems on a single NVIDIA GPU. These improvements, now open-sourced, allow for efficient protein design and structure prediction, potentially accelerating drug discovery. A protein design competition co-sponsored with Adaptyv Bio offers up to $1 million in Claude credits and highlights these advancements.",
       "category": "AI"
     },
     {
@@ -32,6 +58,7 @@
       "summary": "Claude Code Projects let users manage builds by automating task delegation, coordination, and result assembly across cloud sessions. Projects utilize threads for parallel operations, adapting based on progress, and draw on shared memory for efficient task execution. Available now in beta for select subscribers, with wider access coming soon, projects promise enhanced workflow management and...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fclaude.com%2Fblog%2Fprojects-redesigned%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/4VyNk-y8NOr8zMB_Ii4jnszVxd33-qH-K2UeC6RsJWI=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fclaude.com%2Fblog%2Fprojects-redesigned%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/4VyNk-y8NOr8zMB_Ii4jnszVxd33-qH-K2UeC6RsJWI=452\">\n\n<strong>Projects redesigned: from folder to conversation (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Claude Code Projects let users manage builds by automating task delegation, coordination, and result assembly across cloud sessions. Projects utilize threads for parallel operations, adapting based on progress, and draw on shared memory for efficient task execution. Available now in beta for select subscribers, with wider access coming soon, projects promise enhanced workflow management and context retention.",
       "category": "AI"
     },
     {
@@ -43,6 +70,7 @@
       "summary": "This post features a transcript of an interview with Noam Brown, a research scientist at OpenAI who works on reasoning, reinforcement learning, self-play, and multi-agent AI. Brown was a foundational contributor to the development of reasoning models. In this interview, Brown talks about multi-agent, Navier-Stokes, the current explosion of maths progress, automating AI research, and how we...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.dwarkesh.com%2Fp%2Fnoam-brown%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/CJ6VkrdzivqLBAe4MxQfT1Nt8b7plvz_fpCqeI-erk0=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.dwarkesh.com%2Fp%2Fnoam-brown%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/CJ6VkrdzivqLBAe4MxQfT1Nt8b7plvz_fpCqeI-erk0=452\">\n\n<strong>Noam Brown – Agent swarms, alignment, &amp; recursive self-improvement (72 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    This post features a transcript of an interview with Noam Brown, a research scientist at OpenAI who works on reasoning, reinforcement learning, self-play, and multi-agent AI. Brown was a foundational contributor to the development of reasoning models. In this interview, Brown talks about multi-agent, Navier-Stokes, the current explosion of maths progress, automating AI research, and how we will know whether models are actually aligned before recursive self-improvement kicks off. A video of the interview is available.",
       "category": "AI"
     },
     {
@@ -54,6 +82,7 @@
       "summary": "Getting LLMs into shape to reliably serve as classifiers is hard work but potentially highly impactful. More and more research is relying on LLMs for classification, so these tools need to output high-quality results. This post shows how classification is just a feature engineering problem.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fminimallysufficient.com%2Fposts%2Fllm-classification-is-feature-extraction%2F%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/S1WgvB5xXPaR5gUwGj-6PYYwsI00zN7MDkEaGlN8YOc=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fminimallysufficient.com%2Fposts%2Fllm-classification-is-feature-extraction%2F%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/S1WgvB5xXPaR5gUwGj-6PYYwsI00zN7MDkEaGlN8YOc=452\">\n\n<strong>LLM Classification Is Feature Engineering (20 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Getting LLMs into shape to reliably serve as classifiers is hard work but potentially highly impactful. More and more research is relying on LLMs for classification, so these tools need to output high-quality results. This post shows how classification is just a feature engineering problem.",
       "category": "AI"
     },
     {
@@ -65,6 +94,7 @@
       "summary": "Anthropic says Claude now leads 26% of its AI research work and oversees tens of thousands of active internal agents. Its new measurements track how much AI is helping build the next models, whether people can still oversee those agents, and the computing driving the work.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.anthropic.com%2Finstitute%2Fmeasuring-pace-of-ai-development%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/yKFo_krrykeKUBjJ_ks4NU3_MF9x4p6K3eNwmqKgwBw=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.anthropic.com%2Finstitute%2Fmeasuring-pace-of-ai-development%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/yKFo_krrykeKUBjJ_ks4NU3_MF9x4p6K3eNwmqKgwBw=452\">\n\n<strong>Anthropic says its AI now does a quarter of its research work (25 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Anthropic says Claude now leads 26% of its AI research work and oversees tens of thousands of active internal agents. Its new measurements track how much AI is helping build the next models, whether people can still oversee those agents, and the computing driving the work.",
       "category": "AI"
     },
     {
@@ -76,6 +106,7 @@
       "summary": "Z.ai used a GLM-5.3-powered Infra Agent to help build GLM-5.3-Flash's production serving stack on 100,000+ Chinese accelerators in under two weeks. Dense feedback, kernel fixes, and system-level optimization tripled throughput while keeping humans responsible for objectives and risk.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fz.ai%2Fblog%2Fglm-built-its-inference-infrastructure%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/nEGQQTTcaLz31WzKm7cmUpmWlQcnjFTwfDp2hEFPU-w=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fz.ai%2Fblog%2Fglm-built-its-inference-infrastructure%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/nEGQQTTcaLz31WzKm7cmUpmWlQcnjFTwfDp2hEFPU-w=452\">\n\n<strong>Toward Recursive Self-Improvement: How GLM Built Its Own Inference Infrastructure (15 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Z.ai used a GLM-5.3-powered Infra Agent to help build GLM-5.3-Flash's production serving stack on 100,000+ Chinese accelerators in under two weeks. Dense feedback, kernel fixes, and system-level optimization tripled throughput while keeping humans responsible for objectives and risk.",
       "category": "AI"
     },
     {
@@ -87,6 +118,7 @@
       "summary": "Ternary Bonsai 2 27B brings stronger reasoning, coding, vision, and agentic capability to the Bonsai series. It uses ternary {−1, 0, +1} weights with FP16 group-wise scaling, for 1.76 effective bits per weight and a total model footprint of 5.9GB. The model supports a 262K-token context window and multimodal text-and-image input. It can be run on Nvidia GPUs via CUDA and on Apple devices via...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fprismml.com%2Fnews%2Fbonsai-2-27b%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/cNVaSqipExZVMXnZBOLK5piHiTc7enKWVdZ_w1VyBdQ=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fprismml.com%2Fnews%2Fbonsai-2-27b%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/cNVaSqipExZVMXnZBOLK5piHiTc7enKWVdZ_w1VyBdQ=452\">\n\n<strong>Introducing Bonsai 2 27B: Near-Lossless Compression in a 9x Smaller Footprint (7 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Ternary Bonsai 2 27B brings stronger reasoning, coding, vision, and agentic capability to the Bonsai series. It uses ternary {−1, 0, +1} weights with FP16 group-wise scaling, for 1.76 effective bits per weight and a total model footprint of 5.9GB. The model supports a 262K-token context window and multimodal text-and-image input. It can be run on Nvidia GPUs via CUDA and on Apple devices via MLX through custom low-bit kernels.",
       "category": "AI"
     },
     {
@@ -98,6 +130,7 @@
       "summary": "Qwen3.8-Omni-Flash is a native omnimodal model. It supports a 1M-token context window with text, image, audio, and video inputs. Qwen3.8-Omni-Flash achieves audio-visual performance close to Gemini 3.8 Flash and overall audio performance that exceeds Gemini 3.8 Flash. It is now available on the Qianwen AI Platform.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fqwen.ai%2Fblog%3Fid=qwen3.8-omni-flash%26utm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/J1LnYEOxfEAovX_vbCBZWfXL8QFLogMUWdU6gP_LsfI=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fqwen.ai%2Fblog%3Fid=qwen3.8-omni-flash%26utm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/J1LnYEOxfEAovX_vbCBZWfXL8QFLogMUWdU6gP_LsfI=452\">\n\n<strong>Qwen3.8-Omni-Flash: Omni Senses. Agentic Delivery (18 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Qwen3.8-Omni-Flash is a native omnimodal model. It supports a 1M-token context window with text, image, audio, and video inputs. Qwen3.8-Omni-Flash achieves audio-visual performance close to Gemini 3.8 Flash and overall audio performance that exceeds Gemini 3.8 Flash. It is now available on the Qianwen AI Platform.",
       "category": "AI"
     },
     {
@@ -109,6 +142,7 @@
       "summary": "Figure introduced Helix 2.5, a humanoid control model pretrained on its Index dataset and tested zero-shot across 30 Bay Area homes. Without collecting training data in those homes, the robots performed tasks including tidying rooms, folding towels, and making beds.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FZ97lGm/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/TBahu1aJfDAgZSgQRWz6qGHSmIcoem3JzgY0XMMa_Nc=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FZ97lGm/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/TBahu1aJfDAgZSgQRWz6qGHSmIcoem3JzgY0XMMa_Nc=452\">\n\n<strong>Helix 2.5 (2 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Figure introduced Helix 2.5, a humanoid control model pretrained on its Index dataset and tested zero-shot across 30 Bay Area homes. Without collecting training data in those homes, the robots performed tasks including tidying rooms, folding towels, and making beds.",
       "category": "AI"
     },
     {
@@ -120,6 +154,7 @@
       "summary": "Agora lets autonomous research agents share findings through an append-only Git DAG, where hypotheses, results, verifications, and reports become reproducible commits.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fgithub.com%2Fyifanzhang-pro%2FAgora%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/pYwuRBTzI6Usy2GjeGErP7WeVfNfSADN_6JpM2893r0=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fgithub.com%2Fyifanzhang-pro%2FAgora%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/pYwuRBTzI6Usy2GjeGErP7WeVfNfSADN_6JpM2893r0=452\">\n\n<strong>Git as Shared Memory for AI Research Agents (GitHub Repo)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Agora lets autonomous research agents share findings through an append-only Git DAG, where hypotheses, results, verifications, and reports become reproducible commits.",
       "category": "AI"
     },
     {
@@ -131,6 +166,7 @@
       "summary": "AI's potential to transform our relationship with the natural world is often overlooked. Infinite intelligence will not eliminate our need for natural resources. AI promises abundance via the automation of knowledge work, but the Earth system is already fully automated. Natural General Intelligence is a foundation model grounded in the state and dynamics of the planet itself. This article...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fnaturalgeneralintelligence.ai%2F%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/itEpyaCds5dKU6LOfduZ0qbVduaZvipAKlKkGepgnZI=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fnaturalgeneralintelligence.ai%2F%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/itEpyaCds5dKU6LOfduZ0qbVduaZvipAKlKkGepgnZI=452\">\n\n<strong>Natural General Intelligence (125 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    AI's potential to transform our relationship with the natural world is often overlooked. Infinite intelligence will not eliminate our need for natural resources. AI promises abundance via the automation of knowledge work, but the Earth system is already fully automated. Natural General Intelligence is a foundation model grounded in the state and dynamics of the planet itself. This article explains the concept, shows readers how it can be built, and explains why it is necessary.",
       "category": "AI"
     },
     {
@@ -142,6 +178,7 @@
       "summary": "Dario Amodei, a co-founder and the chief executive of Anthropic, is one of the tech industry's most prolific and polished explainers. He has contributed to dozens of scholarly papers and more recently wrote a half-dozen informal essays for the general public. This article takes a look at his writings to see what they reveal about the AI leader.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2Fdvi6w7/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/N7ihcPegywp6ukPPj35ALzW-94NhXC8p7myHivpWXmA=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2Fdvi6w7/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/N7ihcPegywp6ukPPj35ALzW-94NhXC8p7myHivpWXmA=452\">\n\n<strong>The Awesome and Alarming AI Visions of Anthropic's CEO (10 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Dario Amodei, a co-founder and the chief executive of Anthropic, is one of the tech industry's most prolific and polished explainers. He has contributed to dozens of scholarly papers and more recently wrote a half-dozen informal essays for the general public. This article takes a look at his writings to see what they reveal about the AI leader.",
       "category": "AI"
     },
     {
@@ -153,6 +190,7 @@
       "summary": "Astra for Law is a legal AI foundation that combines GPT-6 Astra with tools, settings, privacy controls, and context designed for professional legal work.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FWM3Z7G/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/850JkXoD162_tydEhCjAxNvKr18WJZ7Ldt5gq8q2pdU=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FWM3Z7G/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/850JkXoD162_tydEhCjAxNvKr18WJZ7Ldt5gq8q2pdU=452\">\n\n<strong>Astra for Law (8 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Astra for Law is a legal AI foundation that combines GPT-6 Astra with tools, settings, privacy controls, and context designed for professional legal work.",
       "category": "AI"
     },
     {
@@ -164,6 +202,7 @@
       "summary": "There is a clear internal signal in models that accompanies reward hacking.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.goodfire.com%2Fresearch%2Freward-hacking-activation-monitors%23%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/gr-URnqapnp43lLNPnJZGFvZN2j6flrwjxQWXhf0S6I=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.goodfire.com%2Fresearch%2Freward-hacking-activation-monitors%23%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/gr-URnqapnp43lLNPnJZGFvZN2j6flrwjxQWXhf0S6I=452\">\n\n<strong>Models know when they're reward hacking — and we can catch them at scale (16 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    There is a clear internal signal in models that accompanies reward hacking.",
       "category": "AI"
     },
     {
@@ -175,6 +214,7 @@
       "summary": "Notion's Skills API lets teams edit agent instructions together and distribute them to other agents through GitHub sync or Vercel's skills installer.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.notion.com%2Fblog%2Fa-skills-library-for-every-agent%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/F0aLwQWmp-ehMAsFhHz9v2Tu30r4CDqPC8ll1J9M5Kk=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.notion.com%2Fblog%2Fa-skills-library-for-every-agent%3Futm_source=tldrai/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/F0aLwQWmp-ehMAsFhHz9v2Tu30r4CDqPC8ll1J9M5Kk=452\">\n\n<strong>Notion lets teams share the same instructions across AI agents (7 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Notion's Skills API lets teams edit agent instructions together and distribute them to other agents through GitHub sync or Vercel's skills installer.",
       "category": "AI"
     },
     {
@@ -186,6 +226,7 @@
       "summary": "Instinct is rolling out Concierge, a white-glove service for tasks that require human interaction, including phone calls, high-end bookings, and customer service.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FCztkx4/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/q4dYJChGPHQciqr7l_kZCLi6mUSoy3Q7MOevr85HsXs=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FCztkx4/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/q4dYJChGPHQciqr7l_kZCLi6mUSoy3Q7MOevr85HsXs=452\">\n\n<strong>Instinct Concierge Can Now Handle Phone Calls (1 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Instinct is rolling out Concierge, a white-glove service for tasks that require human interaction, including phone calls, high-end bookings, and customer service.",
       "category": "AI"
     },
     {
@@ -197,6 +238,7 @@
       "summary": "Apply here , create your own role or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of  of 2025.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/kfPKKD0e68MEA-ddcBn-YHd13chwmSV9-tptYybbOA8=452",
       "image": null,
+      "content_html": "<strong>Apply here</strong>,\r\n<strong>create your own role</strong> or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of <a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b4d1cf4d-d725e8dd-23f5-449d-a5d5-4dfde712f1fe-000000/kfPKKD0e68MEA-ddcBn-YHd13chwmSV9-tptYybbOA8=452\"><strong>Inc.'s Best Bootstrapped businesses</strong></a> of 2025.",
       "category": "AI"
     },
     {
@@ -208,6 +250,7 @@
       "summary": "SK Hynix is in exploratory talks with Intel over a deal that would have it manufacture memory chips in the US for the first time, with one scenario having it lease part of Intel's long-delayed Ohio campus and another forming a joint venture with Intel and major cloud providers to lock in steady memory supply. Intel's Ohio site, announced back in 2022 at up to $100 billion, has slipped to a...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2F9mlABf/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/4Gb02hyg8iuC8iCN9LpMWrg0KZXAUvfcGdfEzG493KU=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2F9mlABf/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/4Gb02hyg8iuC8iCN9LpMWrg0KZXAUvfcGdfEzG493KU=452\">\n\n<strong>SK Hynix is in talks with Intel to make its first US memory chips (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    SK Hynix is in exploratory talks with Intel over a deal that would have it manufacture memory chips in the US for the first time, with one scenario having it lease part of Intel's long-delayed Ohio campus and another forming a joint venture with Intel and major cloud providers to lock in steady memory supply. Intel's Ohio site, announced back in 2022 at up to $100 billion, has slipped to a 2030-2031 start, so landing SK Hynix as a tenant would give Intel's foundry business exactly the marquee customer it's been chasing, while giving SK Hynix a way to actually produce chips domestically rather than just package them, as it's already doing at its $4 billion Indiana facility under construction.",
       "category": "Tech"
     },
     {
@@ -219,6 +262,7 @@
       "summary": "Figure pretrained Helix 2.5 entirely on Index, its crowdsourced human video dataset, then fine-tuned three whole-body behaviors - tidying rooms, folding towels, making beds - before deploying a single fixed checkpoint into 30 Bay Area homes it had never seen, with no data collection or adaptation on-site and objects it had never encountered. The key isolation test: training two otherwise...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.figure.ai%2Fnews%2Fhelix-2-5-zero-shot-30-home-generalization%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/UbceJF6YdQ0USIqYX72SUR-T_uHWV20h_Sag5UcOMd0=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.figure.ai%2Fnews%2Fhelix-2-5-zero-shot-30-home-generalization%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/UbceJF6YdQ0USIqYX72SUR-T_uHWV20h_Sag5UcOMd0=452\">\n\n<strong>Figure's Helix 2.5 walks into 30 unseen homes and gets to work with zero fine-tuning (5 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Figure pretrained Helix 2.5 entirely on Index, its crowdsourced human video dataset, then fine-tuned three whole-body behaviors - tidying rooms, folding towels, making beds - before deploying a single fixed checkpoint into 30 Bay Area homes it had never seen, with no data collection or adaptation on-site and objects it had never encountered. The key isolation test: training two otherwise identical policies on the same task-specific data, one from random initialization and one from Index-pretrained weights, showed Index pretraining alone lifted zero-shot success from 9% to 56%, over 6x higher, with success requiring full task completion and no partial credit.",
       "category": "Tech"
     },
     {
@@ -230,6 +274,7 @@
       "summary": "Onsemi's new Embedded Power Platform (EPP) builds power components directly into the silicon itself, wiring them together with precisely etched layers instead of the usual wire bonds, which cuts electrical losses and lets the parts switch faster. The idea is to design the electrical, thermal, and mechanical sides of a power system together from day one instead of separately, since treating...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.servethehome.com%2Fonsemi-embedded-power-platform-announced%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/gnrGCICzio_Rp4wTngR3cAKzZP6uxWMYotIp5ZMLbug=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.servethehome.com%2Fonsemi-embedded-power-platform-announced%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/gnrGCICzio_Rp4wTngR3cAKzZP6uxWMYotIp5ZMLbug=452\">\n\n<strong>Onsemi replaces tiny wires inside power chips to cut energy losses (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Onsemi's new Embedded Power Platform (EPP) builds power components directly into the silicon itself, wiring them together with precisely etched layers instead of the usual wire bonds, which cuts electrical losses and lets the parts switch faster. The idea is to design the electrical, thermal, and mechanical sides of a power system together from day one instead of separately, since treating them as separate problems has been forcing expensive redesigns late in development as devices demand more power in less space.",
       "category": "Tech"
     },
     {
@@ -241,6 +286,7 @@
       "summary": "The shader cores that do actual graphics work aren't where the RISC-V lives - it's in a collective of small management processors handling clocking, memory, security, and other housekeeping, with Nvidia VP Frans Sijstermans confirming each GPU packs 10 to 40 of them depending on the model. Users can't program these cores directly, and they're cryptographically locked down so tightly the GPU...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.xda-developers.com%2Fyour-nvidia-gpu-dozens-risc-v-cores-one-took-over-graphics-driver%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/qpbFWexAeI3FicfIVANnm--ZNQBZ-qfb-CGUbouTSB8=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.xda-developers.com%2Fyour-nvidia-gpu-dozens-risc-v-cores-one-took-over-graphics-driver%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/qpbFWexAeI3FicfIVANnm--ZNQBZ-qfb-CGUbouTSB8=452\">\n\n<strong>Nvidia graphics chips contain up to 40 tiny processors for housekeeping (5 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    The shader cores that do actual graphics work aren't where the RISC-V lives - it's in a collective of small management processors handling clocking, memory, security, and other housekeeping, with Nvidia VP Frans Sijstermans confirming each GPU packs 10 to 40 of them depending on the model. Users can't program these cores directly, and they're cryptographically locked down so tightly the GPU firmware won't even boot if they've been tampered with.",
       "category": "Tech"
     },
     {
@@ -252,6 +298,7 @@
       "summary": "Mixture-of-Experts models keep growing capacity by adding more experts, but even after quantization, the full expert pool still dwarfs consumer RAM and VRAM, so local inference has to lean on SSD storage instead - a much harder problem than just having enough disk space. SSD-LLaMA builds an SSD I/O pipeline tuned specifically for fetching experts, layered with a three-tier SSD-RAM-VRAM...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Farxiv.org%2Fabs%2F2609.18110%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/79kgUzdCoc3M73WwcTDkl8a44xaYFvlqQxMxxSdlY5s=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Farxiv.org%2Fabs%2F2609.18110%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/79kgUzdCoc3M73WwcTDkl8a44xaYFvlqQxMxxSdlY5s=452\">\n\n<strong>Huge AI models can run on a consumer graphics card by using SSD storage (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Mixture-of-Experts models keep growing capacity by adding more experts, but even after quantization, the full expert pool still dwarfs consumer RAM and VRAM, so local inference has to lean on SSD storage instead - a much harder problem than just having enough disk space. SSD-LLaMA builds an SSD I/O pipeline tuned specifically for fetching experts, layered with a three-tier SSD-RAM-VRAM hierarchy that dynamically decides which experts to hold where, and CPU-GPU hybrid execution balanced against the SSD's limited bandwidth, all while running every selected expert in full rather than pruning or substituting cheaper approximations.",
       "category": "Tech"
     },
     {
@@ -263,6 +310,7 @@
       "summary": "Every 3D asset in a robot simulator carries two geometries - a visual mesh for rendering and a coarser collision mesh for physics - a legitimate gap since matching them exactly is too expensive. This paper shows that gap is exploitable: an attacker can alter only the collision mesh, so a policy trained on the poisoned asset looks and behaves normally in simulation, then fails or creates real...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Farxiv.org%2Fabs%2F2609.18122%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/pK8ucxRZduVoAxZ91qvSCeG2Iv6xF1OeJWRnuAGqaYE=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Farxiv.org%2Fabs%2F2609.18122%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/pK8ucxRZduVoAxZ91qvSCeG2Iv6xF1OeJWRnuAGqaYE=452\">\n\n<strong>Invisible changes to a robot's training world can make it fail in real life (3 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Every 3D asset in a robot simulator carries two geometries - a visual mesh for rendering and a coarser collision mesh for physics - a legitimate gap since matching them exactly is too expensive. This paper shows that gap is exploitable: an attacker can alter only the collision mesh, so a policy trained on the poisoned asset looks and behaves normally in simulation, then fails or creates real safety risks once deployed. It slips past existing checks entirely, since asset review covers malware, copyright, and format, but nothing verifies visual-collision consistency, and the researchers found the defenses they tested weren't enough to catch it.",
       "category": "Tech"
     },
     {
@@ -274,6 +322,7 @@
       "summary": "Delos Data, founded by Intel veterans, raised $100 million led by Matrix Partners and Playground to build networking chips and software that move data faster between processors inside increasingly heterogeneous AI data centers. Early AI data centers were mostly Nvidia GPUs wired together with Nvidia's own proprietary networking, but as the focus has shifted from training toward running...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FxVEfsp/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/zYLC_LqfbQDdsLydEV-uZ8qGm2t4CViUDjEWLIe1cYM=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FxVEfsp/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/zYLC_LqfbQDdsLydEV-uZ8qGm2t4CViUDjEWLIe1cYM=452\">\n\n<strong>Intel veterans raise $100 million to help different AI chips work together (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Delos Data, founded by Intel veterans, raised $100 million led by Matrix Partners and Playground to build networking chips and software that move data faster between processors inside increasingly heterogeneous AI data centers. Early AI data centers were mostly Nvidia GPUs wired together with Nvidia's own proprietary networking, but as the focus has shifted from training toward running persistent, failure-tolerant agentic inference workloads, data centers now mix GPUs, XPUs, accelerators, CPUs, memory, and storage from Nvidia, AMD, Cerebras, and others, none of which were designed to talk to each other efficiently at that scale.",
       "category": "Tech"
     },
     {
@@ -285,6 +334,7 @@
       "summary": "An unverified Geekbench 7 result for Apple's new 2nm M6 chip, debuting in the new Mac mini, shows a single-core score of 4,071 and a multi-core score of 22,783, up roughly 12% and 27% respectively over the M5's average scores. That single-core number tops every other Mac or PC in the Geekbench database, including the M5 Max (3,731) and Qualcomm's Snapdragon X2 Elite Extreme (3,396), backing up...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.macrumors.com%2F2026%2F09%2F15%2Fapple-m6-chip-benchmark%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/D7QoNl5KI75zmWVFSYpxw81PYL0yVaJIJ-RIF0dRuy4=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.macrumors.com%2F2026%2F09%2F15%2Fapple-m6-chip-benchmark%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/D7QoNl5KI75zmWVFSYpxw81PYL0yVaJIJ-RIF0dRuy4=452\">\n\n<strong>Leaked test suggests Apple's M6 is 27% faster than M5 on multicore tasks (3 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    An unverified Geekbench 7 result for Apple's new 2nm M6 chip, debuting in the new Mac mini, shows a single-core score of 4,071 and a multi-core score of 22,783, up roughly 12% and 27% respectively over the M5's average scores. That single-core number tops every other Mac or PC in the Geekbench database, including the M5 Max (3,731) and Qualcomm's Snapdragon X2 Elite Extreme (3,396), backing up Apple's claim that the M6 has the world's fastest single-threaded CPU performance, while the multi-core gain lines up with Apple's advertised 1.2x multi-threaded improvement.",
       "category": "Tech"
     },
     {
@@ -296,6 +346,7 @@
       "summary": "Arm CEO Rene Haas discussed the company's AI revenue targets with Jim Cramer on CNBC's Mad Money, framing Arm's architecture as increasingly central to AI infrastructure even as competition from RISC-V and custom silicon intensifies.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.cnbc.com%2F2026%2F09%2F16%2Fjim-cramer-arm-ceo-ai-revenue-goal.html%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/xzJ_PqXrBVcb1xekw51UrTYSjaVss8zjDBMFJmVXo7w=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.cnbc.com%2F2026%2F09%2F16%2Fjim-cramer-arm-ceo-ai-revenue-goal.html%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/xzJ_PqXrBVcb1xekw51UrTYSjaVss8zjDBMFJmVXo7w=452\">\n\n<strong>Arm sees a better chance of reaching $2 billion in sales of its own AI chip (2 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Arm CEO Rene Haas discussed the company's AI revenue targets with Jim Cramer on CNBC's Mad Money, framing Arm's architecture as increasingly central to AI infrastructure even as competition from RISC-V and custom silicon intensifies.",
       "category": "Tech"
     },
     {
@@ -307,6 +358,7 @@
       "summary": "OpenArm is an open-source, fully 3D-printable robotic arm project from Enactic, designed as a low-cost, hackable platform for robotics research and development.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fgithub.com%2Fenactic%2FOpenArm%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/nAcvGBSNdqFozunzGV59cPGRHk6bpfEIfmLKxCVOi3g=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fgithub.com%2Fenactic%2FOpenArm%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/nAcvGBSNdqFozunzGV59cPGRHk6bpfEIfmLKxCVOi3g=452\">\n\n<strong>Open-source plans let you build your own robot arm (2 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    OpenArm is an open-source, fully 3D-printable robotic arm project from Enactic, designed as a low-cost, hackable platform for robotics research and development.",
       "category": "Tech"
     },
     {
@@ -318,6 +370,7 @@
       "summary": "Misumi, a maker of high-end linear actuators, and Fictiv, a manufacture-on-demand service, are launching a $50M venture fund that aims to bring their hardware manufacturing expertise to new hardware and deep tech startups.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.fictiv.com%2Farticles%2Fmisumi-americas-launches-misumi-ventures%3Futm_campaign=%26utm_content=%26utm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/lVgIsY1mhamoJYK0IRUf0DqtnU9hSE78LCCwAzYY4og=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.fictiv.com%2Farticles%2Fmisumi-americas-launches-misumi-ventures%3Futm_campaign=%26utm_content=%26utm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/lVgIsY1mhamoJYK0IRUf0DqtnU9hSE78LCCwAzYY4og=452\">\n\n<strong>Misumi and Fictiv Launch a $50 Million Fund Backing the Next Generation of Hardware, Robotics and Physical AI Companies (3 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Misumi, a maker of high-end linear actuators, and Fictiv, a manufacture-on-demand service, are launching a $50M venture fund that aims to bring their hardware manufacturing expertise to new hardware and deep tech startups.",
       "category": "Tech"
     },
     {
@@ -329,6 +382,7 @@
       "summary": "Speaking at a summit with King Charles III in Scotland, Jensen Huang said Nvidia expects to sell twice as many chips next year, extending a forecast that already projects 70% revenue growth for fiscal 2028.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.cnbc.com%2F2026%2F09%2F17%2Fnvidia-huang-ai-chip-guidance.html%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/b_nKht0ysiA1TXPcgH24mxsqRC5NnQGMsFyS6-FNNKk=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.cnbc.com%2F2026%2F09%2F17%2Fnvidia-huang-ai-chip-guidance.html%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/b_nKht0ysiA1TXPcgH24mxsqRC5NnQGMsFyS6-FNNKk=452\">\n\n<strong>Jensen Huang says Nvidia will double AI chip sales next year (2 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Speaking at a summit with King Charles III in Scotland, Jensen Huang said Nvidia expects to sell twice as many chips next year, extending a forecast that already projects 70% revenue growth for fiscal 2028.",
       "category": "Tech"
     },
     {
@@ -340,6 +394,7 @@
       "summary": "Samsung has started trial production of Tesla's AI5 chip on its 2nm node at the new Taylor, Texas foundry, fast-tracking prototype runs ahead of schedule to handle a wave of custom silicon orders, backed by Tesla's $16.5 billion manufacturing contract at the site.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.notateslaapp.com%2Fnews%2F4701%2Ftesla-ai5-chip-enters-trial-production-at-samsungs-texas-fab%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/Ia7lSyxgxMWtEt3qlrwjQQaOyZDSP8HjKDPRhcj_7RI=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.notateslaapp.com%2Fnews%2F4701%2Ftesla-ai5-chip-enters-trial-production-at-samsungs-texas-fab%3Futm_source=tldrhardware/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/Ia7lSyxgxMWtEt3qlrwjQQaOyZDSP8HjKDPRhcj_7RI=452\">\n\n<strong>Tesla's AI5 chip enters trial production at Samsung's Texas fab (3 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Samsung has started trial production of Tesla's AI5 chip on its 2nm node at the new Taylor, Texas foundry, fast-tracking prototype runs ahead of schedule to handle a wave of custom silicon orders, backed by Tesla's $16.5 billion manufacturing contract at the site.",
       "category": "Tech"
     },
     {
@@ -351,6 +406,7 @@
       "summary": "Apply here , create your own role or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of  of 2025.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/hs-lmQivH5i8Dbjx7pa5EQxKyZIaqSWWduoBIN-Flc4=452",
       "image": null,
+      "content_html": "<strong>Apply here</strong>,\r\n<strong>create your own role</strong> or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of <a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b4bffe71-8971e7fc-8876-47ad-8019-7f59f76b5184-000000/hs-lmQivH5i8Dbjx7pa5EQxKyZIaqSWWduoBIN-Flc4=452\"><strong>Inc.'s Best Bootstrapped businesses</strong></a> of 2025.",
       "category": "Tech"
     },
     {
@@ -362,6 +418,7 @@
       "summary": "The right harness can cut the cost of the same result by 71% without a loss of accuracy. This presents an opportunity for the next generation of software applications. State-of-the-art models can be expensive to use, but a good harness can reduce costs enough for them to be a viable option. An effective harness requires deep customer understanding, a collection of relevant evals, and a factory...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftomtunguz.com%2Fthe-harness-margin-opportunity%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/pckm7u-nGDNGtFndXeBvt2O3IEjwcbmbpImrII1bFhU=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftomtunguz.com%2Fthe-harness-margin-opportunity%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/pckm7u-nGDNGtFndXeBvt2O3IEjwcbmbpImrII1bFhU=452\">\n\n<strong>The Harness Margin Opportunity (3 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    The right harness can cut the cost of the same result by 71% without a loss of accuracy. This presents an opportunity for the next generation of software applications. State-of-the-art models can be expensive to use, but a good harness can reduce costs enough for them to be a viable option. An effective harness requires deep customer understanding, a collection of relevant evals, and a factory for automating hill-climbing.",
       "category": "Business"
     },
     {
@@ -373,6 +430,7 @@
       "summary": "Revenue scale is no longer sufficient when raising a round. What actually matters is how many top AI-native companies use, love, and embrace your products and profess undying loyalty to you. AI-native companies are the hardest customers to win, so they are the leading indicator. Revenue can be bought, but loyalty from a kingmaker can't be manufactured.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FrwsRiU/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/N2Hu4PwU39VtBmjQwHHlOug13KO9QgM0Qimvp9t_z54=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FrwsRiU/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/N2Hu4PwU39VtBmjQwHHlOug13KO9QgM0Qimvp9t_z54=452\">\n\n<strong>The New Kingmakers (2 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Revenue scale is no longer sufficient when raising a round. What actually matters is how many top AI-native companies use, love, and embrace your products and profess undying loyalty to you. AI-native companies are the hardest customers to win, so they are the leading indicator. Revenue can be bought, but loyalty from a kingmaker can't be manufactured.",
       "category": "Business"
     },
     {
@@ -384,6 +442,7 @@
       "summary": "Pulley raised more than $50M to compete with Carta. Now it's shutting down and directing customers to that same competitor. The cap-table startup closes December 8, giving customers about twelve weeks to move. A former employee speculated that spreadsheets, increasingly improved with AI, were a bigger competitive problem than Carta itself. If you use Pulley, start checking the migration...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftechcrunch.com%2F2026%2F09%2F16%2Fpulley-a-carta-rival-is-shutting-down%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/jtd7w00PGToq-tSE1lnE2LU13TsQ_HDNdlNd0CUYlgo=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftechcrunch.com%2F2026%2F09%2F16%2Fpulley-a-carta-rival-is-shutting-down%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/jtd7w00PGToq-tSE1lnE2LU13TsQ_HDNdlNd0CUYlgo=452\">\n\n<strong>Pulley, a Carta rival, is shutting down (2 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Pulley raised more than $50M to compete with Carta. Now it's shutting down and directing customers to that same competitor. The cap-table startup closes December 8, giving customers about twelve weeks to move. A former employee speculated that spreadsheets, increasingly improved with AI, were a bigger competitive problem than Carta itself. If you use Pulley, start checking the migration details now, especially which records transfer automatically and what you'll need to export yourself.",
       "category": "Business"
     },
     {
@@ -395,6 +454,7 @@
       "summary": "HubSpot spent twelve months testing what gets a company found in AI search. Adding an llms.txt file did nothing, while 92% of its highly specific industry and use-case pages eventually earned citations. A page-speed overhaul increased AI crawler visits by 1,600%, and qualified leads from AI search rose 1,850% over the year. The experiments give teams somewhere concrete to start. Track whether...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FnxI7hj/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/cX2-GDVpV59tMjjWfvcrTSqi-bsW5nglcTfG9O8Wibg=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FnxI7hj/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/cX2-GDVpV59tMjjWfvcrTSqi-bsW5nglcTfG9O8Wibg=452\">\n\n<strong>Inside 12 months of AI search experiments (8 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    HubSpot spent twelve months testing what gets a company found in AI search. Adding an llms.txt file did nothing, while 92% of its highly specific industry and use-case pages eventually earned citations. A page-speed overhaul increased AI crawler visits by 1,600%, and qualified leads from AI search rose 1,850% over the year. The experiments give teams somewhere concrete to start. Track whether the content brings qualified leads, though, because more crawler visits alone won't tell you whether it's working.",
       "category": "Business"
     },
     {
@@ -406,6 +466,7 @@
       "summary": "Your customer can ask ChatGPT for a lesson. Getting them to practice again tomorrow is a different problem. This article suggests comparing your app's main use case with what someone can do in a blank chat window, then looking at what's missing. Does your app remember their progress, organize what comes next, or give them someone to practice with? Those are reasons to keep using it even when...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2F3ufJ7S/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/-drT4k6-xIKOFoJzlmk3zj6Mb91L-ABUvPqjRhsAevQ=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2F3ufJ7S/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/-drT4k6-xIKOFoJzlmk3zj6Mb91L-ABUvPqjRhsAevQ=452\">\n\n<strong>Why would someone pay for your app when AI does it for free? (16 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Your customer can ask ChatGPT for a lesson. Getting them to practice again tomorrow is a different problem. This article suggests comparing your app's main use case with what someone can do in a blank chat window, then looking at what's missing. Does your app remember their progress, organize what comes next, or give them someone to practice with? Those are reasons to keep using it even when the answers are available elsewhere. If you're struggling to explain why someone should pay, try the comparison yourself.",
       "category": "Business"
     },
     {
@@ -417,6 +478,7 @@
       "summary": "Mercury Books brings AI-powered accounting to Mercury. It can generate P&L, cash flow, and balance sheet reports using Mercury data and data from external financial platforms. The product was co-designed alongside accountants from leading firms. Existing Mercury customers can get started with Books in minutes.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fmercury.com%2Fbooks%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/yjTMDiYDkfmfLOa_cgaoEUD1Z-0rqib8dXV6Zmkjnf4=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fmercury.com%2Fbooks%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/yjTMDiYDkfmfLOa_cgaoEUD1Z-0rqib8dXV6Zmkjnf4=452\">\n\n<strong>Mercury Books (Website)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Mercury Books brings AI-powered accounting to Mercury. It can generate P&amp;L, cash flow, and balance sheet reports using Mercury data and data from external financial platforms. The product was co-designed alongside accountants from leading firms. Existing Mercury customers can get started with Books in minutes.",
       "category": "Business"
     },
     {
@@ -428,6 +490,7 @@
       "summary": "USDC and USDT are now completely interoperable with the US dollar and every underlying US and international payment rail on Column. Column has built its own card issuer processor, allowing its customers to launch and run card programs with one integration. Column customers can now issue US dollar accounts and cards to verified customers globally. They can also receive, hold, and send foreign...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fcolumn.com%2Flaunch%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/08oGlBS9us-2XjKTg7UnvG-U7SMhJ-VtnBomNE_uaHA=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fcolumn.com%2Flaunch%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/08oGlBS9us-2XjKTg7UnvG-U7SMhJ-VtnBomNE_uaHA=452\">\n\n<strong>Column is releasing four new products (3 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    USDC and USDT are now completely interoperable with the US dollar and every underlying US and international payment rail on Column. Column has built its own card issuer processor, allowing its customers to launch and run card programs with one integration. Column customers can now issue US dollar accounts and cards to verified customers globally. They can also receive, hold, and send foreign currencies in individually numbered accounts with connections to international instant payment systems like SEPA Instant.",
       "category": "Business"
     },
     {
@@ -439,6 +502,7 @@
       "summary": "A customer can now ask an ad questions before visiting your website. OpenAI is testing Sponsored Agents with select US advertisers, letting users talk with a business-sponsored agent before clicking through to buy. It's also adding ChatGPT Ads integrations to HubSpot and Shopify. That moves some of the selling into the ad itself. If you get access to the test, your product information and the...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FsHRlrj/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/wEvoIsCTHzXh0laQ51ZDbQO3LA9lZDcPdjuHvqzNzyo=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FsHRlrj/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/wEvoIsCTHzXh0laQ51ZDbQO3LA9lZDcPdjuHvqzNzyo=452\">\n\n<strong>Reimagining advertising with AI (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    A customer can now ask an ad questions before visiting your website. OpenAI is testing Sponsored Agents with select US advertisers, letting users talk with a business-sponsored agent before clicking through to buy. It's also adding ChatGPT Ads integrations to HubSpot and Shopify. That moves some of the selling into the ad itself. If you get access to the test, your product information and the agent's answers will need as much attention as the creative and landing page.",
       "category": "Business"
     },
     {
@@ -450,6 +514,7 @@
       "summary": "Many founders are getting tired right now. They raised and built in a pre-AI world. Many want to build something else for a post-AI world. This can be a big opportunity for many companies that are in a strong financial position.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.onlycfo.io%2Fp%2Fpulley-is-winding-down-what-happened%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/X8YBz_Ms-tyNaPnIMpMjPm3bEs_8_9jkjXExBm0D_Lg=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.onlycfo.io%2Fp%2Fpulley-is-winding-down-what-happened%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/X8YBz_Ms-tyNaPnIMpMjPm3bEs_8_9jkjXExBm0D_Lg=452\">\n\n<strong>Pulley is “Winding Down” | What Happened? (8 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Many founders are getting tired right now. They raised and built in a pre-AI world. Many want to build something else for a post-AI world. This can be a big opportunity for many companies that are in a strong financial position.",
       "category": "Business"
     },
     {
@@ -461,6 +526,7 @@
       "summary": "You suggest a new feature during a meeting. A week later, someone has built it, and the project you actually needed is behind. You thought you were sharing an idea, but they thought you were giving them a task. This is one reason founders and their teams can disagree about how well things are managed. Tell people whether you're asking for opinions or assigning work. When you do add a task,...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fthefounderplaybook.hustlefund.vc%2Fp%2Fhow-to-lead-a-startup-team%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/Q5vOsvySoqGEkedrPwl1Ru6fljzd_13TltDaH5Hd0Lo=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fthefounderplaybook.hustlefund.vc%2Fp%2Fhow-to-lead-a-startup-team%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/Q5vOsvySoqGEkedrPwl1Ru6fljzd_13TltDaH5Hd0Lo=452\">\n\n<strong>Why Does Your Team Think You're a Worse Manager Than You Do? (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    You suggest a new feature during a meeting. A week later, someone has built it, and the project you actually needed is behind. You thought you were sharing an idea, but they thought you were giving them a task. This is one reason founders and their teams can disagree about how well things are managed. Tell people whether you're asking for opinions or assigning work. When you do add a task, explain how it ranks against what they're already doing.",
       "category": "Business"
     },
     {
@@ -472,6 +538,7 @@
       "summary": "One investor wants an answer by Friday. Another can't meet until next month. You can end up choosing before you know who else is interested. This fundraising guide explains how to avoid that by building relationships early, then scheduling your pitch meetings close together so investors can reach decisions around the same time. Aim to finish the raise before you're down to six months of cash....",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FMlxgt3/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/pLZDSqC_OE091JWUCjibUJfa0-imQr1_CjRSjeHw2gU=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FMlxgt3/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/pLZDSqC_OE091JWUCjibUJfa0-imQr1_CjRSjeHw2gU=452\">\n\n<strong>How to Raise Venture Capital Chapter 1: The Speed Run (13 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    One investor wants an answer by Friday. Another can't meet until next month. You can end up choosing before you know who else is interested. This fundraising guide explains how to avoid that by building relationships early, then scheduling your pitch meetings close together so investors can reach decisions around the same time. Aim to finish the raise before you're down to six months of cash. Even after you accept a term sheet, investors still need to complete their checks and finalize the paperwork before the money reaches your account.",
       "category": "Business"
     },
     {
@@ -483,6 +550,7 @@
       "summary": "Be extremely choosy about what you add to a system and be militant about taking things out.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fliamnugent.me%2Fposts%2Fwhat-you-dont-build%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/gI5A0I85p0z5HDcREzRZoi-bU4-GjsLPyA1bJEFskTM=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fliamnugent.me%2Fposts%2Fwhat-you-dont-build%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/gI5A0I85p0z5HDcREzRZoi-bU4-GjsLPyA1bJEFskTM=452\">\n\n<strong>The most important product decision is what you don't build (8 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Be extremely choosy about what you add to a system and be militant about taking things out.",
       "category": "Business"
     },
     {
@@ -494,6 +562,7 @@
       "summary": "AI accelerates product development, but teams risk prioritizing speed over meaningful outcomes, leading to feature bloat.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Frunthebusiness.substack.com%2Fp%2Fthe-curation-problem%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/9LT0peyqYkIzc4w0ST-60ekmjg0Effm3v1wj-hh3TWQ=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Frunthebusiness.substack.com%2Fp%2Fthe-curation-problem%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/9LT0peyqYkIzc4w0ST-60ekmjg0Effm3v1wj-hh3TWQ=452\">\n\n<strong>The Curation Problem (8 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    AI accelerates product development, but teams risk prioritizing speed over meaningful outcomes, leading to feature bloat.",
       "category": "Business"
     },
     {
@@ -505,6 +574,7 @@
       "summary": "When you let it be known that someone gave you feedback, and they see how you accepted and thanked the person who gave it, you normalize the behavior and make it safer for others to do the same.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Favivbenyosef.com%2Fmaximizing-return-on-feedback%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/oDB_Z2Kd6nP0zo7PqeT9_lsxYzPjbvqmBJxC4N50j2A=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Favivbenyosef.com%2Fmaximizing-return-on-feedback%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/oDB_Z2Kd6nP0zo7PqeT9_lsxYzPjbvqmBJxC4N50j2A=452\">\n\n<strong>Maximizing Return-on-Feedback (5 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    When you let it be known that someone gave you feedback, and they see how you accepted and thanked the person who gave it, you normalize the behavior and make it safer for others to do the same.",
       "category": "Business"
     },
     {
@@ -516,6 +586,7 @@
       "summary": "Zapier CEO Wade Foster discusses the evolution of no-code automation into tools like Zapier MCP, focusing on integrating with users' daily AI drivers like Cursor.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.cognitiverevolution.ai%2Fno-code-is-code-zapier-ceo-wade-foster-on-headless-tools-zapier-mcp-automation-bench%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/MGgjJA9QuSi4MQYR6Pp09Tua_PVCpn9PpQvfd-RLrKc=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.cognitiverevolution.ai%2Fno-code-is-code-zapier-ceo-wade-foster-on-headless-tools-zapier-mcp-automation-bench%2F%3Futm_source=tldrfounders/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/MGgjJA9QuSi4MQYR6Pp09Tua_PVCpn9PpQvfd-RLrKc=452\">\n\n<strong>No Code Is Code: Zapier CEO Wade Foster on Headless Tools, Zapier MCP &amp; Automation Bench (73 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Zapier CEO Wade Foster discusses the evolution of no-code automation into tools like Zapier MCP, focusing on integrating with users' daily AI drivers like Cursor.",
       "category": "Business"
     },
     {
@@ -527,6 +598,7 @@
       "summary": "Apply here , create your own role or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of  of 2025.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/9tlkIbD0akpikLM-NXcyan6OochZgfd0tn2kt50wHEg=452",
       "image": null,
+      "content_html": "<strong>Apply here</strong>,\r\n<strong>create your own role</strong> or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of <a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b489bd2f-5ce787ec-369e-48a4-978f-2223444b69c9-000000/9tlkIbD0akpikLM-NXcyan6OochZgfd0tn2kt50wHEg=452\"><strong>Inc.'s Best Bootstrapped businesses</strong></a> of 2025.",
       "category": "Business"
     },
     {
@@ -538,6 +610,7 @@
       "summary": "Anthropic claims that its Claude chatbot drives more than a quarter of its research and development work. There are over 30,000 agents doing research and engineering work at Anthropic at any one time. Its staffers collaborate with the chatbot for about 90% of their work. The company is trying to create a framework to track agents and monitor the amount of work they do.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FkRGO9K/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/1IVX-P6373-mNUN_w2rhbACyDQPjrZyC2-iYh7wYOKw=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FkRGO9K/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/1IVX-P6373-mNUN_w2rhbACyDQPjrZyC2-iYh7wYOKw=452\">\n\n<strong>Anthropic Says Claude Drives 26% of Its Research and Development (3 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Anthropic claims that its Claude chatbot drives more than a quarter of its research and development work. There are over 30,000 agents doing research and engineering work at Anthropic at any one time. Its staffers collaborate with the chatbot for about 90% of their work. The company is trying to create a framework to track agents and monitor the amount of work they do.",
       "category": "AI"
     },
     {
@@ -549,6 +622,7 @@
       "summary": "Huawei plans to release two new AI chips next year. The company has now shipped more than 1,000 of its AI-computing systems to over 370 customers. China's AI chip market is projected to grow to $67 billion by 2030. Huawei's chip-making technology still trails Nvidia's, but the company is developing workarounds and new designs to squeeze in more computing power while using less advanced equipment.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FxR9NGP/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/kI5jPlQNmZW-MjN5kP5MaGKCoWcwPR2vageGSFWJ3rw=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FxR9NGP/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/kI5jPlQNmZW-MjN5kP5MaGKCoWcwPR2vageGSFWJ3rw=452\">\n\n<strong>Huawei's Plan to Become China's Nvidia (3 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Huawei plans to release two new AI chips next year. The company has now shipped more than 1,000 of its AI-computing systems to over 370 customers. China's AI chip market is projected to grow to $67 billion by 2030. Huawei's chip-making technology still trails Nvidia's, but the company is developing workarounds and new designs to squeeze in more computing power while using less advanced equipment.",
       "category": "Tech"
     },
     {
@@ -560,6 +634,7 @@
       "summary": "Helix 2.5 is an advanced neural network pretrained on Index, Figure's global-scale dataset of human behavior. It can tidy living rooms, fold towels, and make beds in homes it has never seen. The model is the first evidence that whole-body intelligence can be learned from human experience and transferred to new scenarios. Index is now generating roughly 35 minutes of new human experience every...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.figure.ai%2Fnews%2Fhelix-2-5-zero-shot-30-home-generalization%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/-rYkCIIc6ydoSo--rhntzDDZPIhr2CKKOWx_P8ifPAU=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.figure.ai%2Fnews%2Fhelix-2-5-zero-shot-30-home-generalization%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/-rYkCIIc6ydoSo--rhntzDDZPIhr2CKKOWx_P8ifPAU=452\">\n\n<strong>Helix 2.5: Zero-Shot 30-Home Generalization (14 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Helix 2.5 is an advanced neural network pretrained on Index, Figure's global-scale dataset of human behavior. It can tidy living rooms, fold towels, and make beds in homes it has never seen. The model is the first evidence that whole-body intelligence can be learned from human experience and transferred to new scenarios. Index is now generating roughly 35 minutes of new human experience every second - if Helix 2.5 is any guide, more data and compute should translate directly into more of the physical world learned before a robot ever enters a new home.",
       "category": "Tech"
     },
     {
@@ -571,6 +646,7 @@
       "summary": "The differences between the versions of the Raptor rocket engine are stark. Many people initially didn't believe SpaceX when the company released a picture of the three generations of the design. The streamlining of the design also brought meaningful gains in performance - the Raptor 3 provides about 35% more thrust than the Raptor 1. This article looks at what specifically SpaceX changed that...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.construction-physics.com%2Fp%2Fhow-spacex-streamlined-the-raptor%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/c-IziXKcvjDCthTSwa11Jx5bvYA8eXKezlaywsGW2y4=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.construction-physics.com%2Fp%2Fhow-spacex-streamlined-the-raptor%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/c-IziXKcvjDCthTSwa11Jx5bvYA8eXKezlaywsGW2y4=452\">\n\n<strong>How SpaceX Streamlined the Raptor Engine (17 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    The differences between the versions of the Raptor rocket engine are stark. Many people initially didn't believe SpaceX when the company released a picture of the three generations of the design. The streamlining of the design also brought meaningful gains in performance - the Raptor 3 provides about 35% more thrust than the Raptor 1. This article looks at what specifically SpaceX changed that allowed it to take the Raptor from a tangle of wires and pipes into the svelte, streamlined engine it is today.",
       "category": "Tech"
     },
     {
@@ -582,6 +658,7 @@
       "summary": "Researchers chained two critical vulnerabilities to compromise multiple OpenAI employees' ChatGPT accounts in July. The accounts could access internal OpenAI repositories and potentially many other connectors. They used one employee's Codex to open a PR in OpenAI's internal monorepo. This post provides a full timeline of the disclosure process and details about how the vulnerabilities were...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.hacktron.ai%2Fblog%2Fhacking-openai%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/Tt4sBpFpKxQCWyGCg4KJMaiec4mt-VnTKOb3_XT_2hs=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.hacktron.ai%2Fblog%2Fhacking-openai%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/Tt4sBpFpKxQCWyGCg4KJMaiec4mt-VnTKOb3_XT_2hs=452\">\n\n<strong>Hacking OpenAI (11 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Researchers chained two critical vulnerabilities to compromise multiple OpenAI employees' ChatGPT accounts in July. The accounts could access internal OpenAI repositories and potentially many other connectors. They used one employee's Codex to open a PR in OpenAI's internal monorepo. This post provides a full timeline of the disclosure process and details about how the vulnerabilities were discovered.",
       "category": "AI"
     },
     {
@@ -593,6 +670,7 @@
       "summary": "The release notes on the WebKit features for Safari 27.0 are the longest yet, detailing 83 features, including Safari MCP. Safari MCP makes working with coding agents dramatically easier. It gives users' agent of choice control over the browser window so it can see how code renders. The MCP provides access to the DOM, network requests, screenshots, and console output, allowing agents to do...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwebkit.org%2Fblog%2F18325%2Fwebkit-features-for-safari-27-0%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/Bxxwt0kdtJf7WYzW_1AvDMX1vs3RMIgP_bZbuwniCzI=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwebkit.org%2Fblog%2F18325%2Fwebkit-features-for-safari-27-0%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/Bxxwt0kdtJf7WYzW_1AvDMX1vs3RMIgP_bZbuwniCzI=452\">\n\n<strong>WebKit Features for Safari 27.0 (142 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    The release notes on the WebKit features for Safari 27.0 are the longest yet, detailing 83 features, including Safari MCP. Safari MCP makes working with coding agents dramatically easier. It gives users' agent of choice control over the browser window so it can see how code renders. The MCP provides access to the DOM, network requests, screenshots, and console output, allowing agents to do more with less effort from users.",
       "category": "Tech"
     },
     {
@@ -604,6 +682,7 @@
       "summary": "Crusoe built one of the world's biggest AI supercomputers in Abilene, Texas. The company is now investing heavily in smaller data centers. It is manufacturing them in factories, loading them onto flatbed trucks, and deploying them wherever it can find available power. The company believes this is a faster and cheaper method than solely relying on large construction projects. Giant clusters...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FsCPtgZ/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/MImE3iQLDyXs680C6e1bZ7xf2IDC67CxsjGucksoSRw=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FsCPtgZ/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/MImE3iQLDyXs680C6e1bZ7xf2IDC67CxsjGucksoSRw=452\">\n\n<strong>The Startup That Built OpenAI's Biggest Data Center Is Now Making Tiny Ones (6 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Crusoe built one of the world's biggest AI supercomputers in Abilene, Texas. The company is now investing heavily in smaller data centers. It is manufacturing them in factories, loading them onto flatbed trucks, and deploying them wherever it can find available power. The company believes this is a faster and cheaper method than solely relying on large construction projects. Giant clusters with hundreds of thousands of chips are useful for training, but inference can be done with considerably smaller amounts of chips.",
       "category": "AI"
     },
     {
@@ -615,6 +694,7 @@
       "summary": "Anthropic's Mythos model sparked a shift within the White House as officials started realizing that AI can be used to launch cyberattacks and pose national-security threats. White House officials and AI executives are working on regulatory efforts, but when they disagree, the executives have gone directly to Trump. Trump has remained resolute that the nation needs to accelerate AI development...",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FhuCvjL/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/tzdi950QcYR1ujgAWRdFrvK5ELgijD72TmSgeq7zhMU=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FhuCvjL/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/tzdi950QcYR1ujgAWRdFrvK5ELgijD72TmSgeq7zhMU=452\">\n\n<strong>Inside the White House Tussle to Sway Trump on AI (11 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Anthropic's Mythos model sparked a shift within the White House as officials started realizing that AI can be used to launch cyberattacks and pose national-security threats. White House officials and AI executives are working on regulatory efforts, but when they disagree, the executives have gone directly to Trump. Trump has remained resolute that the nation needs to accelerate AI development and continue to build the data centers that are powering the AI boom.",
       "category": "Politics"
     },
     {
@@ -626,6 +706,7 @@
       "summary": "You can turn any LLM into a System One model by batching prompts that generate a single token with structured output.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.seangoedecke.com%2Ftwo-techniques-for-working-with-system-one-models%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/UZKO7kOFLWKZwSpyCMW3gtqESUOPBhREUq-VVfrsHkM=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.seangoedecke.com%2Ftwo-techniques-for-working-with-system-one-models%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/UZKO7kOFLWKZwSpyCMW3gtqESUOPBhREUq-VVfrsHkM=452\">\n\n<strong>Two techniques for working with System One models (8 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    You can turn any LLM into a System One model by batching prompts that generate a single token with structured output.",
       "category": "AI"
     },
     {
@@ -637,6 +718,7 @@
       "summary": "Bend is a language for communicating intent to AI.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fgithub.com%2Fbendlang%2Fbend%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/ra_hDE5OxXQqzHVgqENGLTMruBBMF5TA83KXweDo2IY=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fgithub.com%2Fbendlang%2Fbend%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/ra_hDE5OxXQqzHVgqENGLTMruBBMF5TA83KXweDo2IY=452\">\n\n<strong>Bend (GitHub Repo)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Bend is a language for communicating intent to AI.",
       "category": "Tech"
     },
     {
@@ -648,6 +730,7 @@
       "summary": "The agreements provide each of them with 12 months of base salary paid out as a lump sum, an accelerated vesting schedule for their equity, the ability to exercise their vested stock options, and another year of health coverage.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftechcrunch.com%2F2026%2F09%2F16%2Fautomattics-interim-ceo-and-legal-chief-signed-reciprocal-severance-deals-during-mullenwegs-brief-ouster%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/tJdBA50w2bNe0mrN1r0Ztz8qZY1Cvo5Yl2wPsaFzOA8=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftechcrunch.com%2F2026%2F09%2F16%2Fautomattics-interim-ceo-and-legal-chief-signed-reciprocal-severance-deals-during-mullenwegs-brief-ouster%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/tJdBA50w2bNe0mrN1r0Ztz8qZY1Cvo5Yl2wPsaFzOA8=452\">\n\n<strong>Automattic's interim CEO and legal chief signed reciprocal severance deals during Mullenweg's brief ouster (6 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    The agreements provide each of them with 12 months of base salary paid out as a lump sum, an accelerated vesting schedule for their equity, the ability to exercise their vested stock options, and another year of health coverage.",
       "category": "Business"
     },
     {
@@ -659,6 +742,7 @@
       "summary": "Bitcoin's quantum migration is a question of how to minimize total property-rights violations once elliptic curve signatures no longer reliably authenticate rightful ownership.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fblog.lopp.net%2Fbitcoin-quantum-migration-debate%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/9eqpSJ9hTShvDw-oxIkYfyLPNOUCw9z2uqyF9_S87y4=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fblog.lopp.net%2Fbitcoin-quantum-migration-debate%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/9eqpSJ9hTShvDw-oxIkYfyLPNOUCw9z2uqyF9_S87y4=452\">\n\n<strong>Bitcoin's Quantum Migration Debate (29 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Bitcoin's quantum migration is a question of how to minimize total property-rights violations once elliptic curve signatures no longer reliably authenticate rightful ownership.",
       "category": "Tech"
     },
     {
@@ -670,6 +754,7 @@
       "summary": "Code review used to be slow, but agentic review took that bottleneck away almost entirely.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fallen.hutchison.org%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/xN8SXKnP002jXcPy-8OLEiVfjABJU66ZndFtATtBtNc=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fallen.hutchison.org%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/xN8SXKnP002jXcPy-8OLEiVfjABJU66ZndFtATtBtNc=452\">\n\n<strong>The Test Suite Is the New Code Review (15 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Code review used to be slow, but agentic review took that bottleneck away almost entirely.",
       "category": "Tech"
     },
     {
@@ -681,6 +766,7 @@
       "summary": "Use your own words, don't let the model trick you into thinking your draft is good, and let the model act as a copyeditor.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fsockpuppet.org%2Fblog%2F2026%2F09%2F17%2Fhow-to-write-with-an-llm%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/jUXe0g9Qq1MOtsWin4QQfIkS06G4WMAwNJM957KUasY=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fsockpuppet.org%2Fblog%2F2026%2F09%2F17%2Fhow-to-write-with-an-llm%2F%3Futm_source=tldrnewsletter/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/jUXe0g9Qq1MOtsWin4QQfIkS06G4WMAwNJM957KUasY=452\">\n\n<strong>How To Write With An LLM (5 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Use your own words, don't let the model trick you into thinking your draft is good, and let the model act as a copyeditor.",
       "category": "AI"
     },
     {
@@ -692,6 +778,7 @@
       "summary": "Apply here , create your own role or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of  of 2025.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/5-wyCcDtabMcjoXt6-jG-y_o3qPDSp9nj9WVXxXRI6A=452",
       "image": null,
+      "content_html": "<strong>Apply here</strong>,\r\n<strong>create your own role</strong> or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of <a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b458c6bb-3930a214-a1ee-49c2-a125-ccd36de47732-000000/5-wyCcDtabMcjoXt6-jG-y_o3qPDSp9nj9WVXxXRI6A=452\"><strong>Inc.'s Best Bootstrapped businesses</strong></a> of 2025.",
       "category": "Tech"
     },
     {
@@ -703,6 +790,7 @@
       "summary": "AI is weakening traditional software moats and squeezing the middle. Software may split between massive platforms and small niche products.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FRmUkt8/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/wAtF7M7RASp2F6-PPGXZSCMlUSfkh1rD6Aq9o_7RgZk=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FRmUkt8/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/wAtF7M7RASp2F6-PPGXZSCMlUSfkh1rD6Aq9o_7RgZk=452\">\n\n<strong>Moats &amp; the Barbell-ification of Software (4 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    AI is weakening traditional software moats and squeezing the middle. Software may split between massive platforms and small niche products.",
       "category": "Business"
     },
     {
@@ -714,6 +802,7 @@
       "summary": "Open source can drive adoption, but it does not create a business by itself. Companies need to identify what becomes valuable enough for users to pay for.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.plg.news%2Fp%2Fpopular-isnt-a-business-model%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/Y_OjGVSwCTFioKT6h79HtlCT76m3XSO-524kOclMKhE=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.plg.news%2Fp%2Fpopular-isnt-a-business-model%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/Y_OjGVSwCTFioKT6h79HtlCT76m3XSO-524kOclMKhE=452\">\n\n<strong>Popular isn't a business model (6 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Open source can drive adoption, but it does not create a business by itself. Companies need to identify what becomes valuable enough for users to pay for.",
       "category": "Business"
     },
     {
@@ -725,6 +814,7 @@
       "summary": "Product outcomes should connect directly to business strategy through a clear hierarchy of goals. The Strategy Stack keeps product teams autonomous while aligned with company priorities.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fromanpichler.medium.com%2Fconnecting-product-outcomes-to-business-strategy-c77568171f53%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/hbinw6oBWakn1cI_BwJpbvakMYW-rzQHV6xF0epv644=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fromanpichler.medium.com%2Fconnecting-product-outcomes-to-business-strategy-c77568171f53%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/hbinw6oBWakn1cI_BwJpbvakMYW-rzQHV6xF0epv644=452\">\n\n<strong>Connecting Product Outcomes to Business Strategy (11 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Product outcomes should connect directly to business strategy through a clear hierarchy of goals. The Strategy Stack keeps product teams autonomous while aligned with company priorities.",
       "category": "Business"
     },
     {
@@ -736,6 +826,7 @@
       "summary": "AI software factories should encode human judgment into automated feedback, not just produce more code. Teams should learn through real product work and continuously improve how their agents operate.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.robert-glaser.de%2Fapproach-the-software-factory-as-a-product-team%2F%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/bUMV3YZ8inws8i1SpojeCYnw8STqC7baP8dwO6rpfls=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.robert-glaser.de%2Fapproach-the-software-factory-as-a-product-team%2F%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/bUMV3YZ8inws8i1SpojeCYnw8STqC7baP8dwO6rpfls=452\">\n\n<strong>How should we approach the software factory as a product team? (6 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    AI software factories should encode human judgment into automated feedback, not just produce more code. Teams should learn through real product work and continuously improve how their agents operate.",
       "category": "Business"
     },
     {
@@ -747,6 +838,7 @@
       "summary": "Engineering managers should stop being information routers and use AI to get back into the technical work. Staying close to code, architecture, and critical projects helps them make faster, better decisions.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftheengineeringmanager.substack.com%2Fp%2Fnobody-needs-a-human-router%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/PgxBD0TvEx70V-9-WpFDq3dbe_pdQZQTE7L66Spt6yQ=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftheengineeringmanager.substack.com%2Fp%2Fnobody-needs-a-human-router%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/PgxBD0TvEx70V-9-WpFDq3dbe_pdQZQTE7L66Spt6yQ=452\">\n\n<strong>Nobody needs a human router (9 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Engineering managers should stop being information routers and use AI to get back into the technical work. Staying close to code, architecture, and critical projects helps them make faster, better decisions.",
       "category": "Business"
     },
     {
@@ -758,6 +850,7 @@
       "summary": "Reliable AI products need more than better prompts or models. Teams need evals, guardrails, and orchestration to catch errors and help agents correct them.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.producttalk.org%2F4-new-evals-and-16-experiment-variants%2F%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/lTFk8S4Vh64FKUD3AYLbne4UoSgyAUli4beFqlODWQ4=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.producttalk.org%2F4-new-evals-and-16-experiment-variants%2F%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/lTFk8S4Vh64FKUD3AYLbne4UoSgyAUli4beFqlODWQ4=452\">\n\n<strong>4 New Evals and 16 Experiment Variants to Fix 1 Customer Complaint (14 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Reliable AI products need more than better prompts or models. Teams need evals, guardrails, and orchestration to catch errors and help agents correct them.",
       "category": "Business"
     },
     {
@@ -769,6 +862,7 @@
       "summary": "Momentum drives growth, but it is not a moat. AI startups need to turn early traction into durable advantages competitors cannot easily copy.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.danhock.co%2Fp%2Fmomentum-is-not-a-moat%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/Ly7_6a0SOiPZmTzvxHPPN9RaUN5o_EQr-B1Ka-NKp-E=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.danhock.co%2Fp%2Fmomentum-is-not-a-moat%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/Ly7_6a0SOiPZmTzvxHPPN9RaUN5o_EQr-B1Ka-NKp-E=452\">\n\n<strong>Momentum is Not a Moat (8 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Momentum drives growth, but it is not a moat. AI startups need to turn early traction into durable advantages competitors cannot easily copy.",
       "category": "Business"
     },
     {
@@ -780,6 +874,7 @@
       "summary": "Some burnout comes from feeling disconnected from who you want to be at work, not simply from overwork. Managers can help identify that gap and restore a sense of agency.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fjennywanger.com%2Farticles%2Fcoaching-someone-through-the-burnout-that-rest-doesnt-fix%2F%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/TUQPdNfetvXOvxTogDWj3lkCCqcNeUo5NXZdc43E3VM=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fjennywanger.com%2Farticles%2Fcoaching-someone-through-the-burnout-that-rest-doesnt-fix%2F%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/TUQPdNfetvXOvxTogDWj3lkCCqcNeUo5NXZdc43E3VM=452\">\n\n<strong>Coaching someone through the burnout that rest doesn't fix (8 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Some burnout comes from feeling disconnected from who you want to be at work, not simply from overwork. Managers can help identify that gap and restore a sense of agency.",
       "category": "Business"
     },
     {
@@ -791,6 +886,7 @@
       "summary": "Workarounds often reveal product needs users no longer think to mention.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.antonsten.com%2Farticles%2Fthe-workaround-is-often-the-requirement%2F%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/NKyecAvFxJLwt3PL9cPicTCu36mnhFnykj7KHK6Wfto=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.antonsten.com%2Farticles%2Fthe-workaround-is-often-the-requirement%2F%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/NKyecAvFxJLwt3PL9cPicTCu36mnhFnykj7KHK6Wfto=452\">\n\n<strong>The workaround is often the requirement (2 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    Workarounds often reveal product needs users no longer think to mention.",
       "category": "Business"
     },
     {
@@ -802,6 +898,7 @@
       "summary": "AI adoption works best when teams start there and keep human ownership clear.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Frdel.substack.com%2Fp%2Frdel-161-what-decides-which-tasks%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/Q1lnPkanK0G3ltB776DFBsWzSfu7A-C-nuYV_9rLxmE=452",
       "image": null,
+      "content_html": "<a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Frdel.substack.com%2Fp%2Frdel-161-what-decides-which-tasks%3Futm_source=tldrproduct/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/Q1lnPkanK0G3ltB776DFBsWzSfu7A-C-nuYV_9rLxmE=452\">\n\n<strong>What decides which tasks product managers are willing to delegate to GenAI? (2 minute read)</strong>\n\n</a>\n<br/>\n<br/>\n\r\n                                    AI adoption works best when teams start there and keep human ownership clear.",
       "category": "Business"
     },
     {
@@ -813,183 +910,8 @@
       "summary": "Apply here , create your own role or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of  of 2025.",
       "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/3QbsqvJteV2tn4taJOiDy_jg6OHiPNq8WXgLDVFm7sI=452",
       "image": null,
+      "content_html": "<strong>Apply here</strong>,\r\n<strong>create your own role</strong> or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of <a href=\"https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0b405664c-92cdd974-8197-4b26-90dd-1618d0bef6c0-000000/3QbsqvJteV2tn4taJOiDy_jg6OHiPNq8WXgLDVFm7sI=452\"><strong>Inc.'s Best Bootstrapped businesses</strong></a> of 2025.",
       "category": "Business"
-    },
-    {
-      "id": "917871b6e3065241",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Apple reportedly building server packed with M-series Ultra chips for AI (2 minute read)",
-      "summary": "Apple is working on an AI server powered by its M-series Ultra chips. It is expected to be released in 2029. The enterprise server will come with either two or four M8 Ultra chips. The project, which received support from John Ternus when it began a year ago, back when Ternus led Apple's hardware engineering efforts, will be Apple's first server to hit the market in nearly two decades.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Farstechnica.com%2Fai%2F2026%2F09%2Fapple-reportedly-building-server-packed-with-m-series-ultra-chips-for-ai%2F%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/qOAXlrpw4pi8SHoH8Q7esnj1zJArxqTT0Nv233N7GwA=452",
-      "image": null,
-      "category": "AI"
-    },
-    {
-      "id": "e10f8b223acbc715",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Snap Tries to Sell Consumers on the Idea of $2,195 Smart Glasses (8 minute read)",
-      "summary": "Snap's forthcoming Specs augmented reality glasses will launch later this year at $2,195. People will be able to try the glasses at select Verizon stores and purchase custom wireless data plans for them. There will be a higher-priced version at $2,395 that includes a carrying case with built-in cellular data connectivity.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FZiTxP5/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/Zy6DMsALwJKT_D2jyLpbRl3jB1xjyjkrd3yjPlJTGmU=452",
-      "image": null,
-      "category": "Tech"
-    },
-    {
-      "id": "b54535fca144a6fb",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "OpenAI Discloses Six New Incidents of ‘Concerning' AI Behavior (5 minute read)",
-      "summary": "OpenAI has revealed several more incidents involving its AI systems as part of its new framework for reporting misalignment. The company's AI systems hid mistakes, made up data, and moved miles onto the open internet without permission. The industry is currently in heated discussions about whether AI development needs to be slowed to address the technology's potential dangers. AI leaders have...",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FQIXcBN/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/9DvelH7kFBpD3ffdGoAl0WBGEIlHEXriZS_jxpUj8as=452",
-      "image": null,
-      "category": "AI"
-    },
-    {
-      "id": "992da26804d2c68d",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Mice with human brain cells offer a tool to study disease. Ethicists ask: What's next? (7 minute read)",
-      "summary": "Researchers have developed a technique for installing millions of human brain cells into mice. The scientists bred mice that were missing most of their cerebral cortexes and then replaced a large part of those missing mouse cells with lab-grown human brain cells. This resulted in mice with human neurons that could be altered to approximate human brain conditions. The technique could...",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.npr.org%2F2026%2F09%2F16%2Fnx-s1-5968873%2Flab-mouse-human-brain-cells-organoid-disease-ethics%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/a8kCF2Rtt01haCwZyJw3h00xxGCpPnV_0bFPla2nMz8=452",
-      "image": null,
-      "category": "Tech"
-    },
-    {
-      "id": "614101199a89c7b4",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Introducing Home MCP: enabling your agent to interact with your home (2 minute read)",
-      "summary": "Google has opened early access to Model Context Protocol for Google Home in English for Google Home Premium Advanced users in the US. Any agent that supports calling MCP tools can now interact with all of the devices and event history in the Google Home ecosystem. The MCP allows agents to analyze and answer questions about home activity, summarize camera footage across rooms, manage devices,...",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fsupport.google.com%2Fgooglehome%2Fthread%2F467705013%2Fintroducing-home-mcp-enabling-your-agent-to-interact-with-your-home%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/ixoVvMC9X5dAfb2MxzLfsHGa3wgCbMjeF-Ius2K9j58=452",
-      "image": null,
-      "category": "AI"
-    },
-    {
-      "id": "2eded36179981052",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Training a 4B model to produce 81% faster query plans than Postgres (66 minute read)",
-      "summary": "Query optimizers continue to leave much to be desired despite an enormous body of research. A Postgres database should know everything about the stuff that lives in its tables, but the problem is enormously hard. What's not as hard is verifying whether a query plan an optimizer picks is good or not. Language models are particularly good at learning how to do tasks with easily verifiable...",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Frohanbansal.com%2Fqorl%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/Ee9TB7tTz8PzhXr-1HGLO635EcNi9fkne6TsVHebNus=452",
-      "image": null,
-      "category": "AI"
-    },
-    {
-      "id": "01152001442fcecd",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Read the History, Not Just the Code (2 minute read)",
-      "summary": "Code can't explain things like the history can. You can't understand a codebase from its current state alone. AI models have no commit history. Nobody wrote down why it does things, so researchers have to reconstruct its thought processes from whatever traces are available.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fblog.ptidej.net%2Fread-the-history-not-just-the-code%2F%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/jIVY5hptUkef_8bpt8XWO-wSza8qLZRRCP4PELkp-RQ=452",
-      "image": null,
-      "category": "Tech"
-    },
-    {
-      "id": "6cc05251032761ef",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Judge Orders Data Sharing and Other Fixes to Solve Google's Ad Tech Monopoly (5 minute read)",
-      "summary": "While Google isn't required to break up its ad tech business, judges have mandated changes to the company's practices. The changes largely align with recommendations made by Google and the Justice Department to correct the company's monopolistic behavior. Google will make its ad pricing more transparent to marketers and rival ad businesses, and appoint a trustee to oversee the changes.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FdUFdxG/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/ibiYnYG4DM6psbx1X-S7aVYmIrNKWuMAKSupsPANegc=452",
-      "image": null,
-      "category": "Politics"
-    },
-    {
-      "id": "2b5f47849f47f7c7",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Meta's Amusing Muse (16 minute read)",
-      "summary": "Meta's Muse is impressive, but there aren't that many companies with a worse tech brand when it comes to user trust.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fspyglass.org%2Fmetas-amusing-muse%2F%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/T1QhjhZ-RFWvAU8RZqcNtc8MtnFrCHl4jPBiRrM3ouU=452",
-      "image": null,
-      "category": "Tech"
-    },
-    {
-      "id": "25ab4c6bba6b624e",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "AI Labs Want Compute Commitments, and Their Customers Want Model Choice (9 minute read)",
-      "summary": "Filings describe hyperscaler contracts but reveal little about private labs' customer agreements.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fdavefriedman.substack.com%2Fp%2Fai-labs-want-compute-commitments%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/MsYIQPAYUc7ajbnS3unKqEq9y2zJ2MppVMCtge34XUU=452",
-      "image": null,
-      "category": "AI"
-    },
-    {
-      "id": "7ad0fac20e2f8802",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "The Age of Wonders and Terrors (14 minute read)",
-      "summary": "AI is permanently changing the way mathematical research is done.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fscottaaronson.blog%2F%3Fp=10062%26utm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/W_jI65KTizzylBXtjUeYzVpj6Jmx2gfc2ZEJ5nMnE-E=452",
-      "image": null,
-      "category": "Tech"
-    },
-    {
-      "id": "7deea97db119986e",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "What Regulatory Capture Actually Looks Like (4 minute read)",
-      "summary": "Regulatory capture is when the government slowly gains more and more power to regulate an industry and eventually becomes the industry's protector.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fmarginalrevolution.com%2Fmarginalrevolution%2F2026%2F09%2Fwhat-regulatory-capture-actually-looks-like.html%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/bgQPXcsLBsGZg2wqXGMx3MgIibKehIF2nwTGsURaXuQ=452",
-      "image": null,
-      "category": "Politics"
-    },
-    {
-      "id": "372173f578cd8f68",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "OpenAI Testing Sponsored Agents For ChatGPT Ads (5 minute read)",
-      "summary": "OpenAI's Sponsored Agents let people start a conversation with a business-sponsored agent after clicking an ad in ChatGPT.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.seroundtable.com%2Fopenai-chatgpt-sponsored-agents-42104.html%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/6wNy5HWqUp6feDDxDi04a_-pvFhRoAn95RBVPdR7xZs=452",
-      "image": null,
-      "category": "AI"
-    },
-    {
-      "id": "1b52e36163c70dd1",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Introducing TIN: full-text search for Postgres (22 minute read)",
-      "summary": "TIN (Text INdex) is a fast, full-featured, and reliable full-text search extension for Postgres.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fplanetscale.com%2Fblog%2Fintroducing-tin%3Futm_source=tldrnewsletter/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/kt3WiqV2O8UfpWMm9FIRtucqSowntq2sHijDQTE1uEc=452",
-      "image": null,
-      "category": "Tech"
-    },
-    {
-      "id": "53d97620d90840ce",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "How a Chinese Hacking Firm Tapped AI to Supercharge Cyber-Spying (12 minute read)",
-      "summary": "A look into the interconnected network of Chinese hacking-for-hire companies that steal and analyze confidential information and sell it to Chinese authorities.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FgTAWfm/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/YiAR4k7dOv1dPfOI0BfJ6RjuG31uFiY3bU_uWLxplBw=452",
-      "image": null,
-      "category": "AI"
-    },
-    {
-      "id": "6894a89937a531bc",
-      "source": "TLDR",
-      "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
-      "date": "2026-09-17T11:40:16+00:00",
-      "title": "Inc.'s Best Bootstrapped businesses",
-      "summary": "Apply here , create your own role or send a friend's resume to jobs@tldr.tech and get $1k if we hire them! TLDR is one of  of 2025.",
-      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.linkedin.com%2Ffeed%2Fupdate%2Furn:li:activity:7401699691039830016%2F/1/010001a0af2ada94-b3d551a7-ddd5-48b2-ab03-846e65eb9a43-000000/NHy8z_nlOSu96_qU4ehHdADz02thORsGsScuGuxCpEQ=452",
-      "image": null,
-      "category": "Tech"
     }
   ]
 }
