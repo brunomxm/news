@@ -10,7 +10,7 @@ whatever newsletters you want to show up here; nothing else is ever queried.
 USAGE
 -----
 python fetch_newsletters.py
-python fetch_newsletters.py --label news --days 30
+python fetch_newsletters.py --label news --days 3
 
 Re-running is safe and idempotent: the feed is rebuilt from the last --days
 of labelled mail each time, but any category you (or the scheduled agent)
@@ -71,6 +71,49 @@ WELCOME_RE = re.compile(
     r"you.re subscribed|benvenut|conferma (la tua )?iscrizione",
     re.I,
 )
+
+READER_ALLOWED_TAGS = {
+    "p", "br", "strong", "b", "em", "i", "a", "img",
+    "ul", "ol", "li", "blockquote", "h1", "h2", "h3", "h4",
+}
+
+
+def sanitize_fragment(container) -> str | None:
+    """Turn an article's container element into safe, minimal HTML for the
+    in-app reader: drop scripts/styles/attributes, tracking pixels, and
+    boilerplate links, and unwrap every layout tag (div/td/table/span/...)
+    down to a small set of structural tags. No JS is ever kept."""
+    frag = BeautifulSoup(str(container), "html.parser")
+
+    for tag in frag(["script", "style"]):
+        tag.decompose()
+
+    for img in frag.find_all("img"):
+        src = img.get("src", "")
+        if not src.startswith("http") or TRACKING_IMG_RE.search(src):
+            img.decompose()
+            continue
+        alt = img.get("alt", "")
+        img.attrs = {"src": src, **({"alt": alt} if alt else {})}
+
+    for a in frag.find_all("a"):
+        href = a.get("href", "")
+        text = clean_text(a.get_text(" "))
+        if not href.startswith("http") or BORING_RE.search(text) or BORING_RE.search(href):
+            a.unwrap()
+            continue
+        a.attrs = {"href": href}
+
+    for tag in frag.find_all(True):
+        if tag.name not in READER_ALLOWED_TAGS:
+            tag.unwrap()
+
+    for tag in frag.find_all(["p", "li", "blockquote"]):
+        if not tag.get_text(strip=True) and not tag.find("img"):
+            tag.decompose()
+
+    html = frag.decode_contents().strip()
+    return html or None
 
 
 def get_service(credentials_path: str, token_path: str):
@@ -206,6 +249,7 @@ def extract_articles(html: str, plaintext: str, subject: str):
                 "link": href,
                 "summary": summary,
                 "image": find_image(container),
+                "content_html": sanitize_fragment(container),
             }
         )
 
@@ -225,7 +269,7 @@ def _fallback_article(soup, plaintext: str, subject: str):
             link = a["href"]
             break
     summary = clean_text(plaintext)[:400]
-    return [{"title": subject, "link": link, "summary": summary, "image": None}]
+    return [{"title": subject, "link": link, "summary": summary, "image": None, "content_html": None}]
 
 
 def stable_id(message_id: str, index: int, href: str) -> str:
@@ -243,7 +287,7 @@ def load_existing(data_path: str) -> dict:
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--label", default="news", help="Gmail label to fetch (default: news)")
-    ap.add_argument("--days", type=int, default=30, help="Only keep articles from the last N days")
+    ap.add_argument("--days", type=int, default=3, help="Only keep articles from the last N days")
     ap.add_argument("--credentials", default=DEFAULT_CREDENTIALS)
     ap.add_argument("--token", default=DEFAULT_TOKEN)
     ap.add_argument("--data-dir", default=DEFAULT_DATA_DIR)
@@ -293,6 +337,7 @@ def main():
                     "summary": item["summary"],
                     "link": item["link"],
                     "image": item["image"],
+                    "content_html": item.get("content_html"),
                     "category": prior_categories.get(aid),
                 }
             )

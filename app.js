@@ -18,7 +18,7 @@ function escapeHtml(s) {
 }
 
 function articleRow(a) {
-  return `<li><a href="${escapeHtml(a.link)}" target="_blank" rel="noopener noreferrer">
+  return `<li><a href="article.html?id=${encodeURIComponent(a.id)}">
     <span class="title">${escapeHtml(a.title)}</span>
     <span class="meta">${escapeHtml(a.source)} &middot; ${relativeTime(a.date)}</span>
   </a></li>`;
@@ -29,7 +29,7 @@ function leadArticle(a) {
     ? `<img src="${escapeHtml(a.image)}" alt="" loading="lazy">`
     : "";
   return `<article class="lead">
-    <a class="lead-link" href="${escapeHtml(a.link)}" target="_blank" rel="noopener noreferrer">
+    <a class="lead-link" href="article.html?id=${encodeURIComponent(a.id)}">
       ${img}
       <h3>${escapeHtml(a.title)}</h3>
       <div class="meta">${escapeHtml(a.source)} &middot; ${relativeTime(a.date)}</div>
