@@ -57,13 +57,27 @@ BORING_RE = re.compile(
     r"track your referrals|apply here|create your own role|"
     r"reserve your spot|register now|save your spot|book a demo|"
     r"get .*(free|started)$|see how it works|refer\.tldr|"
-    r"linkedin\.com/in/",
+    r"linkedin\.com/in/|"
+    r"^read more$|^privacy (statement|policy)$|^terms (&|and) conditions$|"
+    r"^terms of (service|use)$|^cookie policy$|"
+    r"\d+% off|for \d+ months?$|"
+    r"is one of inc\.'?s best|powered by beehiiv|^curated by",
     re.I,
 )
 TITLE_IS_URL_RE = re.compile(r"^https?://", re.I)
 SPONSOR_RE = re.compile(r"\(sponsor\)", re.I)
 SPONSOR_BLOCK_ID_RE = re.compile(r"sponsor|sponsy|together-with", re.I)
 SIGNOFF_RE = re.compile(r"thanks for reading|if you have any comments or feedback", re.I)
+AUTHOR_CLASS_RE = re.compile(r"author|byline", re.I)
+POST_TITLE_CLASS_RE = re.compile(r"post-title", re.I)
+READ_IN_APP_RE = re.compile(r"read in app", re.I)
+HERO_BODY_STOP_RE = re.compile(
+    r"upgrade to paid|unsubscribe|get the app|start writing|©|"
+    r"subscribe to .* to unlock|read in app|listen to post|"
+    r"leave a comment|give a gift subscription|claim my free post|"
+    r"share this post|subscribe here for more",
+    re.I,
+)
 TRACKING_IMG_RE = re.compile(
     r"track|pixel|beacon|open\.gif|spacer|logo|banner|header|footer|"
     r"icon|avatar|badge|divider|sponsor|\bad\b",
@@ -269,6 +283,91 @@ def find_image(container) -> str | None:
     return src
 
 
+def sentence_containing(full_text: str, fragment: str) -> str | None:
+    """Return the full sentence inside full_text that contains fragment, or
+    None if it can't be found. Used to recover real context for titles that
+    are just a lowercase mid-sentence link fragment (common in Reuters-style
+    briefings, where a whole paragraph of prose carries several inline
+    links rather than one link per headline)."""
+    if not fragment:
+        return None
+    sentences = re.split(r"(?<=[.!?])\s+", full_text)
+    for s in sentences:
+        if fragment.lower() in s.lower():
+            return clean_text(s)
+    return None
+
+
+def recover_substack_post(soup) -> dict | None:
+    """Substack renders each edition as a single essay with its own
+    <h1 class="post-title"> -- sometimes wrapped in a permalink <a>
+    (Interconnects, Razib Khan), sometimes not (Azeem Azhar's Monday-data
+    cross-promotion inserts). Either way, treating it as a link-list digest
+    and running the generic per-anchor scan over the rest of the post is
+    wrong: every inline citation link, "Leave a comment", "Upgrade to paid",
+    audio-player caption, etc. inside the essay body would each spawn its
+    own bogus "article". Extract the whole post as ONE article instead;
+    extract_articles returns this directly, skipping the per-anchor loop."""
+    heading = soup.find(["h1", "h2", "h3"], class_=POST_TITLE_CLASS_RE)
+    if heading is None:
+        return None
+
+    title_link = heading.find("a", href=True) or heading.find_parent("a", href=True)
+    hero_href = title_link["href"] if title_link else None
+
+    if not hero_href:
+        for a in soup.find_all("a", href=True):
+            if READ_IN_APP_RE.search(clean_text(a.get_text(" "))):
+                hero_href = a["href"]
+                break
+
+    if not hero_href:
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            text = clean_text(a.get_text(" "))
+            if href.startswith("mailto:") or len(text) < 8:
+                continue
+            if a.find_parent(class_=AUTHOR_CLASS_RE) is not None:
+                continue
+            if BORING_RE.search(text) or BORING_RE.search(href):
+                continue
+            hero_href = href
+            break
+    if not hero_href:
+        return None
+
+    title = clean_text(heading.get_text(" "))
+    body_parts = []
+    body_len = 0
+    for el in heading.find_all_next(["p", "h3"]):
+        if el.get("class") and POST_TITLE_CLASS_RE.search(" ".join(el.get("class"))):
+            continue
+        if el.find_parent(class_=AUTHOR_CLASS_RE) is not None:
+            continue
+        text = clean_text(el.get_text(" "))
+        if not text:
+            continue
+        if HERO_BODY_STOP_RE.search(text):
+            break
+        body_parts.append(el)
+        body_len += len(text)
+        if body_len > 4000:
+            break
+
+    hero_html = "".join(str(el) for el in body_parts)
+    hero_fragment = BeautifulSoup(f"<div>{hero_html}</div>", "html.parser")
+    summary = clean_text(hero_fragment.get_text(" "))[:400]
+
+    return {
+        "title": title,
+        "link": hero_href,
+        "summary": summary,
+        "image": find_image(hero_fragment),
+        "content_html": sanitize_fragment(hero_fragment, title),
+        "_consumed_href": hero_href,
+    }
+
+
 def extract_articles(html: str, plaintext: str, subject: str):
     if WELCOME_RE.search(subject):
         return _fallback_article(BeautifulSoup(html, "html.parser"), plaintext, subject)
@@ -282,9 +381,17 @@ def extract_articles(html: str, plaintext: str, subject: str):
     seen_href = set()
     seen_containers = set()
     articles = []
+
+    substack_post = recover_substack_post(soup)
+    if substack_post is not None:
+        substack_post.pop("_consumed_href")
+        return [substack_post]
+
     for a in soup.find_all("a", href=True):
         href = a["href"]
         if href.startswith("mailto:") or href in seen_href:
+            continue
+        if a.find_parent(class_=AUTHOR_CLASS_RE) is not None:
             continue
         strong = a.find(["strong", "b"])
         title = clean_text(strong.get_text(" ") if strong else a.get_text(" "))
@@ -309,6 +416,20 @@ def extract_articles(html: str, plaintext: str, subject: str):
             continue
 
         full_text = clean_text(container.get_text(" "))
+        # An anchor that doesn't start its container's text is a link
+        # embedded mid-paragraph (typical of link-dense briefing prose, e.g.
+        # Reuters Daily Briefing) rather than a real headline -- "UN General
+        # Assembly," or "parliamentary election" read like fragments because
+        # they are. Swap in the full sentence they came from when we can
+        # find it, regardless of the fragment's own capitalization.
+        if not full_text.lower().startswith(title.lower()):
+            better = sentence_containing(full_text, title)
+            if better:
+                if BORING_RE.search(better) or SIGNOFF_RE.search(better):
+                    continue
+                if len(better) > 200:
+                    better = better[:197].rsplit(" ", 1)[0] + "…"
+                title = better
         summary = full_text.replace(title, "", 1).strip(" -–—:|")
         if SIGNOFF_RE.search(summary) or SIGNOFF_RE.search(full_text):
             continue
@@ -423,6 +544,19 @@ def main():
                     "section": SECTION_MAP.get(source_name, DEFAULT_SECTION),
                 }
             )
+
+    # Substack sometimes delivers the same edition as two separate messages
+    # (e.g. a post notification plus a comment/cross-post trigger) -- collapse
+    # those to the first-seen copy so the feed doesn't show one essay twice.
+    seen_source_title = set()
+    deduped = []
+    for a in all_articles:
+        key = (a["source"], a["title"])
+        if key in seen_source_title:
+            continue
+        seen_source_title.add(key)
+        deduped.append(a)
+    all_articles = deduped
 
     all_articles.sort(key=lambda a: a["date"], reverse=True)
 
