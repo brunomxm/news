@@ -176,6 +176,31 @@ await testAsync("migration only runs once per path (idempotent across reloads)",
   assert.equal(sandboxB.ReadState.isRead("new-1"), true);
 });
 
+await testAsync("migration retries after a failed mapping fetch", async () => {
+  let fetchCalls = 0;
+  const fetchImpl = async () => {
+    fetchCalls++;
+    if (fetchCalls === 1) throw new Error("temporary network failure");
+    return { ok: true, json: async () => ({ "old-1": "new-1" }) };
+  };
+  const storage = makeFakeStorage();
+  storage.setItem("bznews:read", JSON.stringify(["old-1"]));
+
+  const first = { localStorage: storage, fetch: fetchImpl, console };
+  vm.createContext(first);
+  vm.runInContext(READSTATE_SRC, first, { filename: "readstate.js" });
+  await first.ReadState.ready;
+  assert.equal(first.ReadState.isRead("old-1"), true);
+  assert.equal(storage.getItem("bznews:read:migrated"), null);
+
+  const second = { localStorage: storage, fetch: fetchImpl, console };
+  vm.createContext(second);
+  vm.runInContext(READSTATE_SRC, second, { filename: "readstate.js" });
+  await second.ReadState.ready;
+  assert.equal(fetchCalls, 2);
+  assert.equal(second.ReadState.isRead("new-1"), true);
+});
+
 test("the shipped 2026-09-21 migration file covers the 73c2a55 -> f9e6349 id change", () => {
   const migrationPath = path.join(ROOT, "data", "id_migration_2026-09-21.json");
   assert.ok(fs.existsSync(migrationPath), "data/id_migration_2026-09-21.json must exist");

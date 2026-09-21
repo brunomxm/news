@@ -26,7 +26,7 @@ import os
 import re
 import sys
 from datetime import datetime, timedelta, timezone
-from email.utils import parseaddr
+from email.utils import parseaddr, parsedate_to_datetime
 
 from bs4 import BeautifulSoup, Tag
 from google.auth.transport.requests import Request
@@ -153,10 +153,7 @@ FORWARDED_SUBJECT_RE = re.compile(
     r"-{5,}\s*forwarded message\s*-{5,}.*?\nSubject:\s*([^\n]+)", re.I | re.S
 )
 # Gmail's own human-readable format, e.g. "Sat, Sep 19, 2026 at 8:16 AM" --
-# no timezone given, so the parsed value is treated as UTC as an
-# approximation; good enough for the date/time shown in the UI, and far
-# better than showing the forward's own send time as if it were the
-# newsletter's original date.
+# no timezone given, so use the forwarding message's timezone when present.
 FORWARDED_DATE_RE = re.compile(
     r"-{5,}\s*forwarded message\s*-{5,}.*?\nDate:\s*([^\n]+)", re.I | re.S
 )
@@ -297,16 +294,14 @@ def clean_text(s: str) -> str:
     return re.sub(r"\s+", " ", s or "").strip()
 
 
-def parse_forwarded_date(date_str: str) -> "datetime | None":
+def parse_forwarded_date(date_str: str, fallback_tz=timezone.utc) -> "datetime | None":
     """Parse Gmail's own human-readable forwarded-header date, e.g. "Sat,
     Sep 19, 2026 at 8:16 AM". Returns None if it doesn't match that shape
     (a differently-worded mail client, a non-English locale, ...) so the
     caller can fall back to the message's own received date."""
     cleaned = clean_text(date_str).replace(" at ", " ")
     try:
-        return datetime.strptime(cleaned, "%a, %b %d, %Y %I:%M %p").replace(
-            tzinfo=timezone.utc
-        )
+        return datetime.strptime(cleaned, "%a, %b %d, %Y %I:%M %p").replace(tzinfo=fallback_tz)
     except ValueError:
         return None
 
@@ -649,10 +644,25 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
     # itself (see find_view_online_link). If there isn't one, this article
     # simply has no external link rather than a misleading one.
     link = find_view_online_link(soup)
+    # Keep the ID seed used by earlier feeds even when the first cited link
+    # is no longer exposed as a misleading issue permalink. Otherwise old
+    # article URLs and local read state break on every regeneration.
+    id_link = link
+    if not id_link:
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            text = clean_text(a.get_text(" "))
+            if href.startswith("mailto:") or len(text) < 8:
+                continue
+            if BORING_RE.search(text) or BORING_RE.search(href):
+                continue
+            id_link = href
+            break
 
     return {
         "title": title,
         "link": link or "",
+        "id_link": id_link or "",
         "summary": summary,
         "image": find_image(fragment),
         "content_html": sanitize_fragment(fragment, title),
@@ -864,6 +874,11 @@ def main():
             continue
 
         if FWD_SUBJECT_RE.match(subject):
+            try:
+                outer_date = parsedate_to_datetime(get_header(headers, "Date"))
+                fallback_tz = outer_date.tzinfo or timezone.utc
+            except (TypeError, ValueError):
+                fallback_tz = timezone.utc
             fwd_match = FORWARDED_FROM_RE.search(plaintext or "")
             if fwd_match:
                 fwd_name, _ = parseaddr(fwd_match.group(1).strip())
@@ -882,7 +897,7 @@ def main():
             # instead of the day it happened to be forwarded.
             date_match = FORWARDED_DATE_RE.search(plaintext or "")
             if date_match:
-                parsed_date = parse_forwarded_date(date_match.group(1))
+                parsed_date = parse_forwarded_date(date_match.group(1), fallback_tz)
                 if parsed_date:
                     msg_date = parsed_date
 
@@ -893,7 +908,7 @@ def main():
             # just any link in the message (see find_view_online_link).
             if not item["title"]:
                 continue
-            aid = stable_id(mid, item["link"])
+            aid = stable_id(mid, item.get("id_link", item["link"]))
             wc = word_count(item.get("content_html"))
             all_articles.append(
                 {

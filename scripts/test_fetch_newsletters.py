@@ -266,6 +266,13 @@ class ForwardedMessageDateRecovery(unittest.TestCase):
         self.assertEqual((parsed.year, parsed.month, parsed.day), (2026, 9, 19))
         self.assertEqual((parsed.hour, parsed.minute), (8, 16))
 
+    def test_uses_outer_message_timezone_when_forward_header_has_none(self):
+        from datetime import timedelta, timezone
+
+        local_tz = timezone(timedelta(hours=2))
+        parsed = parse_forwarded_date("Sat, Sep 19, 2026 at 8:16 AM", local_tz)
+        self.assertEqual(parsed.isoformat(), "2026-09-19T08:16:00+02:00")
+
     def test_unparseable_date_format_returns_none_not_a_crash(self):
         # A differently-worded mail client, or a non-English Gmail locale --
         # must fail closed to "use the received date" rather than throw.
@@ -327,6 +334,16 @@ class GenuinePermalinkOnly(unittest.TestCase):
         articles = extract_articles(html, "", "Sta per succedere qualcosa?", "Francesco Costa")
         self.assertEqual(len(articles), 1)
         self.assertEqual(articles[0]["link"], "")
+
+    def test_citation_remains_id_seed_without_becoming_original_link(self):
+        html = (
+            "<html><body><td>Una newsletter con abbastanza testo per essere letta: "
+            '<a href="https://x.ilpost.it/re?l=abc">citazione di Hemingway</a> '
+            "e una conclusione utile per il lettore.</td></body></html>"
+        )
+        article = extract_articles(html, "", "Sta per succedere qualcosa?", "Francesco Costa")[0]
+        self.assertEqual(article["link"], "")
+        self.assertEqual(article["id_link"], "https://x.ilpost.it/re?l=abc")
 
 
 class FullLetterBodyBoundary(unittest.TestCase):

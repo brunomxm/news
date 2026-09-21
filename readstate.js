@@ -64,7 +64,7 @@ const ReadState = (() => {
     } catch {
       mapping = null;
     }
-    if (mapping) {
+    if (mapping && typeof mapping === "object" && !Array.isArray(mapping)) {
       const s = load();
       let changed = false;
       for (const [oldId, newId] of Object.entries(mapping)) {
@@ -75,10 +75,10 @@ const ReadState = (() => {
         }
       }
       if (changed) save();
+      markMigrated(path);
     }
-    // Mark done even on fetch failure — this is a one-time historical
-    // remap, not something worth retrying indefinitely on every load.
-    markMigrated(path);
+    // A failed fetch must be retried on the next page load, or the reader's
+    // existing read history would remain orphaned permanently.
   }
 
   const ready = MIGRATIONS.reduce(
