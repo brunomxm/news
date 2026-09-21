@@ -38,73 +38,84 @@ function href(a) {
   return `article.html?id=${encodeURIComponent(a.id)}`;
 }
 
+function readGlyph(a, isRead) {
+  if (!isRead) return "";
+  return ` <span class="read-mark" data-read-toggle="${escapeHtml(a.id)}" role="button" tabindex="0" aria-label="Mark as unread" title="Mark as unread">&#10003;</span>`;
+}
+
 function heroBlock(a) {
+  const isRead = ReadState.isRead(a.id);
   const media = a.image
     ? `<div class="hero-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
     : `<div class="hero-media no-image"></div>`;
   const d = dek(a);
-  return `<article class="hero">
+  return `<article class="hero${isRead ? " is-read" : ""}">
     <a href="${href(a)}">
       ${media}
       <span class="label-source">${escapeHtml(a.source)}</span>
       <h1 class="hero-headline">${escapeHtml(a.title)}</h1>
       ${d ? `<p class="hero-dek">${escapeHtml(d)}</p>` : ""}
-      <p class="label-meta">${metaLine(a, { readingTime: true })}</p>
+      <p class="label-meta">${metaLine(a, { readingTime: true })}${readGlyph(a, isRead)}</p>
     </a>
   </article>`;
 }
 
 function secondaryBlock(a) {
+  const isRead = ReadState.isRead(a.id);
   const thumb = a.image
     ? `<div class="secondary-thumb"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
     : "";
-  return `<article class="secondary">
+  return `<article class="secondary${isRead ? " is-read" : ""}">
     <a href="${href(a)}">
       ${thumb}
       <span class="label-source">${escapeHtml(a.source)}</span>
       <h2 class="secondary-headline">${escapeHtml(a.title)}</h2>
-      <p class="label-meta">${metaLine(a, { readingTime: true })}</p>
+      <p class="label-meta">${metaLine(a, { readingTime: true })}${readGlyph(a, isRead)}</p>
     </a>
   </article>`;
 }
 
 function featureBlock(a) {
+  const isRead = ReadState.isRead(a.id);
   const media = a.image
     ? `<div class="feature-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
     : "";
-  return `<article class="feature">
+  return `<article class="feature${isRead ? " is-read" : ""}">
     <a href="${href(a)}">
       ${media}
       <span class="label-source">${escapeHtml(a.source)}</span>
       <h2 class="feature-headline">${escapeHtml(a.title)}</h2>
-      <p class="label-meta">${metaLine(a, { readingTime: true })}</p>
+      <p class="label-meta">${metaLine(a, { readingTime: true })}${readGlyph(a, isRead)}</p>
     </a>
   </article>`;
 }
 
 function compactRow(a) {
-  return `<li><a href="${href(a)}">
+  const isRead = ReadState.isRead(a.id);
+  return `<li class="${isRead ? "is-read" : ""}"><a href="${href(a)}">
     <span class="compact-headline">${escapeHtml(a.title)}</span>
-    <span class="label-meta compact-meta">${metaLine(a)}</span>
+    <span class="label-meta compact-meta">${metaLine(a)}${readGlyph(a, isRead)}</span>
   </a></li>`;
 }
 
 function radarRow(a) {
-  return `<li><a href="${href(a)}">
-    <span class="label-meta radar-meta">${escapeHtml(a.source)} &middot; ${timeOfDay(a.date)}</span>
+  const isRead = ReadState.isRead(a.id);
+  return `<li class="${isRead ? "is-read" : ""}"><a href="${href(a)}">
+    <span class="label-meta radar-meta">${escapeHtml(a.source)} &middot; ${timeOfDay(a.date)}${readGlyph(a, isRead)}</span>
     <span class="radar-headline">${escapeHtml(a.title)}</span>
   </a></li>`;
 }
 
 function longreadBand(a) {
+  const isRead = ReadState.isRead(a.id);
   const d = dek(a);
-  return `<section class="longread-band">
+  return `<section class="longread-band${isRead ? " is-read" : ""}">
     <a href="${href(a)}">
       <span class="longread-tag">Long read</span>
       <span class="label-source"> &middot; ${escapeHtml(a.source)}</span>
       <h2 class="longread-headline">${escapeHtml(a.title)}</h2>
       ${d ? `<p class="longread-dek">${escapeHtml(d)}</p>` : ""}
-      <p class="label-meta">${a.reading_time_min ? `${a.reading_time_min} min read` : ""}</p>
+      <p class="label-meta">${a.reading_time_min ? `${a.reading_time_min} min read` : ""}${readGlyph(a, isRead)}</p>
     </a>
   </section>`;
 }
@@ -192,6 +203,30 @@ function render(data) {
   endmark.innerHTML = `<span>That is everything. ${articles.length} items. Next at 07:00.</span><span class="end-dot">&#9632;</span>`;
 
   setupScroll();
+  setupReadToggle();
+}
+
+function setupReadToggle() {
+  const feed = document.getElementById("feed");
+
+  function handle(target) {
+    const mark = target.closest(".read-mark");
+    if (!mark) return false;
+    const id = mark.dataset.readToggle;
+    ReadState.markUnread(id);
+    const card = mark.closest("article, li");
+    if (card) card.classList.remove("is-read");
+    mark.remove();
+    return true;
+  }
+
+  feed.addEventListener("click", (e) => {
+    if (handle(e.target)) e.preventDefault();
+  });
+  feed.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    if (handle(e.target)) e.preventDefault();
+  });
 }
 
 function setupScroll() {
