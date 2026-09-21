@@ -345,6 +345,20 @@ class GenuinePermalinkOnly(unittest.TestCase):
         self.assertEqual(article["link"], "")
         self.assertEqual(article["id_link"], "https://x.ilpost.it/re?l=abc")
 
+    def test_reuters_photo_captions_are_not_reader_paragraphs(self):
+        html = (
+            "<html><body>"
+            "<p>Germany's Merz fights for survival after the state election, "
+            "as the government faces difficult coalition talks and a growing opposition.</p>"
+            "<p>AfD campaign event ahead of the election. REUTERS/Lisi Niesner</p>"
+            "<p>In the four months since the leaders met, trade shifted and "
+            "expectations for their next summit have changed sharply.</p>"
+            "</body></html>"
+        )
+        article = extract_articles(html, "", "'Disaster' election in Germany", "Reuters Daily Briefing")[0]
+        self.assertNotIn("REUTERS/Lisi Niesner", article["content_html"])
+        self.assertIn("trade shifted", article["content_html"])
+
 
 class FullLetterBodyBoundary(unittest.TestCase):
     """Item 3 (real bug: the Costa article's body was truncated mid-essay

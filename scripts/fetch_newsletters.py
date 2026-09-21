@@ -587,6 +587,8 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
         text = clean_text(block.get_text(" "))
         if not text or SIGNOFF_RE.search(text) or BORING_RE.search(text):
             return False
+        if "REUTERS/" in text and len(text) < 180:
+            return False  # photo caption without its image
         # A short line with no link at all is more likely a masthead/byline
         # ("Daily Briefing", "By Claire Beers") than real body prose.
         return len(text) >= 20 or block.find("a") is not None
