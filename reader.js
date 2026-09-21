@@ -28,6 +28,8 @@ function render(article) {
 
   document.title = article.title ? `${article.title} — ${SITE_NAME}` : SITE_NAME;
 
+  ReadState.markRead(article.id);
+
   // content_html already carries the newsletter's own title + summary text,
   // so a separately-extracted dek would just repeat it. Only show a dek when
   // there is no body content to fall back on.
@@ -50,8 +52,20 @@ function render(article) {
     ${hero}
     <div class="reader-body">${body}</div>
     <a class="reader-original" href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer">Read the original at ${escapeHtml(article.source)} &rarr;</a>
-    <a class="reader-back label-nav" href="index.html" style="display:block;margin-top:40px;">&lsaquo; Back to ${escapeHtml(SITE_NAME)}</a>
+    <a class="reader-mark-unread label-nav" href="#" data-id="${escapeHtml(article.id)}" style="display:block;margin-top:16px;"></a>
+    <a class="reader-back label-nav" href="index.html" style="display:block;margin-top:16px;">&lsaquo; Back to ${escapeHtml(SITE_NAME)}</a>
   `;
+
+  const markLink = main.querySelector(".reader-mark-unread");
+  const updateMarkLink = () => {
+    markLink.textContent = ReadState.isRead(article.id) ? "Mark as unread" : "Mark as read";
+  };
+  updateMarkLink();
+  markLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    ReadState.toggle(article.id);
+    updateMarkLink();
+  });
 }
 
 const id = new URLSearchParams(location.search).get("id");
