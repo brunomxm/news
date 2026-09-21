@@ -1,4 +1,11 @@
-const CATEGORY_ORDER = ["Tech", "AI", "Business", "Politics", "Italia", "Other"];
+const SECTION_ORDER = ["Latest", "World & Ideas", "Technology & AI", "Culture", "Music & Industry"];
+const LONGREAD_WORD_THRESHOLD = 300;
+
+function escapeHtml(s) {
+  return (s || "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+}
 
 function relativeTime(iso) {
   const diffMs = Date.now() - new Date(iso).getTime();
@@ -7,72 +14,209 @@ function relativeTime(iso) {
   const hours = Math.round(mins / 60);
   if (hours < 24) return `${hours}h ago`;
   const days = Math.round(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return `${days}d ago`;
 }
 
-function escapeHtml(s) {
-  return (s || "").replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-  }[c]));
+function timeOfDay(iso) {
+  return new Date(iso).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
 }
 
-function articleRow(a) {
-  return `<li><a href="article.html?id=${encodeURIComponent(a.id)}">
-    <span class="title">${escapeHtml(a.title)}</span>
-    <span class="meta">${escapeHtml(a.source)} &middot; ${relativeTime(a.date)}</span>
-  </a></li>`;
+function dek(article) {
+  const s = (article.summary || "").trim();
+  if (!s) return "";
+  const sentences = s.match(/[^.!?]+[.!?]+/g);
+  return sentences ? sentences.slice(0, 2).join(" ").trim() : s;
 }
 
-function leadArticle(a) {
-  const img = a.image
-    ? `<img src="${escapeHtml(a.image)}" alt="" loading="lazy">`
-    : "";
-  return `<article class="lead">
-    <a class="lead-link" href="article.html?id=${encodeURIComponent(a.id)}">
-      ${img}
-      <h3>${escapeHtml(a.title)}</h3>
-      <div class="meta">${escapeHtml(a.source)} &middot; ${relativeTime(a.date)}</div>
+function metaLine(a, opts = {}) {
+  const parts = [escapeHtml(a.source), relativeTime(a.date)];
+  if (opts.readingTime && a.reading_time_min) parts.push(`${a.reading_time_min} min`);
+  return parts.join(" &middot; ");
+}
+
+function href(a) {
+  return `article.html?id=${encodeURIComponent(a.id)}`;
+}
+
+function heroBlock(a) {
+  const media = a.image
+    ? `<div class="hero-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
+    : `<div class="hero-media no-image"></div>`;
+  const d = dek(a);
+  return `<article class="hero">
+    <a href="${href(a)}">
+      ${media}
+      <span class="label-source">${escapeHtml(a.source)}</span>
+      <h1 class="hero-headline">${escapeHtml(a.title)}</h1>
+      ${d ? `<p class="hero-dek">${escapeHtml(d)}</p>` : ""}
+      <p class="label-meta">${metaLine(a, { readingTime: true })}</p>
     </a>
   </article>`;
 }
 
-function categorySection(name, articles) {
-  const [lead, ...rest] = articles;
-  const slug = name.toLowerCase().replace(/\s+/g, "-");
-  return `<section class="category" id="cat-${slug}">
-    <h2 class="category-title">${escapeHtml(name)}</h2>
-    ${leadArticle(lead)}
-    <ul class="list">${rest.map(articleRow).join("")}</ul>
+function secondaryBlock(a) {
+  const thumb = a.image
+    ? `<div class="secondary-thumb"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
+    : "";
+  return `<article class="secondary">
+    <a href="${href(a)}">
+      ${thumb}
+      <span class="label-source">${escapeHtml(a.source)}</span>
+      <h2 class="secondary-headline">${escapeHtml(a.title)}</h2>
+      <p class="label-meta">${metaLine(a, { readingTime: true })}</p>
+    </a>
+  </article>`;
+}
+
+function featureBlock(a) {
+  const media = a.image
+    ? `<div class="feature-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
+    : "";
+  return `<article class="feature">
+    <a href="${href(a)}">
+      ${media}
+      <span class="label-source">${escapeHtml(a.source)}</span>
+      <h2 class="feature-headline">${escapeHtml(a.title)}</h2>
+      <p class="label-meta">${metaLine(a, { readingTime: true })}</p>
+    </a>
+  </article>`;
+}
+
+function compactRow(a) {
+  return `<li><a href="${href(a)}">
+    <span class="compact-headline">${escapeHtml(a.title)}</span>
+    <span class="label-meta compact-meta">${metaLine(a)}</span>
+  </a></li>`;
+}
+
+function radarRow(a) {
+  return `<li><a href="${href(a)}">
+    <span class="label-meta radar-meta">${escapeHtml(a.source)} &middot; ${timeOfDay(a.date)}</span>
+    <span class="radar-headline">${escapeHtml(a.title)}</span>
+  </a></li>`;
+}
+
+function longreadBand(a) {
+  const d = dek(a);
+  return `<section class="longread-band">
+    <a href="${href(a)}">
+      <span class="longread-tag">Long read</span>
+      <span class="label-source"> &middot; ${escapeHtml(a.source)}</span>
+      <h2 class="longread-headline">${escapeHtml(a.title)}</h2>
+      ${d ? `<p class="longread-dek">${escapeHtml(d)}</p>` : ""}
+      <p class="label-meta">${a.reading_time_min ? `${a.reading_time_min} min read` : ""}</p>
+    </a>
   </section>`;
+}
+
+function sectionHeader(name, count) {
+  const slug = name.toLowerCase().replace(/[^a-z]+/g, "-");
+  return `<div class="section-header" id="sec-${slug}">
+    <h2 class="label-section section-title">${escapeHtml(name)}</h2>
+    <span class="label-meta section-count">${count}</span>
+  </div>`;
+}
+
+function renderSection(name, items) {
+  if (!items.length) return "";
+  let body = "";
+  if (name === "Latest") {
+    body = `<ul class="radar-list">${items.map(radarRow).join("")}</ul>`;
+  } else if (name === "World & Ideas") {
+    const [lead, ...rest] = items;
+    body = `${secondaryBlock(lead)}<ul class="compact-list">${rest.map(compactRow).join("")}</ul>`;
+  } else if (name === "Technology & AI") {
+    body = `<ul class="compact-list compact-grid-3">${items.map(compactRow).join("")}</ul>`;
+  } else if (name === "Culture") {
+    const [lead, ...rest] = items.slice(0, 4);
+    body = `${featureBlock(lead)}<ul class="compact-list">${rest.map(compactRow).join("")}</ul>`;
+  } else {
+    body = `<ul class="compact-list">${items.map(compactRow).join("")}</ul>`;
+  }
+  return `<section class="section">
+    ${sectionHeader(name, items.length)}
+    <div class="section-body">${body}</div>
+  </section>`;
+}
+
+function renderMasthead(articles, generatedAt) {
+  document.getElementById("wordmark").textContent = SITE_NAME;
+  document.getElementById("sticky-wordmark").textContent = SITE_NAME;
+  const now = generatedAt ? new Date(generatedAt) : new Date();
+  const dateStr = now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }).toUpperCase();
+  document.getElementById("masthead-date").textContent = dateStr;
+  document.getElementById("masthead-count").textContent = `${articles.length} ITEMS · ${timeOfDay(now.toISOString())}`;
+
+  const present = SECTION_ORDER.filter((s) => articles.some((a) => a.section === s));
+  document.getElementById("jumpline").innerHTML = present
+    .map((s) => `<a class="label-nav" href="#sec-${s.toLowerCase().replace(/[^a-z]+/g, "-")}">${escapeHtml(s)}</a>`)
+    .join("");
 }
 
 function render(data) {
   const feed = document.getElementById("feed");
-  const pills = document.getElementById("pills");
   const articles = data.articles || [];
 
   if (articles.length === 0) {
     feed.innerHTML = '<p class="empty">No articles yet. Label a newsletter issue "news" in Gmail and run the fetch script.</p>';
+    document.getElementById("endmark").innerHTML = "";
     return;
   }
 
-  const byCategory = {};
-  for (const a of articles) {
-    const cat = a.category || "Other";
-    (byCategory[cat] ||= []).push(a);
+  renderMasthead(articles, data.generated_at);
+
+  const remaining = articles.slice();
+  const hero = remaining.shift();
+
+  let longread = null;
+  const longreadIdx = remaining.findIndex((a) => a.word_count >= LONGREAD_WORD_THRESHOLD);
+  if (longreadIdx !== -1) {
+    longread = remaining.splice(longreadIdx, 1)[0];
   }
 
-  const present = CATEGORY_ORDER.filter((c) => byCategory[c]?.length);
-  for (const c of Object.keys(byCategory)) {
-    if (!present.includes(c)) present.push(c);
+  const bySection = {};
+  for (const a of remaining) {
+    (bySection[a.section] ||= []).push(a);
   }
 
-  pills.innerHTML = present
-    .map((c, i) => `<a class="pill${i === 0 ? " active" : ""}" href="#cat-${c.toLowerCase().replace(/\s+/g, "-")}">${escapeHtml(c)}</a>`)
-    .join("");
+  let html = heroBlock(hero);
+  for (const name of SECTION_ORDER) {
+    html += renderSection(name, bySection[name] || []);
+    if (name === "Technology & AI" && longread) {
+      html += longreadBand(longread);
+    }
+  }
+  feed.innerHTML = html;
 
-  feed.innerHTML = present.map((c) => categorySection(c, byCategory[c])).join("");
+  const endmark = document.getElementById("endmark");
+  endmark.innerHTML = `<span>That is everything. ${articles.length} items. Next at 07:00.</span><span class="end-dot">&#9632;</span>`;
+
+  setupScroll();
+}
+
+function setupScroll() {
+  const bar = document.getElementById("sticky-bar");
+  const stickySection = document.getElementById("sticky-section");
+  const headers = Array.from(document.querySelectorAll(".section-header"));
+
+  window.addEventListener("scroll", () => {
+    bar.classList.toggle("visible", window.scrollY > 420);
+  }, { passive: true });
+
+  if (headers.length) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const title = entry.target.querySelector(".section-title").textContent;
+            stickySection.textContent = title;
+          }
+        });
+      },
+      { rootMargin: "-44px 0px -80% 0px" }
+    );
+    headers.forEach((h) => observer.observe(h));
+  }
 }
 
 fetch("data/articles.json", { cache: "no-store" })

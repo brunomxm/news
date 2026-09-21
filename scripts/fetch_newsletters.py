@@ -12,9 +12,9 @@ USAGE
 python fetch_newsletters.py
 python fetch_newsletters.py --label news --days 3
 
-Re-running is safe and idempotent: the feed is rebuilt from the last --days
-of labelled mail each time, but any category you (or the scheduled agent)
-already assigned to an article is preserved across rebuilds.
+Re-running is safe and idempotent: the feed is fully rebuilt from the last
+--days of labelled mail each time. Section assignment is deterministic (see
+SECTION_MAP below) — no judgment call, no LLM, nothing to preserve.
 """
 
 import argparse
@@ -53,7 +53,7 @@ BORING_RE = re.compile(
     r"abbonati|^regala$|scegli quali newsletter|scopri tutti i podcast|"
     r"scarica l.app del post|altre newsletter|le ultime uscite|"
     r"puoi disiscriverti|puoi iscriverti|^newsletter$|^app del post$|"
-    r"scopri tutte le newsletter|"
+    r"scopri tutte le newsletter|continua (a leggere)?\s*(sul |su )?\w*$|"
     r"track your referrals|apply here|create your own role|"
     r"reserve your spot|register now|save your spot|book a demo|"
     r"get .*(free|started)$|see how it works|refer\.tldr|"
@@ -64,7 +64,41 @@ TITLE_IS_URL_RE = re.compile(r"^https?://", re.I)
 SPONSOR_RE = re.compile(r"\(sponsor\)", re.I)
 SPONSOR_BLOCK_ID_RE = re.compile(r"sponsor|sponsy|together-with", re.I)
 SIGNOFF_RE = re.compile(r"thanks for reading|if you have any comments or feedback", re.I)
-TRACKING_IMG_RE = re.compile(r"track|pixel|beacon|open\.gif|spacer", re.I)
+TRACKING_IMG_RE = re.compile(
+    r"track|pixel|beacon|open\.gif|spacer|logo|banner|header|footer|"
+    r"icon|avatar|badge|divider|sponsor|\bad\b",
+    re.I,
+)
+
+# Deterministic source -> section mapping. No AI/LLM classification — this is
+# the single place to edit when a new newsletter is labelled "news".
+SECTION_MAP = {
+    "Reuters": "Latest",
+    "Reuters Daily Briefing": "Latest",
+    "The Conversation": "World & Ideas",
+    "The Conversation AI": "World & Ideas",
+    "Da Costa a Costa": "World & Ideas",
+    "Francesco Costa": "World & Ideas",
+    "TLDR": "Technology & AI",
+    "TLDR AI": "Technology & AI",
+    "TLDR Hardware": "Technology & AI",
+    "TLDR Founders": "Technology & AI",
+    "TLDR Product": "Technology & AI",
+    "Interconnects": "Technology & AI",
+    "Interconnects by Nathan Lambert": "Technology & AI",
+    "Stratechery": "Technology & AI",
+    "Quanta": "Culture",
+    "Quanta Magazine": "Culture",
+    "Works in Progress": "Culture",
+    "The New Yorker": "Culture",
+    "New Yorker Books": "Culture",
+    "Il Post": "Culture",
+    "Water & Music": "Music & Industry",
+    "Water and Music": "Music & Industry",
+    "Music Business Worldwide": "Music & Industry",
+}
+SECTION_ORDER = ["Latest", "World & Ideas", "Technology & AI", "Culture", "Music & Industry"]
+DEFAULT_SECTION = "Latest"
 WELCOME_RE = re.compile(
     r"welcome to|you.re on the list|grazie per la registrazione|"
     r"thank(s| you) for (subscribing|signing up)|confirm your subscription|"
@@ -78,7 +112,7 @@ READER_ALLOWED_TAGS = {
 }
 
 
-def sanitize_fragment(container) -> str | None:
+def sanitize_fragment(container, title: str = "") -> str | None:
     """Turn an article's container element into safe, minimal HTML for the
     in-app reader: drop scripts/styles/attributes, tracking pixels, and
     boilerplate links, and unwrap every layout tag (div/td/table/span/...)
@@ -107,6 +141,20 @@ def sanitize_fragment(container) -> str | None:
     for tag in frag.find_all(True):
         if tag.name not in READER_ALLOWED_TAGS:
             tag.unwrap()
+
+    # The reader page already shows the title as its own headline; drop a
+    # leading anchor/strong that just repeats it so the body doesn't open
+    # with the same line twice.
+    if title:
+        first = frag.find(True)
+        if first is not None and clean_text(first.get_text(" ")) == clean_text(title):
+            first.decompose()
+            for _ in range(2):
+                nxt = frag.find(True)
+                if nxt is not None and nxt.name == "br":
+                    nxt.decompose()
+                else:
+                    break
 
     for tag in frag.find_all(["p", "li", "blockquote"]):
         if not tag.get_text(strip=True) and not tag.find("img"):
@@ -249,7 +297,7 @@ def extract_articles(html: str, plaintext: str, subject: str):
                 "link": href,
                 "summary": summary,
                 "image": find_image(container),
-                "content_html": sanitize_fragment(container),
+                "content_html": sanitize_fragment(container, title),
             }
         )
 
@@ -277,11 +325,11 @@ def stable_id(message_id: str, index: int, href: str) -> str:
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
 
 
-def load_existing(data_path: str) -> dict:
-    if os.path.exists(data_path):
-        with open(data_path) as f:
-            return json.load(f)
-    return {"generated_at": None, "articles": []}
+def word_count(content_html: str | None) -> int:
+    if not content_html:
+        return 0
+    text = BeautifulSoup(content_html, "html.parser").get_text(" ")
+    return len(text.split())
 
 
 def main():
@@ -294,8 +342,6 @@ def main():
     args = ap.parse_args()
 
     articles_path = os.path.join(args.data_dir, "articles.json")
-    existing = load_existing(articles_path)
-    prior_categories = {a["id"]: a.get("category") for a in existing.get("articles", [])}
 
     service = get_service(args.credentials, args.token)
 
@@ -327,6 +373,7 @@ def main():
             if not item["title"] or not item["link"]:
                 continue
             aid = stable_id(mid, i, item["link"])
+            wc = word_count(item.get("content_html"))
             all_articles.append(
                 {
                     "id": aid,
@@ -338,7 +385,9 @@ def main():
                     "link": item["link"],
                     "image": item["image"],
                     "content_html": item.get("content_html"),
-                    "category": prior_categories.get(aid),
+                    "word_count": wc,
+                    "reading_time_min": max(1, round(wc / 200)) if wc >= 60 else None,
+                    "section": SECTION_MAP.get(source_name, DEFAULT_SECTION),
                 }
             )
 
@@ -353,8 +402,7 @@ def main():
             ensure_ascii=False,
         )
 
-    uncategorized = sum(1 for a in all_articles if not a["category"])
-    print(f"Wrote {len(all_articles)} article(s) to {articles_path} ({uncategorized} need a category).")
+    print(f"Wrote {len(all_articles)} article(s) to {articles_path}.")
 
 
 if __name__ == "__main__":

@@ -4,15 +4,19 @@ function escapeHtml(s) {
   }[c]));
 }
 
-function relativeTime(iso) {
-  const diffMs = Date.now() - new Date(iso).getTime();
-  const mins = Math.round(diffMs / 60000);
-  if (mins < 60) return `${Math.max(mins, 1)}m ago`;
-  const hours = Math.round(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.round(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+function timeOfDay(iso) {
+  return new Date(iso).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+}
+
+function dateLabel(iso) {
+  return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short" }).toUpperCase();
+}
+
+function dek(summary) {
+  const s = (summary || "").trim();
+  if (!s) return "";
+  const sentences = s.match(/[^.!?]+[.!?]+/g);
+  return sentences ? sentences.slice(0, 2).join(" ").trim() : s;
 }
 
 function render(article) {
@@ -22,18 +26,31 @@ function render(article) {
     return;
   }
 
-  document.title = article.title ? `${article.title} — News` : "News";
+  document.title = article.title ? `${article.title} — ${SITE_NAME}` : SITE_NAME;
 
-  const body = article.content_html
+  // content_html already carries the newsletter's own title + summary text,
+  // so a separately-extracted dek would just repeat it. Only show a dek when
+  // there is no body content to fall back on.
+  const hasBody = Boolean(article.content_html);
+  const d = hasBody ? "" : dek(article.summary);
+  const body = hasBody
     ? article.content_html
-    : `<p><strong>${escapeHtml(article.title)}</strong></p><p>${escapeHtml(article.summary || "")}</p>`;
+    : `<p>${escapeHtml(article.summary || article.title)}</p>`;
+  const hero = article.image
+    ? `<div class="reader-hero"><img src="${escapeHtml(article.image)}" alt=""></div>`
+    : "";
+  const bylineParts = [dateLabel(article.date), timeOfDay(article.date)];
+  if (article.reading_time_min) bylineParts.push(`${article.reading_time_min} MIN READ`);
 
   main.innerHTML = `
-    <article class="reader-article">
-      <p class="meta">${escapeHtml(article.source)} &middot; ${relativeTime(article.date)}${article.category ? ` &middot; ${escapeHtml(article.category)}` : ""}</p>
-      <div class="reader-content">${body}</div>
-      <a class="reader-fallback" href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer">Read the original &#8599;</a>
-    </article>
+    <span class="label-source reader-source">${escapeHtml(article.source)}</span>
+    <h1 class="reader-headline">${escapeHtml(article.title)}</h1>
+    ${d ? `<p class="reader-dek">${escapeHtml(d)}</p>` : ""}
+    <p class="label-nav reader-byline">${bylineParts.join(" &middot; ")}</p>
+    ${hero}
+    <div class="reader-body">${body}</div>
+    <a class="reader-original" href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer">Read the original at ${escapeHtml(article.source)} &rarr;</a>
+    <a class="reader-back label-nav" href="index.html" style="display:block;margin-top:40px;">&lsaquo; Back to ${escapeHtml(SITE_NAME)}</a>
   `;
 }
 
