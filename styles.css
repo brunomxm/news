@@ -154,7 +154,9 @@ a { color: inherit; text-decoration: none; }
   padding: 16px 0 24px;
 }
 .jumpline a { color: var(--text-muted); }
-.jumpline a:hover { color: var(--accent); }
+.jumpline a:hover,
+.jumpline a.active { color: var(--accent); }
+.section-hidden { display: none; }
 @media (min-width: 768px) {
   .jumpline { justify-content: center; gap: 0 36px; padding: 14px 0; }
 }
@@ -470,9 +472,9 @@ ul.radar-list a { display: block; min-height: 44px; }
   margin: 0 auto;
   padding: 32px var(--page-margin) 64px;
 }
-.reader-back {
+.reader-back-top {
   display: inline-block;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 .reader-source {
   display: inline-block;
