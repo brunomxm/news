@@ -123,11 +123,30 @@ SECTION_MAP = {
 }
 SECTION_ORDER = ["Latest", "World & Ideas", "Technology & AI", "Culture", "Music & Industry"]
 DEFAULT_SECTION = "Latest"
-WELCOME_RE = re.compile(
-    r"welcome to|you.re on the list|grazie per la registrazione|"
-    r"thank(s| you) for (subscribing|signing up)|confirm your subscription|"
-    r"you.re subscribed|benvenut|conferma (la tua )?iscrizione|"
-    r"questo messaggio .{0,20}confermare la tua iscrizione",
+# Subscription confirmations ("thanks for signing up", "grazie per la tua
+# iscrizione") are not issues: they have no articles in them, so every one of
+# them used to land in the feed as a card with an empty reader. They're dropped
+# outright instead.
+#
+# Every phrase here has to be one that *only* a confirmation email says. An
+# earlier version also matched a bare "welcome to" and "benvenut", which reads
+# as a confirmation but is also a perfectly ordinary way to open an essay --
+# and for the senders whose subject line *is* the headline (Francesco Costa,
+# Substack) that would silently delete a real issue titled e.g. "Benvenuti
+# nell'era dei data center". Checked against all 11 confirmation emails in the
+# labelled mailbox, the unambiguous phrases below catch every one of them
+# either in the subject or in the opening lines ("Questo messaggio è solo per
+# confermare la tua iscrizione a Da Costa a Costa", "Important information
+# about your new newsletter subscription", ...), so the ambiguous ones aren't
+# needed.
+SUBSCRIPTION_CONFIRMATION_RE = re.compile(
+    r"thank(s| you)[^.]{0,20}for (subscribing|signing up)|"
+    r"you.re (on the list|now subscribed|subscribed)|"
+    r"your new newsletter subscription|"
+    r"confirm(ing)? your subscription|"
+    r"grazie (per|della) (la )?(tua )?(registrazione|iscrizione)|"
+    r"grazie per la registrazione|"
+    r"confermare (la tua )?iscrizione|conferma (la tua )?iscrizione",
     re.I,
 )
 
@@ -139,7 +158,35 @@ WELCOME_RE = re.compile(
 # a bold headline since there never was a real one -- the message's own
 # subject line is. Known senders in this format get the whole-message
 # treatment instead of the per-link digest scan.
-FULL_LETTER_SENDERS = {"Francesco Costa", "Reuters Daily Briefing", "Reuters"}
+FULL_LETTER_SENDERS = {
+    "Francesco Costa",
+    "Reuters Daily Briefing",
+    "Reuters",
+    # Il Post's "Ok Boomer!" is one essay per issue, not the link roundup its
+    # sibling "Evening Post" is: the whole piece lives in two long <td>s, and
+    # the only other links in the message are a "Leggi le newsletter
+    # precedenti" nav list -- which the per-link scan turned into three
+    # content-less articles ("Cosa mettersi per la fine del mondo", "L'amore
+    # che si fa", "Il paese dove nessuno ha ragione") plus a few mid-essay
+    # sentences dressed up as headlines.
+    "Il Post - Ok Boomer!",
+}
+
+# TLDR labels every real item in its own headline: "Some Headline (4 minute
+# read)", "(GitHub Repo)", "(Website)". Sponsored blocks and job postings are
+# the only things in the message without that label -- they instead read
+# "... (Sponsor)" or carry no marker at all ("Gartner has the data.", "Meet
+# GigaChat 3.5 Reasoning. Explore the model", "GTM Engineer, Applied AI at
+# TLDR ($175-205k base + $40-60k bonus, Fully Remote)"). Requiring TLDR's own
+# marker is therefore an exact filter rather than a guess at what reads like
+# an ad: across the labelled mailbox it keeps all 270 editorial items and drops
+# all 15 promo/job ones.
+TLDR_ITEM_MARKER_RE = re.compile(
+    r"\((\d+\s+minute\s+(read|listen|video|watch)|github repo|website|"
+    r"product launch|tool|video|podcast)\)\s*$",
+    re.I,
+)
+TLDR_SPONSOR_MARKER_RE = re.compile(r"\(sponsor\)\s*$", re.I)
 
 # Gmail-forwarded newsletters (subject starts with "Fwd:"/"Fw:") carry the
 # real sender in a quoted header block in the plaintext body, not in the
@@ -224,6 +271,39 @@ def sanitize_fragment(container, title: str = "") -> str | None:
     return html or None
 
 
+def normalize_for_compare(s: str) -> str:
+    """Lowercase, strip punctuation and collapse whitespace, so two renderings
+    of the same sentence compare equal despite curly quotes, a trailing period
+    or the space bs4 inserts between adjacent text nodes."""
+    return re.sub(r"[^a-z0-9]+", " ", clean_text(s).lower()).strip()
+
+
+def body_is_just_the_title(body_html: str | None, title: str) -> bool:
+    """True when an item's "body" is nothing but a repeat of its own headline.
+
+    Il Post's digests are written as one self-contained sentence per link
+    ("Uno che correva fortissimo. E che oggi compie 50 anni."), so the item's
+    own block *is* the headline and there is no body text underneath it. Kept
+    as-is, the reader page showed that same sentence twice -- once as the
+    headline, once as the entire article. There is genuinely nothing more to
+    show for these, so the body is dropped and the reader falls back to
+    offering the link to the original."""
+    if not body_html:
+        return True
+    body = normalize_for_compare(re.sub(r"<[^>]+>", " ", body_html))
+    head = normalize_for_compare(title)
+    if not body:
+        return True
+    if not head:
+        return False
+    # Only when the body adds essentially nothing beyond the headline. Without
+    # the length test, "in body" would also match a real article whose first
+    # line happens to be its own headline and throw the rest of it away.
+    if len(body) > len(head) * 1.15 + 8:
+        return False
+    return body in head or head in body
+
+
 def get_service(credentials_path: str, token_path: str):
     creds = None
     if os.path.exists(token_path):
@@ -291,7 +371,13 @@ def extract_bodies(payload):
 
 
 def clean_text(s: str) -> str:
-    return re.sub(r"\s+", " ", s or "").strip()
+    # get_text(" ") inserts its separator between *every* text node, so a
+    # sentence whose closing punctuation sits outside the inline link that ends
+    # it ("...nell'unico modo possibile</a>.") comes back as "possibile ." --
+    # which the reader then rendered as a headline with an orphaned period
+    # dangling on its own line. Pull that punctuation back onto the word.
+    collapsed = re.sub(r"\s+", " ", s or "").strip()
+    return re.sub(r"\s+([.,;:!?»”’)])", r"\1", collapsed)
 
 
 def parse_forwarded_date(date_str: str, fallback_tz=timezone.utc) -> "datetime | None":
@@ -493,6 +579,51 @@ def recover_substack_post(soup) -> dict | None:
     }
 
 
+# Il Post's templates tag every content cell with their own class -- dmText for
+# body copy, dmTitle for a section heading, cta/dmCTA for a button. Gmail
+# rewrites those class names on a forwarded copy by prefixing them with
+# "m_<digits>" (e.g. "m_-4096301463258734691dmText"), so every check has to
+# match on the suffix rather than on equality.
+ILPOST_TEXT_CLASS_RE = re.compile(r"dmText$")
+
+# The evening digest opens with the editors' own chatty note -- where they are
+# touring this week, whether it rained on them -- before the news starts, and
+# that note carries links of its own (to a photo of their fans, to the event
+# page), which the per-link scan turned into "articles" like "A Faenza sabato
+# mattina c'era il sole, ma poi è arrivata altra pioggia". The news list is
+# introduced by a literal "Le notizie." label, so everything before that label
+# is the intro. The label is the boundary rather than the cell, because the
+# forwarded copy merges the tail of the intro and the label into one cell.
+ILPOST_NEWS_LABEL_RE = re.compile(r"^\s*le notizie[.:]?\s*$", re.I)
+
+
+def ilpost_news_start(soup):
+    """Document position of Il Post's "Le notizie." label, or None when this
+    isn't one of their digests (their other newsletters -- Ok Boomer!, Colonne,
+    the onboarding emails -- have no such label, and are left alone)."""
+    label = soup.find(string=ILPOST_NEWS_LABEL_RE)
+    if label is None:
+        return None
+    if soup.find("td", class_=ILPOST_TEXT_CLASS_RE) is None:
+        return None
+    return label
+
+
+def document_order(soup) -> dict:
+    """id(node) -> pre-order position, for "does this come before that" tests."""
+    return {id(n): i for i, n in enumerate(soup.descendants)}
+
+
+def in_unclassed_cell(anchor) -> bool:
+    """True when the anchor sits in a table cell that carries no class at all,
+    inside a template where every content cell does. Il Post closes the digest
+    with two such cells -- a teaser for tomorrow ("Indizio: gli easter egg sono
+    25", "Ma quindi Portici la seguite già?") sitting after the "Continua sul
+    Post" button -- and they're the only cells in the message without one."""
+    td = anchor.find_parent("td")
+    return td is not None and not (td.get("class") or [])
+
+
 def leaf_table_cells(soup):
     """<td> elements that carry their own text directly rather than
     wrapping a further layout table -- the granularity at which a
@@ -506,48 +637,31 @@ def leaf_table_cells(soup):
     ]
 
 
-PROMO_ASIDE_RE = re.compile(
-    r"biglietti si comprano|i biglietti si comprano|si comprano qui|"
-    r"prenota (il tuo posto|ora)|iscriviti (qui|ora)|acquista (i biglietti|il biglietto)",
+NEWSLETTER_FOOTER_RE = re.compile(
+    r"tutte le newsletter|copyright ©|©\s*20\d\d|all rights reserved|"
+    r"puoi disiscriverti|unsubscribe|privacy (statement|policy)|"
+    r"this email includes limited tracking",
     re.I,
 )
 
 
-def is_ticket_or_event_promo(tag) -> bool:
-    """True if this block is a ticket/event-sale call to action (Il Post's
-    podcast-live-show plugs and similar). There's no reliable *structural*
-    marker for this -- it's rendered the same as the newsletter's own
-    emphasized prose (both just sit in a plain <em>, checked and ruled out
-    against a real example: Costa italicizes ordinary asides mid-essay
-    too) -- so this is deliberately a narrow, content-based check instead,
-    scoped to the specific CTA phrasing these plugs actually use rather
-    than "any block that's all-italic"."""
-    return bool(PROMO_ASIDE_RE.search(clean_text(tag.get_text(" "))))
-
-
-def starts_new_syndicated_article(tag) -> bool:
-    """True if this block opens with a <strong> title immediately followed
-    by a short "di <Author Name>" byline -- Il Post's convention for a
-    second, differently-authored article bundled into the same issue."""
-    strong = tag.find("strong")
-    if strong is None:
-        return False
-    text = clean_text(tag.get_text(" "))
-    strong_text = clean_text(strong.get_text(" "))
-    idx = text.find(strong_text)
-    if idx == -1:
-        return False
-    after = text[idx + len(strong_text) : idx + len(strong_text) + 60]
-    return bool(re.match(r"^\s*di\s+[A-ZÀ-Ý]", after))
-
-
-def is_section_boundary(tag) -> bool:
-    """A block that starts a ticket/event promo or a new syndicated
-    article -- the newsletter's own piece ends right before the first one
-    of these, not at some arbitrary character count. See
-    is_ticket_or_event_promo / starts_new_syndicated_article for the two
-    patterns this recognizes."""
-    return is_ticket_or_event_promo(tag) or starts_new_syndicated_article(tag)
+def is_newsletter_footer(tag) -> bool:
+    """True once a block is the generic email chrome after the newsletter
+    itself is over: the "all newsletters" nav, the unsubscribe line, the
+    copyright/rights-reserved boilerplate. This is the one thing worth
+    stopping at -- a newsletter issue can legitimately bundle several
+    differently-flavored sections (Francesco Costa's own essay, a guest
+    contributor's piece, a quick links roundup, his own sign-off) that all
+    belong in the body; an earlier version of this function also stopped
+    at a ticket/event promo aside and at any block that looked like a new,
+    differently-authored piece, on the theory that those meant "the
+    newsletter is over". Checked against Costa's real "Sta per succedere
+    qualcosa?" issue, that was wrong: the guest-authored cotton-industry
+    piece it stopped at is itself part of that same issue, and Costa's own
+    closing thanks/sign-off ("A presto, Francesco") comes after it. Only
+    the trailing footer reliably marks where the newsletter actually
+    ends."""
+    return bool(NEWSLETTER_FOOTER_RE.search(clean_text(tag.get_text(" "))))
 
 
 VIEW_ONLINE_RE = re.compile(
@@ -601,16 +715,14 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
         blocks = [td for td in leaf_table_cells(soup) if qualifies(td)]
 
     if blocks:
-        # Stop at the newsletter's own natural end -- a promo aside or a
-        # different, syndicated article bundled into the same issue --
-        # instead of an arbitrary character limit that can cut the actual
-        # piece off mid-paragraph.
+        # Stop at the newsletter's own natural end -- the generic email
+        # chrome after it (see is_newsletter_footer) -- instead of an
+        # arbitrary character limit that can cut the actual issue off
+        # mid-paragraph, or an assumption about internal section changes
+        # that turned out to also be part of the same issue.
         body_blocks = []
         for block in blocks:
-            block_text = clean_text(block.get_text(" "))
-            if block_text.startswith("This email includes limited tracking") or "Thomson Reuters. All rights reserved" in block_text:
-                break
-            if is_section_boundary(block):
+            if is_newsletter_footer(block):
                 break
             body_blocks.append(block)
         frag_html = "".join(str(b) for b in body_blocks)
@@ -634,8 +746,10 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
         paragraphs = [clean_text(p) for p in re.split(r"\n\s*\n", text) if clean_text(p)]
         body_paragraphs = []
         for para in paragraphs:
-            if SIGNOFF_RE.search(para) or BORING_RE.search(para):
+            if NEWSLETTER_FOOTER_RE.search(para):
                 break
+            if SIGNOFF_RE.search(para) or BORING_RE.search(para):
+                continue
             body_paragraphs.append(para)
         frag_html = "".join(f"<p>{html.escape(p)}</p>" for p in body_paragraphs)
 
@@ -678,28 +792,37 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style"]):
         tag.decompose()
-    for hidden in soup.find_all(style=re.compile(r"display:\s*none", re.I)):
-        hidden.decompose()
 
     # Some senders (e.g. Francesco Costa's "Da Costa a Costa") reuse the same
     # generic subject line for every issue, including the one-off
-    # subscription-confirmation email, so a subject-only welcome check can't
-    # tell them apart -- also check the start of the actual message body. A
-    # message with no plaintext part at all needs its lead text pulled from
-    # the HTML's *rendered* text, not the first 1000 characters of raw
-    # markup, which for a real template is nothing but <head>/style
-    # boilerplate -- that would never contain the greeting this is looking
-    # for no matter how long the confirmation email actually is.
+    # subscription-confirmation email, so a subject-only check can't tell them
+    # apart -- also check the start of the actual message body. A message with
+    # no plaintext part at all needs its lead text pulled from the HTML's
+    # *rendered* text, not the first 1000 characters of raw markup, which for
+    # a real template is nothing but <head>/style boilerplate -- that would
+    # never contain the greeting this is looking for no matter how long the
+    # confirmation email actually is. This runs before hidden elements are
+    # stripped below, because the give-away line is often the preheader (the
+    # display:none blurb mail clients show next to the subject): The New
+    # Yorker's confirmations say nothing but "Welcome to ..." in the visible
+    # body and put "Important information about your new newsletter
+    # subscription" there.
     lead_source = plaintext or (clean_text(soup.get_text(" ")) if html else "")
     lead_text = clean_text(lead_source[:1000])
-    if WELCOME_RE.search(subject) or WELCOME_RE.search(lead_text):
-        return _fallback_article(soup, plaintext, subject)
+
+    for hidden in soup.find_all(style=re.compile(r"display:\s*none", re.I)):
+        hidden.decompose()
+    if SUBSCRIPTION_CONFIRMATION_RE.search(subject) or SUBSCRIPTION_CONFIRMATION_RE.search(
+        lead_text
+    ):
+        return []
 
     if source_name in FULL_LETTER_SENDERS:
         return [extract_full_letter(soup, plaintext, subject)]
 
     seen_href = set()
     seen_containers = set()
+    seen_titles = set()
     articles = []
 
     substack_post = recover_substack_post(soup)
@@ -707,12 +830,19 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
         substack_post.pop("_consumed_href")
         return [substack_post]
 
+    news_label = ilpost_news_start(soup)
+    order = document_order(soup) if news_label is not None else {}
+    news_start = order.get(id(news_label), -1) if news_label is not None else -1
+
     for a in soup.find_all("a", href=True):
         href = a["href"]
         if href.startswith("mailto:") or href in seen_href:
             continue
         if a.find_parent(class_=AUTHOR_CLASS_RE) is not None:
             continue
+        if news_label is not None:
+            if order.get(id(a), 0) < news_start or in_unclassed_cell(a):
+                continue
         strong = a.find(["strong", "b"])
         title = clean_text(strong.get_text(" ") if strong else a.get_text(" "))
         if len(title) < 8 or TITLE_IS_URL_RE.match(title):
@@ -747,22 +877,19 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
             lambda t: isinstance(t, Tag)
             and any(isinstance(c, Tag) and c.name == "br" for c in t.children)
         )
+        # That walk-up is only ever meant to go *down* from the container
+        # (into the <font>/<span> that actually holds the <br>s). When it
+        # instead lands on an ancestor of the container it has jumped the
+        # template's own block boundary -- a Gmail-forwarded copy nests the
+        # quoted HTML in wrappers whose <br>s are the forward header's line
+        # breaks, and Il Post's digest cell sits inside a layout table whose
+        # own <br>s separate whole sections. Splitting from up there glued
+        # unrelated items together: one Evening Post headline came out with
+        # an 8,527-character body belonging to the rest of the issue. The
+        # container is the block, so overshooting it means falling back to it.
+        if br_holder is not None and br_holder is not container and br_holder in container.parents:
+            br_holder = None
         groups = br_split_groups(br_holder if br_holder is not None else container)
-        # A Gmail-forwarded copy of the same newsletter can nest its quoted
-        # HTML differently than the original, so this walk-up occasionally
-        # lands on something far too big (e.g. the whole "gmail_quote"
-        # wrapper, whose own <br>s are just the forward header's line
-        # breaks) instead of the many small items the anchor's own item
-        # belongs to. A legitimate multi-item digest block splits into many
-        # groups even when its combined text is long; a bad match doesn't
-        # split much despite being long. Bail out to the plain container
-        # rather than risk splicing unrelated items' content together.
-        if (
-            groups is not None
-            and len(groups) < 3
-            and len(clean_text((br_holder or container).get_text(" "))) > 1200
-        ):
-            groups = None
         if groups is not None:
             idx = group_index_containing(groups, a)
             if idx is not None:
@@ -770,7 +897,13 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
                 group_html = "".join(str(n) for n in groups[idx])
                 content_container = BeautifulSoup(f"<div>{group_html}</div>", "html.parser")
 
-        if container_key in seen_containers:
+        # Il Post's digest is a run of teasers inside one cell, and only *some*
+        # of them are separated by a <br> -- the rest are just consecutive
+        # sentences. Keying on the block would collapse every teaser that
+        # shares a cell with the one before it into a single article, so for
+        # this template the dedupe key is the recovered sentence instead
+        # (applied below, once the sentence is known).
+        if news_label is None and container_key in seen_containers:
             continue
 
         full_text = clean_text(content_container.get_text(" "))
@@ -789,6 +922,12 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
             if len(better) > 200:
                 better = better[:197].rsplit(" ", 1)[0] + "…"
             title = better
+        # TLDR marks each of its own items with a reading-time/kind label; a
+        # block without one is a sponsored slot or a job ad, never an article.
+        if source_name.startswith("TLDR") and not TLDR_ITEM_MARKER_RE.search(title):
+            continue
+        if TLDR_SPONSOR_MARKER_RE.search(title):
+            continue
         summary = full_text.replace(title, "", 1).strip(" -–—:|")
         if SIGNOFF_RE.search(summary) or SIGNOFF_RE.search(full_text):
             continue
@@ -797,13 +936,34 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
         if len(summary) > 400:
             summary = summary[:397].rsplit(" ", 1)[0] + "..."
 
+        if news_label is not None:
+            key = normalize_for_compare(title)
+            if not key or key in seen_titles:
+                continue
+            seen_titles.add(key)
+
+        content_html = sanitize_fragment(content_container, title)
+        if body_is_just_the_title(content_html, title):
+            content_html = None
+        if news_label is not None:
+            # A digest teaser has no body under its own headline: the piece it
+            # points at lives on ilpost.it, and whatever else shares the cell
+            # belongs to the *neighbouring* teasers. Keeping the block as a body
+            # is what put another item's text -- once 8,527 characters of it --
+            # under the wrong headline in the reader. The same goes for the
+            # summary shown under a headline on the front page, which was
+            # printing the *next* teaser ("Le notizie. Quelle tedesche in
+            # Meclemburgo...") beneath the lead story.
+            content_html = None
+            summary = ""
+
         articles.append(
             {
                 "title": title,
                 "link": href,
                 "summary": summary,
                 "image": find_image(content_container),
-                "content_html": sanitize_fragment(content_container, title),
+                "content_html": content_html,
             }
         )
 
@@ -912,6 +1072,12 @@ def main():
             # sets one when it found a genuine "view online" permalink, not
             # just any link in the message (see find_view_online_link).
             if not item["title"]:
+                continue
+            # ...but an item with neither body nor link is a dead end: nothing
+            # to read in the reader and nowhere to send the reader instead.
+            # That's what a message in a template none of the extractors
+            # recognise collapses to, and it has no business in the feed.
+            if not (item.get("content_html") or "").strip() and not item["link"]:
                 continue
             aid = stable_id(mid, item.get("id_link", item["link"]))
             wc = word_count(item.get("content_html"))

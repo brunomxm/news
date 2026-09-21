@@ -19,6 +19,8 @@ from bs4 import BeautifulSoup
 from fetch_newsletters import (
     FORWARDED_DATE_RE,
     FORWARDED_SUBJECT_RE,
+    FULL_LETTER_SENDERS,
+    body_is_just_the_title,
     br_split_groups,
     extract_articles,
     extract_full_letter,
@@ -72,9 +74,13 @@ class SentenceRecovery(unittest.TestCase):
     def test_merges_short_lead_in_sentence(self):
         # Il Post's two-sentence teaser style: the link only covers the
         # second, contextless half.
+        # The " ." is what get_text(" ") produces when the closing period sits
+        # outside the link; clean_text pulls it back onto the word, so the
+        # recovered sentence must come back without the floating period that
+        # used to dangle on its own line under the headline.
         full_text = "Uno che correva fortissimo. E che oggi compie 50 anni ."
         result = sentence_containing(full_text, "E che oggi compie 50 anni")
-        self.assertEqual(result, "Uno che correva fortissimo. E che oggi compie 50 anni .")
+        self.assertEqual(result, "Uno che correva fortissimo. E che oggi compie 50 anni.")
 
     def test_does_not_pull_in_glued_ui_badge(self):
         # TLDR-style: the anchor text itself already includes "(N minute
@@ -145,7 +151,10 @@ class DigestExtraction(unittest.TestCase):
             "</td>"
             "</body></html>"
         )
-        articles = extract_articles(html, "", "Some subject", "Il Post - Ok Boomer!")
+        # Deliberately not "Il Post - Ok Boomer!": that sender is now handled as
+        # a whole-issue letter (see FullLetterSenders below), so it would return
+        # one article by design. Any other <br>-stacking digest still splits.
+        articles = extract_articles(html, "", "Some subject", "Some Digest")
         titles = [a["title"] for a in articles]
         self.assertEqual(len(articles), 3)
         self.assertIn("Cosa mettersi per la fine del mondo lunga", titles)
@@ -364,18 +373,25 @@ class GenuinePermalinkOnly(unittest.TestCase):
 
 
 class FullLetterBodyBoundary(unittest.TestCase):
-    """Item 3 (real bug: the Costa article's body was truncated mid-essay
-    at "El Niño" by a fixed 6000-character cap, before the piece's actual
-    closing paragraph). The body must stop at the newsletter's own natural
-    end -- a ticket/event promo or a different, bylined article bundled
-    into the same issue -- using the email's structure, not a character
-    count, and must never be cut off while the essay itself is still
-    running."""
+    """Item 3, corrected: the Costa article's body was first truncated
+    mid-essay at "El Niño" by a fixed 6000-character cap; the fix for that
+    then over-corrected by also stopping at a ticket/event promo aside and
+    at any block that looked like a new, differently-authored piece, on
+    the theory that either one meant "the newsletter is over". Checked
+    against the real "Sta per succedere qualcosa?" issue (which bundles:
+    Costa's own opening essay, a podcast promo, a guest-authored
+    cotton-industry piece, a quick-links roundup, and Costa's own
+    sign-off, "A presto, Francesco", all in that order), that assumption
+    was wrong -- the guest piece and the promo are both part of that same
+    issue, and the real newsletter runs to about 24,000 characters, not
+    the ~8,000 the syndicated-article cutoff left. Only the trailing email
+    chrome (unsubscribe/copyright/"all newsletters" nav) reliably marks
+    where a newsletter issue actually ends."""
 
-    # Modeled directly on the real "Sta per succedere qualcosa?" email:
-    # one <td> per paragraph-with-a-link block (Il Post's actual template
-    # splits the essay this way), then a ticket-promo <td>, then a second,
-    # differently-authored article's <td>.
+    # Modeled directly on the real "Sta per succedere qualcosa?" email's
+    # section order: one <td> per paragraph-with-a-link block (Il Post's
+    # template splits the essay this way), a ticket-promo aside, a guest
+    # piece by a different author, Costa's own sign-off, then the footer.
     HTML = (
         "<html><body>"
         "<td>Primo paragrafo del pezzo di Costa, con la sua argomentazione principale "
@@ -385,25 +401,35 @@ class FullLetterBodyBoundary(unittest.TestCase):
         "<td><em>Con la fine dell'estate ritorna il podcast del Post. "
         'I biglietti si comprano <a href="https://x.ilpost.it/re?l=2">qui</a>.</em></td>'
         '<td><strong>"Un titolo qualsiasi"</strong><br>di Un Altro Autore<br><br>'
-        "Testo di un articolo completamente diverso, firmato da qualcun altro, "
-        "bundlato nella stessa email ma che non fa parte del pezzo di Costa.</td>"
+        "Testo di un articolo di un altro autore, ma bundlato nella stessa "
+        "newsletter come segmento ospite di questo numero.</td>"
+        # Costa's real sign-off sits at the tail of the same <td> as his
+        # closing paragraph, not in its own tiny cell -- matching that
+        # avoids the short-line/no-link masthead filter firing on it.
+        "<td>Grazie ancora per aver letto fino a qui, un applauso a voi. "
+        "A presto,<br>Francesco</td>"
+        '<td><a href="https://x.ilpost.it/re?l=3">Tutte le newsletter</a> - ilpost.it. '
+        "Ricevi questa newsletter perché lo hai chiesto, puoi disiscriverti qui. "
+        "Copyright © 2026 Il Post, All rights reserved.</td>"
         "</body></html>"
     )
 
-    def test_body_includes_full_essay_and_excludes_promo_and_next_article(self):
+    def test_body_includes_the_whole_issue_and_stops_only_at_the_footer(self):
         soup = BeautifulSoup(self.HTML, "html.parser")
         result = extract_full_letter(soup, "", "Sta per succedere qualcosa?")
         body = result["content_html"] or ""
         self.assertIn("argomentazione principale", body)
         self.assertIn("ultima frase significativa", body, "must not cut the essay off mid-way")
-        self.assertNotIn("podcast del Post", body, "must exclude the ticket/event promo")
-        self.assertNotIn("Un Altro Autore", body, "must exclude the bundled second article")
-        self.assertNotIn("Testo di un articolo completamente diverso", body)
+        self.assertIn("podcast del Post", body, "the promo is part of this same issue")
+        self.assertIn("Un Altro Autore", body, "the guest segment is part of this same issue")
+        self.assertIn("A presto", body, "Costa's own sign-off is part of this same issue")
+        self.assertNotIn("Tutte le newsletter", body, "must stop at the generic footer nav")
+        self.assertNotIn("Copyright ©", body, "must stop at the copyright boilerplate")
 
     def test_no_fixed_character_cap_truncates_a_long_but_legitimate_essay(self):
         # A single-block essay long enough that the old 6000-character cap
-        # would have cut it off, with no promo/second-article markers at
-        # all -- the whole thing must survive.
+        # would have cut it off, with no footer at all -- the whole thing
+        # must survive.
         long_text = "Frase numero {}. ".format
         long_essay = "".join(long_text(i) + "Contenuto legittimo del pezzo. " for i in range(400))
         html = f"<html><body><td>{long_essay}</td></body></html>"
@@ -411,6 +437,167 @@ class FullLetterBodyBoundary(unittest.TestCase):
         result = extract_full_letter(soup, "", "Un pezzo molto lungo")
         body = result["content_html"] or ""
         self.assertIn("Frase numero 399", body, "a long legitimate essay must not be truncated")
+
+
+class SubscriptionConfirmations(unittest.TestCase):
+    """Confirmation emails have no articles in them -- they used to land in the
+    feed as a card with an empty reader."""
+
+    def test_confirmation_recognised_from_the_body(self):
+        html = (
+            "<html><body><td>Ciao! Questo messaggio è solo per confermare la tua "
+            "iscrizione a Da Costa a Costa, la newsletter del Post."
+            '<a href="http://x/a">il sito del Post</a></td></body></html>'
+        )
+        self.assertEqual(
+            extract_articles(html, "", "Ciao, da Francesco Costa", "Francesco Costa"), []
+        )
+
+    def test_confirmation_recognised_from_a_hidden_preheader(self):
+        # The New Yorker's confirmations say nothing but "Welcome to ..." in the
+        # visible body; the give-away sits in the display:none preheader, which
+        # is stripped before the per-anchor scan -- so the check has to read the
+        # lead text first.
+        html = (
+            "<html><body>"
+            '<div style="display:none">Important information about your new '
+            "newsletter subscription</div>"
+            '<td>Welcome to The New Yorker. <a href="http://x/a">Start reading here</a>'
+            " and explore our archive of long reads.</td>"
+            "</body></html>"
+        )
+        self.assertEqual(extract_articles(html, "", "Welcome", "The New Yorker"), [])
+
+    def test_an_essay_that_merely_opens_with_a_welcome_is_kept(self):
+        # "welcome to" / "benvenuti" on their own are ordinary ways to open a
+        # piece, and for senders whose subject line IS the headline, matching
+        # them would silently delete a real issue.
+        html = (
+            "<html><body><td>Benvenuti nell'era dei data center: questa settimana "
+            "proviamo a capire quanta energia consumano davvero e chi la paga. "
+            '<a href="http://x/a">Un rapporto recente</a> prova a quantificarlo.'
+            "</td></body></html>"
+        )
+        articles = extract_articles(html, "", "Benvenuti nell'era dei data center", "Qualcuno")
+        self.assertEqual(len(articles), 1)
+
+
+class TLDRPromoFiltering(unittest.TestCase):
+    """TLDR labels every editorial item with its own reading-time/kind marker;
+    sponsored slots and job ads are the only blocks without one."""
+
+    def _titles(self, html):
+        return [a["title"] for a in extract_articles(html, "", "TLDR", "TLDR Founders")]
+
+    def test_sponsor_and_job_blocks_are_dropped(self):
+        html = (
+            "<html><body>"
+            '<div class="container"><a href="http://x/1">New ICONIQ Benchmarks are '
+            "insane (5 minute read)</a> A board member sent this over.</div>"
+            '<div class="container"><a href="http://x/2">Financial infrastructure to '
+            "grow your revenue (Sponsor)</a> Payments start as a weekend project.</div>"
+            '<div class="container"><a href="http://x/3">GTM Engineer, Applied AI at '
+            "TLDR ($175-205k base, Fully Remote)</a></div>"
+            '<div class="container"><a href="http://x/4">AX (GitHub Repo)</a> '
+            "A high-throughput declarative orchestrator.</div>"
+            "</body></html>"
+        )
+        titles = self._titles(html)
+        self.assertEqual(len(titles), 2)
+        self.assertTrue(any("ICONIQ" in t for t in titles))
+        self.assertTrue(any("GitHub Repo" in t for t in titles))
+        self.assertFalse(any("Sponsor" in t for t in titles))
+        self.assertFalse(any("GTM Engineer" in t for t in titles))
+
+
+class FullLetterSenders(unittest.TestCase):
+    def test_ok_boomer_is_one_whole_issue(self):
+        # Ok Boomer! is one essay per issue -- the per-link scan turned its
+        # "previous editions" nav list into content-less articles.
+        self.assertIn("Il Post - Ok Boomer!", FULL_LETTER_SENDERS)
+        html = (
+            "<html><body><td>Un lungo pezzo sul vestirsi per la fine del mondo, "
+            "che continua per parecchi paragrafi e non è un elenco di link.</td>"
+            '<td><a href="http://x/a">Cosa mettersi per la fine del mondo</a><br>'
+            '<a href="http://x/b">L’amore che si fa</a></td></body></html>'
+        )
+        articles = extract_articles(html, "", "Ok Boomer! di oggi", "Il Post - Ok Boomer!")
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0]["title"], "Ok Boomer! di oggi")
+
+
+class TitleOnlyBodies(unittest.TestCase):
+    """Il Post's digest items are one self-contained sentence, so the item's own
+    block IS the headline -- the reader used to print it twice."""
+
+    def test_body_identical_to_title_is_dropped(self):
+        self.assertTrue(
+            body_is_just_the_title(
+                "<p>Uno che correva fortissimo. E che oggi compie 50 anni.</p>",
+                "Uno che correva fortissimo. E che oggi compie 50 anni.",
+            )
+        )
+
+    def test_body_that_merely_starts_with_its_title_is_kept(self):
+        self.assertFalse(
+            body_is_just_the_title(
+                "<p>Uno che correva fortissimo.</p><p>Aveva vinto due volte a Milano "
+                "e poi si era ritirato in silenzio, a trent'anni appena compiuti.</p>",
+                "Uno che correva fortissimo.",
+            )
+        )
+
+
+class IlPostEveningDigest(unittest.TestCase):
+    """The evening digest opens with the editors' own chatty note (with links of
+    its own) and closes with a teaser for tomorrow; only what sits between "Le
+    notizie." and those closing cells is news."""
+
+    DIGEST = (
+        "<html><body><table><tr><td class=\"dmText\">"
+        "Come forse sapete, da oggi siamo a Faenza per Talk in città. Come "
+        'probabilmente non sapete, <a href="http://x/rain">era praticamente certo '
+        "che avrebbe piovuto</a>. L'abbiamo presa con spirito."
+        "</td></tr><tr><td class=\"dmText\">"
+        "<em>Le notizie.</em> Le elezioni parlamentari in Russia sono andate "
+        '<a href="http://x/ru">nell’unico modo possibile</a>. Quelle tedesche '
+        'invece sono state <a href="http://x/de">eccezionali per almeno tre motivi</a>.'
+        "</td></tr><tr><td>"
+        '<a href="http://x/easter">Indizio: gli easter egg sono 25</a>'
+        "</td></tr></table></body></html>"
+    )
+
+    def setUp(self):
+        self.articles = extract_articles(self.DIGEST, "", "Evening Post", "Il Post")
+        self.titles = [a["title"] for a in self.articles]
+
+    def test_editors_intro_is_not_an_article(self):
+        self.assertFalse(
+            any("Faenza" in t or "piovuto" in t for t in self.titles),
+            f"the intro leaked into the feed: {self.titles}",
+        )
+
+    def test_closing_teaser_is_not_an_article(self):
+        self.assertFalse(any("easter egg" in t for t in self.titles))
+
+    def test_the_news_items_themselves_survive(self):
+        self.assertEqual(len(self.articles), 2, self.titles)
+        self.assertTrue(any("Russia" in t for t in self.titles))
+        self.assertTrue(any("tedesche" in t for t in self.titles))
+
+    def test_an_item_never_carries_another_items_text_as_its_body(self):
+        for art in self.articles:
+            body = art["content_html"] or ""
+            for other in self.titles:
+                if other != art["title"]:
+                    self.assertNotIn(other, body)
+
+    def test_other_ilpost_newsletters_are_untouched(self):
+        # No "Le notizie." label -> no intro skipping, or Colonne/Ok Boomer and
+        # the onboarding emails would lose their first block.
+        html = self.DIGEST.replace("<em>Le notizie.</em> ", "")
+        titles = [a["title"] for a in extract_articles(html, "", "Colonne", "Il Post - Colonne")]
+        self.assertTrue(any("piovuto" in t or "Faenza" in t for t in titles))
 
 
 if __name__ == "__main__":
