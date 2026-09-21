@@ -410,6 +410,38 @@ ul.radar-list a { display: block; min-height: 44px; }
   ul.compact-grid-3 li:nth-child(-n+3) { border-top: none; }
 }
 
+/* ---------- Read state ---------- */
+.is-read .hero-headline,
+.is-read .secondary-headline,
+.is-read .feature-headline,
+.is-read .compact-headline,
+.is-read .radar-headline,
+.is-read .longread-headline {
+  color: var(--text-muted);
+}
+.is-read .hero-dek,
+.is-read .secondary-dek,
+.is-read .feature-dek,
+.is-read .longread-dek {
+  color: var(--text-muted);
+}
+.is-read .hero-media img,
+.is-read .secondary-thumb img,
+.is-read .feature-media img {
+  filter: grayscale(35%) opacity(0.82);
+}
+.read-mark {
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--text-muted);
+  font-size: 10px;
+  cursor: pointer;
+}
+.read-mark:hover,
+.read-mark:focus-visible {
+  color: var(--accent);
+}
+
 /* ---------- End mark ---------- */
 .endmark {
   max-width: var(--max-content);
