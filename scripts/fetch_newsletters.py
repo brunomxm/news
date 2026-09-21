@@ -94,6 +94,7 @@ SECTION_MAP = {
     "New Yorker Books": "Culture",
     "Il Post": "Culture",
     "Il Post - Colonne": "Culture",
+    "Il Post - Ok Boomer!": "Culture",
     "Water & Music": "Music & Industry",
     "Water and Music": "Music & Industry",
     "Music Business Worldwide": "Music & Industry",
@@ -105,6 +106,15 @@ WELCOME_RE = re.compile(
     r"thank(s| you) for (subscribing|signing up)|confirm your subscription|"
     r"you.re subscribed|benvenut|conferma (la tua )?iscrizione",
     re.I,
+)
+
+# Gmail-forwarded newsletters (subject starts with "Fwd:"/"Fw:") carry the
+# real sender in a quoted header block in the plaintext body, not in the
+# message's own From header -- without this, every forwarded issue gets
+# attributed to whoever hit "Forward", not the newsletter.
+FWD_SUBJECT_RE = re.compile(r"^\s*(fwd|fw)\s*:", re.I)
+FORWARDED_FROM_RE = re.compile(
+    r"-{5,}\s*forwarded message\s*-{5,}.*?\nFrom:\s*([^\n]+)", re.I | re.S
 )
 
 READER_ALLOWED_TAGS = {
@@ -368,6 +378,13 @@ def main():
         html, plaintext = extract_bodies(msg["payload"])
         if not html and not plaintext:
             continue
+
+        if FWD_SUBJECT_RE.match(subject):
+            fwd_match = FORWARDED_FROM_RE.search(plaintext or "")
+            if fwd_match:
+                fwd_name, _ = parseaddr(fwd_match.group(1).strip())
+                if fwd_name:
+                    source_name = fwd_name
 
         parsed = extract_articles(html or "", plaintext or "", subject)
         for i, item in enumerate(parsed):
