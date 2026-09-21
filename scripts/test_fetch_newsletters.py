@@ -17,11 +17,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bs4 import BeautifulSoup
 
 from fetch_newsletters import (
+    FORWARDED_DATE_RE,
     FORWARDED_SUBJECT_RE,
     br_split_groups,
     extract_articles,
     extract_full_letter,
+    find_view_online_link,
     group_index_containing,
+    parse_forwarded_date,
     sanitize_fragment,
     sentence_containing,
 )
@@ -239,6 +242,141 @@ class FullLetterExtraction(unittest.TestCase):
         self.assertEqual(result["title"], "'Disaster' election in Germany")
         self.assertIn('href="http://reuters.example/a"', result["content_html"] or "")
         self.assertNotIn("By Claire Beers", result["content_html"] or "")
+
+
+class ForwardedMessageDateRecovery(unittest.TestCase):
+    """Item 1 (real bug: brunomxm.github.io/news article 4567d13942c5c92c
+    showed 21 Sept, the forward date, instead of 19 Sept, the newsletter's
+    real send date). main() extracts the Date: line from the forwarded
+    header block and uses it instead of the envelope's own received date."""
+
+    FORWARDED_HEADER = (
+        "---------- Forwarded message ---------\n"
+        "From: Francesco Costa <costa@ilpost.it>\n"
+        "Date: Sat, Sep 19, 2026 at 8:16 AM\n"
+        "Subject: Sta per succedere qualcosa?\n"
+        "To: <bruno@example.com>\n"
+    )
+
+    def test_extracts_and_parses_the_original_send_date(self):
+        match = FORWARDED_DATE_RE.search(self.FORWARDED_HEADER)
+        self.assertIsNotNone(match)
+        parsed = parse_forwarded_date(match.group(1))
+        self.assertIsNotNone(parsed)
+        self.assertEqual((parsed.year, parsed.month, parsed.day), (2026, 9, 19))
+        self.assertEqual((parsed.hour, parsed.minute), (8, 16))
+
+    def test_unparseable_date_format_returns_none_not_a_crash(self):
+        # A differently-worded mail client, or a non-English Gmail locale --
+        # must fail closed to "use the received date" rather than throw.
+        self.assertIsNone(parse_forwarded_date("not a real date at all"))
+
+
+class GenuinePermalinkOnly(unittest.TestCase):
+    """Item 2 (real bug: the Costa article's "Read the original" pointed at
+    a Hemingway citation link, and Reuters' pointed at the first article
+    cited in the briefing). Every link in these templates is either a
+    tracking redirect or a citation to something else entirely -- only an
+    explicit "view online" style anchor should ever become the article's
+    external link."""
+
+    def test_no_link_when_only_citation_and_tracking_links_exist(self):
+        # Modeled on the real Costa email: every href is the same
+        # x.ilpost.it/re tracking-redirect domain, none of them the
+        # newsletter's own permalink.
+        html = (
+            "<html><body><td>"
+            'Ricordavo che fosse una frase di Hemingway ma ero convinto che si trattasse di uno '
+            'di quegli aforismi apocrifi, poi ho controllato '
+            '<a href="https://x.ilpost.it/re?l=abc">ed è effettivamente di Hemingway</a>, anche se '
+            "lui la scrisse un po' diversa."
+            "</td></body></html>"
+        )
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertIsNone(find_view_online_link(soup))
+
+    def test_no_link_when_only_read_more_citation_links_exist(self):
+        # Modeled on the real Reuters email: "Read more" links go to the
+        # individual articles cited in the briefing, not to the briefing
+        # itself -- there is no digest-level permalink at all.
+        html = (
+            "<html><body>"
+            '<p>Germany\'s Merz fights for survival. <a href="https://reuters.example/merz">Read more</a>.</p>'
+            '<p>Oil prices slid. <a href="https://reuters.example/oil">Read more</a>.</p>'
+            "</body></html>"
+        )
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertIsNone(find_view_online_link(soup))
+
+    def test_finds_a_genuine_view_online_link_when_one_exists(self):
+        html = (
+            "<html><body>"
+            '<a href="https://example.com/issue/42">View this email in your browser</a>'
+            '<p>Some article text with a <a href="https://example.com/cited">citation</a>.</p>'
+            "</body></html>"
+        )
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertEqual(find_view_online_link(soup), "https://example.com/issue/42")
+
+    def test_extract_articles_omits_link_entirely_rather_than_a_wrong_one(self):
+        html = (
+            "<html><body><td>"
+            'Testo con un link di citazione <a href="https://x.ilpost.it/re?l=abc">qualcosa</a> qui.'
+            "</td></body></html>"
+        )
+        articles = extract_articles(html, "", "Sta per succedere qualcosa?", "Francesco Costa")
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0]["link"], "")
+
+
+class FullLetterBodyBoundary(unittest.TestCase):
+    """Item 3 (real bug: the Costa article's body was truncated mid-essay
+    at "El Niño" by a fixed 6000-character cap, before the piece's actual
+    closing paragraph). The body must stop at the newsletter's own natural
+    end -- a ticket/event promo or a different, bylined article bundled
+    into the same issue -- using the email's structure, not a character
+    count, and must never be cut off while the essay itself is still
+    running."""
+
+    # Modeled directly on the real "Sta per succedere qualcosa?" email:
+    # one <td> per paragraph-with-a-link block (Il Post's actual template
+    # splits the essay this way), then a ticket-promo <td>, then a second,
+    # differently-authored article's <td>.
+    HTML = (
+        "<html><body>"
+        "<td>Primo paragrafo del pezzo di Costa, con la sua argomentazione principale "
+        'e un link di supporto <a href="https://x.ilpost.it/re?l=1">come questo</a>.</td>'
+        "<td>Secondo paragrafo che conclude davvero il pezzo, fino all'ultima frase "
+        "significativa che il lettore deve poter leggere per intero.</td>"
+        "<td><em>Con la fine dell'estate ritorna il podcast del Post. "
+        'I biglietti si comprano <a href="https://x.ilpost.it/re?l=2">qui</a>.</em></td>'
+        '<td><strong>"Un titolo qualsiasi"</strong><br>di Un Altro Autore<br><br>'
+        "Testo di un articolo completamente diverso, firmato da qualcun altro, "
+        "bundlato nella stessa email ma che non fa parte del pezzo di Costa.</td>"
+        "</body></html>"
+    )
+
+    def test_body_includes_full_essay_and_excludes_promo_and_next_article(self):
+        soup = BeautifulSoup(self.HTML, "html.parser")
+        result = extract_full_letter(soup, "", "Sta per succedere qualcosa?")
+        body = result["content_html"] or ""
+        self.assertIn("argomentazione principale", body)
+        self.assertIn("ultima frase significativa", body, "must not cut the essay off mid-way")
+        self.assertNotIn("podcast del Post", body, "must exclude the ticket/event promo")
+        self.assertNotIn("Un Altro Autore", body, "must exclude the bundled second article")
+        self.assertNotIn("Testo di un articolo completamente diverso", body)
+
+    def test_no_fixed_character_cap_truncates_a_long_but_legitimate_essay(self):
+        # A single-block essay long enough that the old 6000-character cap
+        # would have cut it off, with no promo/second-article markers at
+        # all -- the whole thing must survive.
+        long_text = "Frase numero {}. ".format
+        long_essay = "".join(long_text(i) + "Contenuto legittimo del pezzo. " for i in range(400))
+        html = f"<html><body><td>{long_essay}</td></body></html>"
+        soup = BeautifulSoup(html, "html.parser")
+        result = extract_full_letter(soup, "", "Un pezzo molto lungo")
+        body = result["content_html"] or ""
+        self.assertIn("Frase numero 399", body, "a long legitimate essay must not be truncated")
 
 
 if __name__ == "__main__":

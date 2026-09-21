@@ -64,16 +64,29 @@ function render(article) {
   // there's nothing more here instead, and point at the original link.
   const hasSummary = summaryText && summaryText.toLowerCase() !== article.title.trim().toLowerCase();
   const d = hasBody ? "" : (hasSummary ? dek(article.summary) : "");
+  // Some newsletters (e.g. Il Post's forwarded table templates, Reuters'
+  // briefing) never include a genuine "read online" permalink -- every
+  // other link in them points at a cited article or a tracking redirect,
+  // not at the issue itself, so extraction leaves article.link empty
+  // rather than guessing. Word the empty-body message accordingly, and
+  // don't render a "Read the original" link that would send the reader
+  // somewhere unrelated to what they just read.
+  const hasLink = Boolean(article.link);
   const body = hasBody
     ? article.content_html
     : hasSummary
       ? `<p>${escapeHtml(article.summary)}</p>`
-      : `<p class="reader-empty">Full text isn’t available here — read it on the original site below.</p>`;
+      : hasLink
+        ? `<p class="reader-empty">Full text isn’t available here — read it on the original site below.</p>`
+        : `<p class="reader-empty">Full text isn’t available here.</p>`;
   const hero = article.image
     ? `<div class="reader-hero"><img src="${escapeHtml(article.image)}" alt=""></div>`
     : "";
   const bylineParts = [dateLabel(article.date), timeOfDay(article.date)];
   if (article.reading_time_min) bylineParts.push(`${article.reading_time_min} MIN READ`);
+  const original = hasLink
+    ? `<a class="reader-original" href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer">Read the original at ${escapeHtml(article.source)} &rarr;</a>`
+    : "";
 
   main.innerHTML = `
     <a class="reader-back-top label-nav" href="index.html">&lsaquo; Back to ${escapeHtml(SITE_NAME)}</a>
@@ -83,7 +96,7 @@ function render(article) {
     <p class="label-nav reader-byline">${bylineParts.join(" &middot; ")}</p>
     ${hero}
     <div class="reader-body">${body}</div>
-    <a class="reader-original" href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer">Read the original at ${escapeHtml(article.source)} &rarr;</a>
+    ${original}
     <a class="reader-mark-unread label-nav" href="#" data-id="${escapeHtml(article.id)}" style="display:block;margin-top:16px;"></a>
   `;
 

@@ -152,6 +152,14 @@ FORWARDED_FROM_RE = re.compile(
 FORWARDED_SUBJECT_RE = re.compile(
     r"-{5,}\s*forwarded message\s*-{5,}.*?\nSubject:\s*([^\n]+)", re.I | re.S
 )
+# Gmail's own human-readable format, e.g. "Sat, Sep 19, 2026 at 8:16 AM" --
+# no timezone given, so the parsed value is treated as UTC as an
+# approximation; good enough for the date/time shown in the UI, and far
+# better than showing the forward's own send time as if it were the
+# newsletter's original date.
+FORWARDED_DATE_RE = re.compile(
+    r"-{5,}\s*forwarded message\s*-{5,}.*?\nDate:\s*([^\n]+)", re.I | re.S
+)
 FORWARD_HEADER_RE = re.compile(r"-{5,}\s*forwarded message\s*-{5,}\n.*?\n\s*\n", re.I | re.S)
 
 READER_ALLOWED_TAGS = {
@@ -287,6 +295,20 @@ def extract_bodies(payload):
 
 def clean_text(s: str) -> str:
     return re.sub(r"\s+", " ", s or "").strip()
+
+
+def parse_forwarded_date(date_str: str) -> "datetime | None":
+    """Parse Gmail's own human-readable forwarded-header date, e.g. "Sat,
+    Sep 19, 2026 at 8:16 AM". Returns None if it doesn't match that shape
+    (a differently-worded mail client, a non-English locale, ...) so the
+    caller can fall back to the message's own received date."""
+    cleaned = clean_text(date_str).replace(" at ", " ")
+    try:
+        return datetime.strptime(cleaned, "%a, %b %d, %Y %I:%M %p").replace(
+            tzinfo=timezone.utc
+        )
+    except ValueError:
+        return None
 
 
 def br_split_groups(container):
@@ -476,6 +498,83 @@ def recover_substack_post(soup) -> dict | None:
     }
 
 
+def leaf_table_cells(soup):
+    """<td> elements that carry their own text directly rather than
+    wrapping a further layout table -- the granularity at which a
+    table-based email template (no <p> tags at all, e.g. Il Post's
+    Gmail-forwarded newsletters) holds one logical block: a paragraph run,
+    a promo box, a secondary syndicated article."""
+    return [
+        td
+        for td in soup.find_all("td")
+        if td.find("td") is None and len(clean_text(td.get_text(" "))) >= 40
+    ]
+
+
+PROMO_ASIDE_RE = re.compile(
+    r"biglietti si comprano|i biglietti si comprano|si comprano qui|"
+    r"prenota (il tuo posto|ora)|iscriviti (qui|ora)|acquista (i biglietti|il biglietto)",
+    re.I,
+)
+
+
+def is_ticket_or_event_promo(tag) -> bool:
+    """True if this block is a ticket/event-sale call to action (Il Post's
+    podcast-live-show plugs and similar). There's no reliable *structural*
+    marker for this -- it's rendered the same as the newsletter's own
+    emphasized prose (both just sit in a plain <em>, checked and ruled out
+    against a real example: Costa italicizes ordinary asides mid-essay
+    too) -- so this is deliberately a narrow, content-based check instead,
+    scoped to the specific CTA phrasing these plugs actually use rather
+    than "any block that's all-italic"."""
+    return bool(PROMO_ASIDE_RE.search(clean_text(tag.get_text(" "))))
+
+
+def starts_new_syndicated_article(tag) -> bool:
+    """True if this block opens with a <strong> title immediately followed
+    by a short "di <Author Name>" byline -- Il Post's convention for a
+    second, differently-authored article bundled into the same issue."""
+    strong = tag.find("strong")
+    if strong is None:
+        return False
+    text = clean_text(tag.get_text(" "))
+    strong_text = clean_text(strong.get_text(" "))
+    idx = text.find(strong_text)
+    if idx == -1:
+        return False
+    after = text[idx + len(strong_text) : idx + len(strong_text) + 60]
+    return bool(re.match(r"^\s*di\s+[A-ZÀ-Ý]", after))
+
+
+def is_section_boundary(tag) -> bool:
+    """A block that starts a ticket/event promo or a new syndicated
+    article -- the newsletter's own piece ends right before the first one
+    of these, not at some arbitrary character count. See
+    is_ticket_or_event_promo / starts_new_syndicated_article for the two
+    patterns this recognizes."""
+    return is_ticket_or_event_promo(tag) or starts_new_syndicated_article(tag)
+
+
+VIEW_ONLINE_RE = re.compile(
+    r"view .*(online|in (your )?browser)|view (this )?online|view in browser|"
+    r"web version|leggi (su|online)|visualizza (online|nel browser)",
+    re.I,
+)
+
+
+def find_view_online_link(soup) -> str | None:
+    """A genuine "read this issue online" permalink, if the newsletter
+    actually includes one. Every other link in a briefing/letter template
+    points at a cited article or a tracking redirect, not at the issue
+    itself -- showing one of those as "Read the original" would send the
+    reader somewhere unrelated to what they just read, so when no real
+    permalink exists this returns None rather than guessing."""
+    for a in soup.find_all("a", href=True):
+        if VIEW_ONLINE_RE.search(clean_text(a.get_text(" "))):
+            return a["href"]
+    return None
+
+
 def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
     """Extract a FULL_LETTER_SENDERS message as one article: these senders
     (Francesco Costa's personal letter, Reuters' daily briefing) have no
@@ -488,23 +587,38 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
     and forwarded-header block are stripped: "Sta per succedere qualcosa?"),
     so it's used as the title unconditionally -- see FULL_LETTER_SENDERS
     for why this differs from the per-link digest scan."""
-    body_paragraphs_html = [
-        p
-        for p in soup.find_all("p")
-        if (text := clean_text(p.get_text(" ")))
-        and not SIGNOFF_RE.search(text)
-        and not BORING_RE.search(text)
-        and (len(text) >= 20 or p.find("a") is not None)
-    ]
 
-    if body_paragraphs_html and sum(len(clean_text(p.get_text(" "))) for p in body_paragraphs_html) > 150:
-        # Real HTML body (Reuters): extract straight from the markup so
-        # inline citation links survive into the reader.
-        frag_html = "".join(str(p) for p in body_paragraphs_html)
+    def qualifies(block) -> bool:
+        text = clean_text(block.get_text(" "))
+        if not text or SIGNOFF_RE.search(text) or BORING_RE.search(text):
+            return False
+        # A short line with no link at all is more likely a masthead/byline
+        # ("Daily Briefing", "By Claire Beers") than real body prose.
+        return len(text) >= 20 or block.find("a") is not None
+
+    body_paragraphs_html = [p for p in soup.find_all("p") if qualifies(p)]
+    blocks = body_paragraphs_html
+    if not (blocks and sum(len(clean_text(b.get_text(" "))) for b in blocks) > 150):
+        # No usable <p> structure -- fall back to this template's <td>
+        # leaves (Francesco Costa's Gmail-forwarded, table-only template).
+        blocks = [td for td in leaf_table_cells(soup) if qualifies(td)]
+
+    if blocks:
+        # Stop at the newsletter's own natural end -- a promo aside or a
+        # different, syndicated article bundled into the same issue --
+        # instead of an arbitrary character limit that can cut the actual
+        # piece off mid-paragraph.
+        body_blocks = []
+        for block in blocks:
+            if is_section_boundary(block):
+                break
+            body_blocks.append(block)
+        frag_html = "".join(str(b) for b in body_blocks)
     else:
-        # No usable <p> structure (Francesco Costa's Gmail-forwarded,
-        # table-only template) -- fall back to the plaintext body, which
-        # Gmail renders as clean blank-line-separated paragraphs.
+        # No usable HTML structure at all -- fall back to the plaintext
+        # body, which Gmail renders as clean blank-line-separated
+        # paragraphs. This drops inline links (plaintext can't carry them)
+        # but is still readable prose.
         text = (plaintext or "").replace("\r\n", "\n")
         text = FORWARD_HEADER_RE.sub("", text, count=1)
         # Gmail's plain-text view renders *bold*/_italic_ markup literally
@@ -517,39 +631,24 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
         # what should read as prose; the bracketed URL is just clutter
         # since this fallback path doesn't carry links through anyway.
         text = re.sub(r"\s*<https?://.*?>", "", text, flags=re.S)
-        paragraphs = [clean_text(p) for p in re.split(r"\n\s*\n", text)]
+        paragraphs = [clean_text(p) for p in re.split(r"\n\s*\n", text) if clean_text(p)]
         body_paragraphs = []
-        body_len = 0
         for para in paragraphs:
-            if not para:
-                continue
             if SIGNOFF_RE.search(para) or BORING_RE.search(para):
                 break
             body_paragraphs.append(para)
-            body_len += len(para)
-            if body_len > 6000:
-                break
         frag_html = "".join(f"<p>{html.escape(p)}</p>" for p in body_paragraphs)
 
     title = subject
     fragment = BeautifulSoup(f"<div>{frag_html}</div>", "html.parser")
     summary = clean_text(fragment.get_text(" "))[:400]
 
-    link = None
-    for a in soup.find_all("a", href=True):
-        if re.search(r"view (this )?online|web version|view in browser", a.get_text(" "), re.I):
-            link = a["href"]
-            break
-    if not link:
-        for a in soup.find_all("a", href=True):
-            href = a["href"]
-            text = clean_text(a.get_text(" "))
-            if href.startswith("mailto:") or len(text) < 8:
-                continue
-            if BORING_RE.search(text) or BORING_RE.search(href):
-                continue
-            link = href
-            break
+    # Only a genuine "view this issue online" permalink is used as the
+    # "Read the original" link -- every other link in these templates
+    # points at a cited article or a tracking redirect, not at the issue
+    # itself (see find_view_online_link). If there isn't one, this article
+    # simply has no external link rather than a misleading one.
+    link = find_view_online_link(soup)
 
     return {
         "title": title,
@@ -561,19 +660,25 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
 
 
 def extract_articles(html: str, plaintext: str, subject: str, source_name: str = ""):
-    # Some senders (e.g. Francesco Costa's "Da Costa a Costa") reuse the same
-    # generic subject line for every issue, including the one-off
-    # subscription-confirmation email, so a subject-only welcome check can't
-    # tell them apart -- also check the start of the actual message body.
-    lead_text = clean_text((plaintext or html or "")[:1000])
-    if WELCOME_RE.search(subject) or WELCOME_RE.search(lead_text):
-        return _fallback_article(BeautifulSoup(html, "html.parser"), plaintext, subject)
-
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style"]):
         tag.decompose()
     for hidden in soup.find_all(style=re.compile(r"display:\s*none", re.I)):
         hidden.decompose()
+
+    # Some senders (e.g. Francesco Costa's "Da Costa a Costa") reuse the same
+    # generic subject line for every issue, including the one-off
+    # subscription-confirmation email, so a subject-only welcome check can't
+    # tell them apart -- also check the start of the actual message body. A
+    # message with no plaintext part at all needs its lead text pulled from
+    # the HTML's *rendered* text, not the first 1000 characters of raw
+    # markup, which for a real template is nothing but <head>/style
+    # boilerplate -- that would never contain the greeting this is looking
+    # for no matter how long the confirmation email actually is.
+    lead_source = plaintext or (clean_text(soup.get_text(" ")) if html else "")
+    lead_text = clean_text(lead_source[:1000])
+    if WELCOME_RE.search(subject) or WELCOME_RE.search(lead_text):
+        return _fallback_article(soup, plaintext, subject)
 
     if source_name in FULL_LETTER_SENDERS:
         return [extract_full_letter(soup, plaintext, subject)]
@@ -770,10 +875,23 @@ def main():
             subj_match = FORWARDED_SUBJECT_RE.search(plaintext or "")
             if subj_match:
                 subject = subj_match.group(1).strip()
+            # Likewise the message's own received date is when it was
+            # forwarded, not when the newsletter was actually sent -- use
+            # the original send date from the quoted header when we can
+            # parse it, so the reader shows the newsletter's real date
+            # instead of the day it happened to be forwarded.
+            date_match = FORWARDED_DATE_RE.search(plaintext or "")
+            if date_match:
+                parsed_date = parse_forwarded_date(date_match.group(1))
+                if parsed_date:
+                    msg_date = parsed_date
 
         parsed = extract_articles(html or "", plaintext or "", subject, source_name)
         for item in parsed:
-            if not item["title"] or not item["link"]:
+            # A missing link is legitimate here: extract_full_letter only
+            # sets one when it found a genuine "view online" permalink, not
+            # just any link in the message (see find_view_online_link).
+            if not item["title"]:
                 continue
             aid = stable_id(mid, item["link"])
             wc = word_count(item.get("content_html"))
