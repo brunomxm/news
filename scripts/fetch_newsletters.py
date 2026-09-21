@@ -607,6 +607,9 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
         # piece off mid-paragraph.
         body_blocks = []
         for block in blocks:
+            block_text = clean_text(block.get_text(" "))
+            if block_text.startswith("This email includes limited tracking") or "Thomson Reuters. All rights reserved" in block_text:
+                break
             if is_section_boundary(block):
                 break
             body_blocks.append(block)

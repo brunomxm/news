@@ -353,10 +353,13 @@ class GenuinePermalinkOnly(unittest.TestCase):
             "<p>AfD campaign event ahead of the election. REUTERS/Lisi Niesner</p>"
             "<p>In the four months since the leaders met, trade shifted and "
             "expectations for their next summit have changed sharply.</p>"
+            "<p>This email includes limited tracking for Reuters to understand engagement.</p>"
+            "<p>Thomson Reuters. All rights reserved.</p>"
             "</body></html>"
         )
         article = extract_articles(html, "", "'Disaster' election in Germany", "Reuters Daily Briefing")[0]
         self.assertNotIn("REUTERS/Lisi Niesner", article["content_html"])
+        self.assertNotIn("limited tracking", article["content_html"])
         self.assertIn("trade shifted", article["content_html"])
 
 
