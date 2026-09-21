@@ -45,6 +45,7 @@ function render(article) {
   if (article.reading_time_min) bylineParts.push(`${article.reading_time_min} MIN READ`);
 
   main.innerHTML = `
+    <a class="reader-back-top label-nav" href="index.html">&lsaquo; Back to ${escapeHtml(SITE_NAME)}</a>
     <span class="label-source reader-source">${escapeHtml(article.source)}</span>
     <h1 class="reader-headline">${escapeHtml(article.title)}</h1>
     ${d ? `<p class="reader-dek">${escapeHtml(d)}</p>` : ""}
@@ -53,7 +54,6 @@ function render(article) {
     <div class="reader-body">${body}</div>
     <a class="reader-original" href="${escapeHtml(article.link)}" target="_blank" rel="noopener noreferrer">Read the original at ${escapeHtml(article.source)} &rarr;</a>
     <a class="reader-mark-unread label-nav" href="#" data-id="${escapeHtml(article.id)}" style="display:block;margin-top:16px;"></a>
-    <a class="reader-back label-nav" href="index.html" style="display:block;margin-top:16px;">&lsaquo; Back to ${escapeHtml(SITE_NAME)}</a>
   `;
 
   const markLink = main.querySelector(".reader-mark-unread");
