@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bs4 import BeautifulSoup
 
 from fetch_newsletters import (
+    FORWARDED_SUBJECT_RE,
     br_split_groups,
     extract_articles,
     extract_full_letter,
@@ -169,12 +170,32 @@ class DigestExtraction(unittest.TestCase):
 
 
 class FullLetterExtraction(unittest.TestCase):
-    """Item 2/3: Francesco Costa arrives as a Gmail forward with a
-    table-based HTML template (no <p> tags at all) -- extraction must fall
-    back to the plaintext body, strip the forwarded-message header block,
-    and not leave literal *emphasis* markers in the title."""
+    """Item 2/3, plus the follow-up bug where Reuters Daily Briefing's
+    per-sentence "headlines" were really just paragraph-long sentences with
+    no real headline behind them at all. FULL_LETTER_SENDERS treats the
+    whole message as one article and uses the subject line (the one real,
+    human-written headline for the issue) as the title unconditionally."""
 
-    def test_uses_plaintext_and_strips_forward_header_and_markup(self):
+    def test_recovers_true_subject_from_forwarded_header(self):
+        # main() strips the outer "Fwd: ..." wrapper and swaps in the real
+        # subject from the quoted header block before calling
+        # extract_full_letter -- verify that recovery works.
+        plaintext = (
+            "---------- Forwarded message ---------\n"
+            "From: Francesco Costa <costa@ilpost.it>\n"
+            "Date: Sat, Sep 19, 2026 at 8:16 AM\n"
+            "Subject: Sta per succedere qualcosa?\n"
+            "To: <bruno@example.com>\n"
+        )
+        match = FORWARDED_SUBJECT_RE.search(plaintext)
+        self.assertIsNotNone(match)
+        self.assertEqual(match.group(1).strip(), "Sta per succedere qualcosa?")
+
+    def test_falls_back_to_plaintext_and_strips_header_and_markup(self):
+        # Francesco Costa's table-only Gmail-forward template has no <p>
+        # tags at all -- extraction must fall back to the plaintext body,
+        # strip the forwarded-message header block, and not leave literal
+        # *emphasis* markers in the body.
         plaintext = (
             "---------- Forwarded message ---------\n"
             "From: Francesco Costa <costa@ilpost.it>\n"
@@ -187,21 +208,37 @@ class FullLetterExtraction(unittest.TestCase):
             "\n"
             "Si dice delle grandi crisi che arrivano lentamente e poi tutte in una volta.\n"
         )
-        # Table-based HTML with no <p>/<h*> tags, as Il Post's real template
-        # produces -- extraction must not depend on finding any.
         html = (
             "<html><body><table><tr><td>"
             'no paragraph tags here, just a <a href="http://x/view">view online</a> link'
             "</td></tr></table></body></html>"
         )
         soup = BeautifulSoup(html, "html.parser")
-        result = extract_full_letter(soup, plaintext, "Fwd: Sta per succedere qualcosa?")
-        self.assertEqual(
-            result["title"], "Alla fine di questa newsletter, un ringraziamento importante."
-        )
-        self.assertNotIn("*", result["title"])
+        # subject as already recovered by main() -- the "Fwd:" prefix is gone.
+        result = extract_full_letter(soup, plaintext, "Sta per succedere qualcosa?")
+        self.assertEqual(result["title"], "Sta per succedere qualcosa?")
+        self.assertNotIn("*", result["content_html"] or "")
         self.assertNotIn("Forwarded message", result["content_html"] or "")
         self.assertIn("grandi crisi", result["content_html"] or "")
+
+    def test_uses_html_paragraphs_and_preserves_links_when_available(self):
+        # Reuters' real newsletter template has genuine <p> tags with real
+        # inline citation links -- those should survive into the body
+        # rather than being discarded in favor of the plaintext fallback.
+        html = (
+            "<html><body>"
+            "<p>Daily Briefing</p>"
+            "<p>By Claire Beers</p>"
+            '<p>Hello. Germany\'s Merz fights for survival after a '
+            '<a href="http://reuters.example/a">disaster state election</a>, '
+            "and markets reacted sharply to the news this morning as investors weighed the outcome.</p>"
+            "</body></html>"
+        )
+        soup = BeautifulSoup(html, "html.parser")
+        result = extract_full_letter(soup, "", "'Disaster' election in Germany")
+        self.assertEqual(result["title"], "'Disaster' election in Germany")
+        self.assertIn('href="http://reuters.example/a"', result["content_html"] or "")
+        self.assertNotIn("By Claire Beers", result["content_html"] or "")
 
 
 if __name__ == "__main__":

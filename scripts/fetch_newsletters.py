@@ -131,13 +131,15 @@ WELCOME_RE = re.compile(
     re.I,
 )
 
-# Some newsletters are a single flowing personal letter with no per-topic
-# headline markup at all (unlike Reuters/Il Post's digest style, or
-# Substack's own h1.post-title) -- every inline citation link there would
-# otherwise become its own fake "article" titled with whatever sentence it
-# sits in. Known senders in this format get the whole-message treatment
-# instead of the per-link digest scan.
-FULL_LETTER_SENDERS = {"Francesco Costa"}
+# Some newsletters are a single flowing digest/letter with no per-topic
+# headline markup at all -- unlike Il Post's digest style (each item is its
+# own short blurb) or Substack's h1.post-title, every inline citation link
+# here would otherwise become its own fake "article" titled with whatever
+# sentence it sits in, and even the best-recovered sentence reads badly as
+# a bold headline since there never was a real one -- the message's own
+# subject line is. Known senders in this format get the whole-message
+# treatment instead of the per-link digest scan.
+FULL_LETTER_SENDERS = {"Francesco Costa", "Reuters Daily Briefing", "Reuters"}
 
 # Gmail-forwarded newsletters (subject starts with "Fwd:"/"Fw:") carry the
 # real sender in a quoted header block in the plaintext body, not in the
@@ -475,52 +477,61 @@ def recover_substack_post(soup) -> dict | None:
 
 
 def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
-    """Extract a FULL_LETTER_SENDERS message as one article. These arrive as
-    Gmail forwards using a nested-table HTML template with no <p>/<h*> tags
-    at all, so there is no reliable structure to walk in the HTML -- the
-    plaintext body, which Gmail renders as clean blank-line-separated
-    paragraphs, is what we extract from instead. The first real paragraph's
-    first sentence becomes the title (skipping a bare "Ciao!" greeting
-    line), and paragraphs up to the first boilerplate/signoff line become
-    the body -- see FULL_LETTER_SENDERS for why this differs from the
-    per-link digest scan."""
-    text = (plaintext or "").replace("\r\n", "\n")
-    text = FORWARD_HEADER_RE.sub("", text, count=1)
-    # Gmail's plain-text view renders *bold* and _italic_ markup literally
-    # (there's no HTML here to carry real emphasis) -- strip the markers so
-    # they don't end up glued onto the title/body text.
-    text = re.sub(r"[*_]{1,2}(\S[^*_]*?\S)[*_]{1,2}", r"\1", text)
-    # Gmail's plain-text view renders each link as its own visible anchor
-    # text followed by the raw target URL in angle brackets (which can wrap
-    # onto the next line) -- the anchor text alone is what should read as
-    # prose; the bracketed URL is just clutter here since this extraction
-    # path doesn't carry links through into the body.
-    text = re.sub(r"\s*<https?://.*?>", "", text, flags=re.S)
-    paragraphs = [clean_text(p) for p in re.split(r"\n\s*\n", text)]
-    paragraphs = [p for p in paragraphs if p]
+    """Extract a FULL_LETTER_SENDERS message as one article: these senders
+    (Francesco Costa's personal letter, Reuters' daily briefing) have no
+    per-item headline at all -- it's one flowing digest touching several
+    topics, and every "headline" the per-link scan could find is really
+    just a mid-sentence fragment or, at best, a full but paragraph-long
+    sentence that reads badly as a bold headline. The message's own
+    subject line is the real, human-written headline for the whole issue
+    (Reuters: "'Disaster' election in Germany"; Costa, once the Fwd: prefix
+    and forwarded-header block are stripped: "Sta per succedere qualcosa?"),
+    so it's used as the title unconditionally -- see FULL_LETTER_SENDERS
+    for why this differs from the per-link digest scan."""
+    body_paragraphs_html = [
+        p
+        for p in soup.find_all("p")
+        if (text := clean_text(p.get_text(" ")))
+        and not SIGNOFF_RE.search(text)
+        and not BORING_RE.search(text)
+        and (len(text) >= 20 or p.find("a") is not None)
+    ]
 
-    title = None
-    body_paragraphs = []
-    body_len = 0
-    for para in paragraphs:
-        if SIGNOFF_RE.search(para) or BORING_RE.search(para):
-            break
-        if title is None:
-            if len(para) < 20:
+    if body_paragraphs_html and sum(len(clean_text(p.get_text(" "))) for p in body_paragraphs_html) > 150:
+        # Real HTML body (Reuters): extract straight from the markup so
+        # inline citation links survive into the reader.
+        frag_html = "".join(str(p) for p in body_paragraphs_html)
+    else:
+        # No usable <p> structure (Francesco Costa's Gmail-forwarded,
+        # table-only template) -- fall back to the plaintext body, which
+        # Gmail renders as clean blank-line-separated paragraphs.
+        text = (plaintext or "").replace("\r\n", "\n")
+        text = FORWARD_HEADER_RE.sub("", text, count=1)
+        # Gmail's plain-text view renders *bold*/_italic_ markup literally
+        # (there's no HTML here to carry real emphasis) -- strip the
+        # markers so they don't end up glued onto the body text.
+        text = re.sub(r"[*_]{1,2}(\S[^*_]*?\S)[*_]{1,2}", r"\1", text)
+        # Gmail's plain-text view renders each link as its own visible
+        # anchor text followed by the raw target URL in angle brackets
+        # (which can wrap onto the next line) -- the anchor text alone is
+        # what should read as prose; the bracketed URL is just clutter
+        # since this fallback path doesn't carry links through anyway.
+        text = re.sub(r"\s*<https?://.*?>", "", text, flags=re.S)
+        paragraphs = [clean_text(p) for p in re.split(r"\n\s*\n", text)]
+        body_paragraphs = []
+        body_len = 0
+        for para in paragraphs:
+            if not para:
                 continue
-            sentences = re.split(r"(?<=[.!?])\s+", para)
-            title = sentences[0]
-            if len(title) > 200:
-                title = title[:197].rsplit(" ", 1)[0] + "…"
-        body_paragraphs.append(para)
-        body_len += len(para)
-        if body_len > 6000:
-            break
+            if SIGNOFF_RE.search(para) or BORING_RE.search(para):
+                break
+            body_paragraphs.append(para)
+            body_len += len(para)
+            if body_len > 6000:
+                break
+        frag_html = "".join(f"<p>{html.escape(p)}</p>" for p in body_paragraphs)
 
-    if title is None:
-        title = subject
-
-    frag_html = "".join(f"<p>{html.escape(p)}</p>" for p in body_paragraphs)
+    title = subject
     fragment = BeautifulSoup(f"<div>{frag_html}</div>", "html.parser")
     summary = clean_text(fragment.get_text(" "))[:400]
 
