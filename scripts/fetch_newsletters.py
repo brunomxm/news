@@ -20,6 +20,7 @@ SECTION_MAP below) — no judgment call, no LLM, nothing to preserve.
 import argparse
 import base64
 import hashlib
+import html
 import json
 import os
 import re
@@ -27,7 +28,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from email.utils import parseaddr
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -61,7 +62,8 @@ BORING_RE = re.compile(
     r"^read more$|^privacy (statement|policy)$|^terms (&|and) conditions$|"
     r"^terms of (service|use)$|^cookie policy$|"
     r"\d+% off|for \d+ months?$|"
-    r"is one of inc\.'?s best|powered by beehiiv|^curated by",
+    r"is one of inc\.'?s best|powered by beehiiv|^curated by|"
+    r"^book a call$|^tutte le newsletter$",
     re.I,
 )
 TITLE_IS_URL_RE = re.compile(r"^https?://", re.I)
@@ -117,15 +119,25 @@ SECTION_MAP = {
     "Water & Music": "Music & Industry",
     "Water and Music": "Music & Industry",
     "Music Business Worldwide": "Music & Industry",
+    "The AI Musicpreneur": "Music & Industry",
 }
 SECTION_ORDER = ["Latest", "World & Ideas", "Technology & AI", "Culture", "Music & Industry"]
 DEFAULT_SECTION = "Latest"
 WELCOME_RE = re.compile(
     r"welcome to|you.re on the list|grazie per la registrazione|"
     r"thank(s| you) for (subscribing|signing up)|confirm your subscription|"
-    r"you.re subscribed|benvenut|conferma (la tua )?iscrizione",
+    r"you.re subscribed|benvenut|conferma (la tua )?iscrizione|"
+    r"questo messaggio .{0,20}confermare la tua iscrizione",
     re.I,
 )
+
+# Some newsletters are a single flowing personal letter with no per-topic
+# headline markup at all (unlike Reuters/Il Post's digest style, or
+# Substack's own h1.post-title) -- every inline citation link there would
+# otherwise become its own fake "article" titled with whatever sentence it
+# sits in. Known senders in this format get the whole-message treatment
+# instead of the per-link digest scan.
+FULL_LETTER_SENDERS = {"Francesco Costa"}
 
 # Gmail-forwarded newsletters (subject starts with "Fwd:"/"Fw:") carry the
 # real sender in a quoted header block in the plaintext body, not in the
@@ -135,6 +147,10 @@ FWD_SUBJECT_RE = re.compile(r"^\s*(fwd|fw)\s*:", re.I)
 FORWARDED_FROM_RE = re.compile(
     r"-{5,}\s*forwarded message\s*-{5,}.*?\nFrom:\s*([^\n]+)", re.I | re.S
 )
+FORWARDED_SUBJECT_RE = re.compile(
+    r"-{5,}\s*forwarded message\s*-{5,}.*?\nSubject:\s*([^\n]+)", re.I | re.S
+)
+FORWARD_HEADER_RE = re.compile(r"-{5,}\s*forwarded message\s*-{5,}\n.*?\n\s*\n", re.I | re.S)
 
 READER_ALLOWED_TAGS = {
     "p", "br", "strong", "b", "em", "i", "a", "img",
@@ -171,6 +187,13 @@ def sanitize_fragment(container, title: str = "") -> str | None:
     for tag in frag.find_all(True):
         if tag.name not in READER_ALLOWED_TAGS:
             tag.unwrap()
+
+    # a/img attrs were already reduced to href/src/alt above; strip every
+    # other attribute (style, class, data-*, ...) from the remaining tags so
+    # no inline styling or tracking metadata survives into the reader page.
+    for tag in frag.find_all(True):
+        if tag.name not in ("a", "img"):
+            tag.attrs = {}
 
     # The reader page already shows the title as its own headline; drop a
     # leading anchor/strong that just repeats it so the body doesn't open
@@ -264,6 +287,63 @@ def clean_text(s: str) -> str:
     return re.sub(r"\s+", " ", s or "").strip()
 
 
+def br_split_groups(container):
+    """If `container` directly stacks multiple <br>-separated items -- e.g.
+    Il Post's digest putting several unrelated one-line news items (each
+    with its own link) in one shared <td>, split only by <br> -- return
+    each item's own direct children as a separate group, so callers can
+    build a per-item container instead of one that bleeds all the items'
+    content together. Returns None when there's at most one anchor-bearing
+    group, which means this is just ordinary prose with an incidental line
+    break, not a stacked list of separate items -- the existing
+    whole-container behavior (correct for Reuters/Costa-style flowing
+    paragraphs with many links in one sentence) is left alone."""
+    if container.find("br") is None:
+        return None
+    groups, current = [], []
+    for child in container.children:
+        if getattr(child, "name", None) == "br":
+            groups.append(current)
+            current = []
+        else:
+            current.append(child)
+    groups.append(current)
+    groups = [g for g in groups if any(clean_text(str(n)) for n in g)]
+
+    def has_anchor(group):
+        for n in group:
+            if isinstance(n, Tag) and (n.name == "a" or n.find("a") is not None):
+                return True
+        return False
+
+    if sum(1 for g in groups if has_anchor(g)) < 2:
+        return None
+    return groups
+
+
+def group_index_containing(groups, anchor) -> int | None:
+    for i, g in enumerate(groups):
+        for n in g:
+            if n is anchor or (isinstance(n, Tag) and n.find(lambda t: t is anchor) is not None):
+                return i
+    return None
+
+
+def raw_text_with_line_breaks(container) -> str:
+    """Like container.get_text(" ") but a <br> becomes a real "\\n" instead
+    of just another word-separator -- get_text's separator is inserted
+    between every text node regardless of whether a <br> was actually
+    there, so it can't otherwise tell a deliberate line break (e.g. Il
+    Post's "Ok Boomer!" stacking three unrelated titles in one <td> with
+    <br> and no punctuation between them) from two halves of one sentence
+    split across adjacent inline tags. Reparses a copy so the original
+    container (still needed for sanitize_fragment/find_image) is untouched."""
+    frag = BeautifulSoup(str(container), "html.parser")
+    for br in frag.find_all("br"):
+        br.replace_with("\n")
+    return frag.get_text(" ")
+
+
 def find_image(container) -> str | None:
     img = container.find("img")
     if img is None:
@@ -284,17 +364,43 @@ def find_image(container) -> str | None:
 
 
 def sentence_containing(full_text: str, fragment: str) -> str | None:
-    """Return the full sentence inside full_text that contains fragment, or
-    None if it can't be found. Used to recover real context for titles that
-    are just a lowercase mid-sentence link fragment (common in Reuters-style
-    briefings, where a whole paragraph of prose carries several inline
-    links rather than one link per headline)."""
+    """Return the full sentence inside full_text that contains fragment,
+    with the sentence right before it merged in when the match on its own
+    is too short to stand as a headline, or None if fragment can't be
+    found. Used to recover real context for titles that are just a link
+    fragment sitting mid-sentence or mid-teaser:
+    - Reuters-style briefings run several headlines as one flowing
+      paragraph, so an anchor's own text is often just the tail half of its
+      sentence ("parliamentary election" inside a much longer sentence
+      about Russia).
+    - Il Post's short digest items often split one teaser across two short
+      sentences ("Uno che correva fortissimo. E che oggi compie 50 anni."),
+      with the link only on the second -- that half means nothing alone.
+
+    Sentences are also split right before "(" so a glued-on UI badge like
+    TLDR's "(12 minute read)" can't accidentally splice two unrelated
+    sentences together and get treated as extra context, and on real line
+    breaks (see raw_text_with_line_breaks) so a <br>-separated list of
+    unrelated short titles sharing one container -- e.g. Il Post's "Ok
+    Boomer!" links three separate pieces in one <td> with no punctuation
+    between them at all -- doesn't get glued into one garbled title."""
     if not fragment:
         return None
-    sentences = re.split(r"(?<=[.!?])\s+", full_text)
-    for s in sentences:
-        if fragment.lower() in s.lower():
-            return clean_text(s)
+    sentences = [s for s in re.split(r"(?<=[.!?])\s+|\s+(?=\()|\n+", full_text) if s.strip()]
+    for i, s in enumerate(sentences):
+        # Compare against whitespace-normalized text: get_text(" ") inserts
+        # its separator between every text node regardless of the source
+        # markup, so an inline tag split (e.g. "quello di <em>Barely
+        # Breathing</em>") leaves a double space in the raw segment that a
+        # plain substring check against the (single-spaced) fragment would
+        # otherwise miss.
+        if fragment.lower() in clean_text(s).lower():
+            result = clean_text(s)
+            if i > 0 and len(result) < 60:
+                prev = clean_text(sentences[i - 1])
+                if prev and len(prev) < 120:
+                    result = f"{prev} {result}"
+            return result
     return None
 
 
@@ -368,8 +474,88 @@ def recover_substack_post(soup) -> dict | None:
     }
 
 
-def extract_articles(html: str, plaintext: str, subject: str):
-    if WELCOME_RE.search(subject):
+def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
+    """Extract a FULL_LETTER_SENDERS message as one article. These arrive as
+    Gmail forwards using a nested-table HTML template with no <p>/<h*> tags
+    at all, so there is no reliable structure to walk in the HTML -- the
+    plaintext body, which Gmail renders as clean blank-line-separated
+    paragraphs, is what we extract from instead. The first real paragraph's
+    first sentence becomes the title (skipping a bare "Ciao!" greeting
+    line), and paragraphs up to the first boilerplate/signoff line become
+    the body -- see FULL_LETTER_SENDERS for why this differs from the
+    per-link digest scan."""
+    text = (plaintext or "").replace("\r\n", "\n")
+    text = FORWARD_HEADER_RE.sub("", text, count=1)
+    # Gmail's plain-text view renders *bold* and _italic_ markup literally
+    # (there's no HTML here to carry real emphasis) -- strip the markers so
+    # they don't end up glued onto the title/body text.
+    text = re.sub(r"[*_]{1,2}(\S[^*_]*?\S)[*_]{1,2}", r"\1", text)
+    # Gmail's plain-text view renders each link as its own visible anchor
+    # text followed by the raw target URL in angle brackets (which can wrap
+    # onto the next line) -- the anchor text alone is what should read as
+    # prose; the bracketed URL is just clutter here since this extraction
+    # path doesn't carry links through into the body.
+    text = re.sub(r"\s*<https?://.*?>", "", text, flags=re.S)
+    paragraphs = [clean_text(p) for p in re.split(r"\n\s*\n", text)]
+    paragraphs = [p for p in paragraphs if p]
+
+    title = None
+    body_paragraphs = []
+    body_len = 0
+    for para in paragraphs:
+        if SIGNOFF_RE.search(para) or BORING_RE.search(para):
+            break
+        if title is None:
+            if len(para) < 20:
+                continue
+            sentences = re.split(r"(?<=[.!?])\s+", para)
+            title = sentences[0]
+            if len(title) > 200:
+                title = title[:197].rsplit(" ", 1)[0] + "…"
+        body_paragraphs.append(para)
+        body_len += len(para)
+        if body_len > 6000:
+            break
+
+    if title is None:
+        title = subject
+
+    frag_html = "".join(f"<p>{html.escape(p)}</p>" for p in body_paragraphs)
+    fragment = BeautifulSoup(f"<div>{frag_html}</div>", "html.parser")
+    summary = clean_text(fragment.get_text(" "))[:400]
+
+    link = None
+    for a in soup.find_all("a", href=True):
+        if re.search(r"view (this )?online|web version|view in browser", a.get_text(" "), re.I):
+            link = a["href"]
+            break
+    if not link:
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            text = clean_text(a.get_text(" "))
+            if href.startswith("mailto:") or len(text) < 8:
+                continue
+            if BORING_RE.search(text) or BORING_RE.search(href):
+                continue
+            link = href
+            break
+
+    return {
+        "title": title,
+        "link": link or "",
+        "summary": summary,
+        "image": find_image(fragment),
+        "content_html": sanitize_fragment(fragment, title),
+    }
+
+
+def extract_articles(html: str, plaintext: str, subject: str, source_name: str = ""):
+    # Some senders (e.g. Francesco Costa's "Da Costa a Costa") reuse the same
+    # generic subject line for every issue, including the one-off
+    # subscription-confirmation email, so a subject-only welcome check can't
+    # tell them apart -- also check the start of the actual message body.
+    lead_text = clean_text((plaintext or html or "")[:1000])
+    if WELCOME_RE.search(subject) or WELCOME_RE.search(lead_text):
         return _fallback_article(BeautifulSoup(html, "html.parser"), plaintext, subject)
 
     soup = BeautifulSoup(html, "html.parser")
@@ -377,6 +563,9 @@ def extract_articles(html: str, plaintext: str, subject: str):
         tag.decompose()
     for hidden in soup.find_all(style=re.compile(r"display:\s*none", re.I)):
         hidden.decompose()
+
+    if source_name in FULL_LETTER_SENDERS:
+        return [extract_full_letter(soup, plaintext, subject)]
 
     seen_href = set()
     seen_containers = set()
@@ -412,24 +601,63 @@ def extract_articles(html: str, plaintext: str, subject: str):
         # every link in that paragraph becomes its own "article" with the
         # same body, flooding the feed with near-duplicates of one piece.
         container_key = id(container)
+
+        # But sometimes that shared container is instead stacking several
+        # unrelated one-line items separated only by <br> (Il Post's digest
+        # again, and its "Ok Boomer!" spin-off) -- in that case we still
+        # want each item as its own article, built only from its own lines,
+        # not from the whole shared <td> (which would bleed neighboring
+        # items' text into this one's body). The <br> siblings are often
+        # one level deeper than the div/td/p/li container itself (e.g.
+        # wrapped in a <font>/<span>), so look for the nearest ancestor
+        # that actually holds them as direct children.
+        content_container = container
+        br_holder = a.find_parent(
+            lambda t: isinstance(t, Tag)
+            and any(isinstance(c, Tag) and c.name == "br" for c in t.children)
+        )
+        groups = br_split_groups(br_holder if br_holder is not None else container)
+        # A Gmail-forwarded copy of the same newsletter can nest its quoted
+        # HTML differently than the original, so this walk-up occasionally
+        # lands on something far too big (e.g. the whole "gmail_quote"
+        # wrapper, whose own <br>s are just the forward header's line
+        # breaks) instead of the many small items the anchor's own item
+        # belongs to. A legitimate multi-item digest block splits into many
+        # groups even when its combined text is long; a bad match doesn't
+        # split much despite being long. Bail out to the plain container
+        # rather than risk splicing unrelated items' content together.
+        if (
+            groups is not None
+            and len(groups) < 3
+            and len(clean_text((br_holder or container).get_text(" "))) > 1200
+        ):
+            groups = None
+        if groups is not None:
+            idx = group_index_containing(groups, a)
+            if idx is not None:
+                container_key = (id(container), idx)
+                group_html = "".join(str(n) for n in groups[idx])
+                content_container = BeautifulSoup(f"<div>{group_html}</div>", "html.parser")
+
         if container_key in seen_containers:
             continue
 
-        full_text = clean_text(container.get_text(" "))
-        # An anchor that doesn't start its container's text is a link
-        # embedded mid-paragraph (typical of link-dense briefing prose, e.g.
-        # Reuters Daily Briefing) rather than a real headline -- "UN General
-        # Assembly," or "parliamentary election" read like fragments because
-        # they are. Swap in the full sentence they came from when we can
-        # find it, regardless of the fragment's own capitalization.
-        if not full_text.lower().startswith(title.lower()):
-            better = sentence_containing(full_text, title)
-            if better:
-                if BORING_RE.search(better) or SIGNOFF_RE.search(better):
-                    continue
-                if len(better) > 200:
-                    better = better[:197].rsplit(" ", 1)[0] + "…"
-                title = better
+        full_text = clean_text(content_container.get_text(" "))
+        # The anchor's own text is frequently just part of its real
+        # headline -- a mid-sentence fragment ("parliamentary election" in
+        # Reuters' flowing briefing prose), or half of a two-sentence
+        # teaser (Il Post's "Uno che correva fortissimo. E che oggi compie
+        # 50 anni."). Always try to recover the full sentence(s); a title
+        # that's already a complete, self-contained sentence (e.g. TLDR's
+        # own "Headline (12 minute read)") comes back unchanged because
+        # sentence_containing won't find a bigger match worth using.
+        better = sentence_containing(raw_text_with_line_breaks(content_container), title)
+        if better and better.lower() != title.lower():
+            if BORING_RE.search(better) or SIGNOFF_RE.search(better):
+                continue
+            if len(better) > 200:
+                better = better[:197].rsplit(" ", 1)[0] + "…"
+            title = better
         summary = full_text.replace(title, "", 1).strip(" -–—:|")
         if SIGNOFF_RE.search(summary) or SIGNOFF_RE.search(full_text):
             continue
@@ -443,8 +671,8 @@ def extract_articles(html: str, plaintext: str, subject: str):
                 "title": title,
                 "link": href,
                 "summary": summary,
-                "image": find_image(container),
-                "content_html": sanitize_fragment(container, title),
+                "image": find_image(content_container),
+                "content_html": sanitize_fragment(content_container, title),
             }
         )
 
@@ -467,8 +695,12 @@ def _fallback_article(soup, plaintext: str, subject: str):
     return [{"title": subject, "link": link, "summary": summary, "image": None, "content_html": None}]
 
 
-def stable_id(message_id: str, index: int, href: str) -> str:
-    raw = f"{message_id}:{index}:{href}"
+def stable_id(message_id: str, href: str) -> str:
+    """Keyed only by message + link, not by position in the extracted list --
+    a link's index can shift between runs (e.g. an earlier item in the same
+    email gets filtered differently), which would otherwise change the id
+    and silently drop that article's read state in localStorage."""
+    raw = f"{message_id}:{href}"
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
 
 
@@ -521,12 +753,18 @@ def main():
                 fwd_name, _ = parseaddr(fwd_match.group(1).strip())
                 if fwd_name:
                     source_name = fwd_name
+            # The outer "Fwd: ..." subject is Gmail's own, not the
+            # newsletter's -- the real subject lives in the quoted header
+            # block, same place the real sender name comes from above.
+            subj_match = FORWARDED_SUBJECT_RE.search(plaintext or "")
+            if subj_match:
+                subject = subj_match.group(1).strip()
 
-        parsed = extract_articles(html or "", plaintext or "", subject)
-        for i, item in enumerate(parsed):
+        parsed = extract_articles(html or "", plaintext or "", subject, source_name)
+        for item in parsed:
             if not item["title"] or not item["link"]:
                 continue
-            aid = stable_id(mid, i, item["link"])
+            aid = stable_id(mid, item["link"])
             wc = word_count(item.get("content_html"))
             all_articles.append(
                 {

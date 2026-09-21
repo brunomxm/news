@@ -238,7 +238,7 @@ function setupReadToggle() {
     if (!mark) return false;
     const id = mark.dataset.readToggle;
     ReadState.markUnread(id);
-    const card = mark.closest("article, li");
+    const card = mark.closest("article, li, .longread-band");
     if (card) card.classList.remove("is-read");
     mark.remove();
     return true;

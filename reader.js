@@ -34,10 +34,19 @@ function render(article) {
   // so a separately-extracted dek would just repeat it. Only show a dek when
   // there is no body content to fall back on.
   const hasBody = Boolean(article.content_html);
-  const d = hasBody ? "" : dek(article.summary);
+  const summaryText = (article.summary || "").trim();
+  // A summary that's empty, or identical to the title (which happens when
+  // extraction couldn't find any body text beyond the headline sentence
+  // itself), isn't real body content -- showing it back as the "article"
+  // just duplicates the headline and reads as broken. Say plainly that
+  // there's nothing more here instead, and point at the original link.
+  const hasSummary = summaryText && summaryText.toLowerCase() !== article.title.trim().toLowerCase();
+  const d = hasBody ? "" : (hasSummary ? dek(article.summary) : "");
   const body = hasBody
     ? article.content_html
-    : `<p>${escapeHtml(article.summary || article.title)}</p>`;
+    : hasSummary
+      ? `<p>${escapeHtml(article.summary)}</p>`
+      : `<p class="reader-empty">Full text isn’t available here — read it on the original site below.</p>`;
   const hero = article.image
     ? `<div class="reader-hero"><img src="${escapeHtml(article.image)}" alt=""></div>`
     : "";

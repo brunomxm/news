@@ -526,6 +526,11 @@ ul.radar-list a { display: block; min-height: 44px; }
 }
 .reader-body p { margin: 0; }
 .reader-body p + p { text-indent: 1.2em; margin-top: 0; }
+.reader-body .reader-empty {
+  font-style: italic;
+  color: var(--text-muted);
+  text-indent: 0;
+}
 .reader-body h1, .reader-body h2, .reader-body h3, .reader-body h4 {
   font-family: var(--font-serif);
   font-weight: 600;
