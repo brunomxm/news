@@ -49,7 +49,7 @@ function heroBlock(a) {
     ? `<div class="hero-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
     : `<div class="hero-media no-image"></div>`;
   const d = dek(a);
-  return `<article class="hero${isRead ? " is-read" : ""}">
+  return `<article class="hero${isRead ? " is-read" : ""}" data-section="${escapeHtml(a.section)}">
     <a href="${href(a)}">
       ${media}
       <span class="label-source">${escapeHtml(a.source)}</span>
@@ -109,7 +109,7 @@ function radarRow(a) {
 function longreadBand(a) {
   const isRead = ReadState.isRead(a.id);
   const d = dek(a);
-  return `<section class="longread-band${isRead ? " is-read" : ""}">
+  return `<section class="longread-band${isRead ? " is-read" : ""}" data-section="${escapeHtml(a.section)}">
     <a href="${href(a)}">
       <span class="longread-tag">Long read</span>
       <span class="label-source"> &middot; ${escapeHtml(a.source)}</span>
@@ -144,7 +144,7 @@ function renderSection(name, items) {
   } else {
     body = `<ul class="compact-list">${items.map(compactRow).join("")}</ul>`;
   }
-  return `<section class="section">
+  return `<section class="section" data-section="${escapeHtml(name)}">
     ${sectionHeader(name, items.length)}
     <div class="section-body">${body}</div>
   </section>`;
@@ -160,7 +160,7 @@ function renderMasthead(articles, generatedAt) {
 
   const present = SECTION_ORDER.filter((s) => articles.some((a) => a.section === s));
   document.getElementById("jumpline").innerHTML = present
-    .map((s) => `<a class="label-nav" href="#sec-${s.toLowerCase().replace(/[^a-z]+/g, "-")}">${escapeHtml(s)}</a>`)
+    .map((s) => `<a class="label-nav" data-section="${escapeHtml(s)}" href="#sec-${s.toLowerCase().replace(/[^a-z]+/g, "-")}">${escapeHtml(s)}</a>`)
     .join("");
 }
 
@@ -204,6 +204,30 @@ function render(data) {
 
   setupScroll();
   setupReadToggle();
+  setupSectionFilter();
+}
+
+function setupSectionFilter() {
+  const jumpline = document.getElementById("jumpline");
+  let activeFilter = null;
+
+  function applyFilter(name) {
+    document.querySelectorAll("[data-section]").forEach((el) => {
+      el.classList.toggle("section-hidden", Boolean(name) && el.dataset.section !== name);
+    });
+    jumpline.querySelectorAll("a").forEach((a) => {
+      a.classList.toggle("active", a.dataset.section === name);
+    });
+  }
+
+  jumpline.addEventListener("click", (e) => {
+    const link = e.target.closest("a[data-section]");
+    if (!link) return;
+    e.preventDefault();
+    activeFilter = activeFilter === link.dataset.section ? null : link.dataset.section;
+    applyFilter(activeFilter);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  });
 }
 
 function setupReadToggle() {
