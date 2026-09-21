@@ -19,6 +19,20 @@ function dek(summary) {
   return sentences ? sentences.slice(0, 2).join(" ").trim() : s;
 }
 
+function stripTags(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html || "";
+  return (div.textContent || "").trim();
+}
+
+function normalizeForCompare(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/[.!?,;:'’"“”\-–—…]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function render(article) {
   const main = document.getElementById("reader");
   if (!article) {
@@ -33,7 +47,15 @@ function render(article) {
   // content_html already carries the newsletter's own title + summary text,
   // so a separately-extracted dek would just repeat it. Only show a dek when
   // there is no body content to fall back on.
-  const hasBody = Boolean(article.content_html);
+  //
+  // Some short teasers (e.g. Il Post's "Uno che correva fortissimo. E che
+  // oggi compie 50 anni.") extract a content_html whose text is the title
+  // sentence itself, with nothing else -- showing that back as the
+  // "article" just repeats the headline. Treat that the same as no body.
+  const bodyText = article.content_html ? stripTags(article.content_html) : "";
+  const isBodyJustTheTitle =
+    bodyText && normalizeForCompare(bodyText) === normalizeForCompare(article.title);
+  const hasBody = Boolean(article.content_html) && !isBodyJustTheTitle;
   const summaryText = (article.summary || "").trim();
   // A summary that's empty, or identical to the title (which happens when
   // extraction couldn't find any body text beyond the headline sentence
@@ -79,9 +101,11 @@ function render(article) {
 
 const id = new URLSearchParams(location.search).get("id");
 
-fetch("data/articles.json", { cache: "no-store" })
-  .then((r) => r.json())
-  .then((data) => {
+Promise.all([
+  fetch("data/articles.json", { cache: "no-store" }).then((r) => r.json()),
+  ReadState.ready,
+])
+  .then(([data]) => {
     const article = (data.articles || []).find((a) => a.id === id);
     render(article);
   })

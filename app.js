@@ -139,7 +139,11 @@ function renderSection(name, items) {
   } else if (name === "Technology & AI") {
     body = `<ul class="compact-list compact-grid-3">${items.map(compactRow).join("")}</ul>`;
   } else if (name === "Culture") {
-    const [lead, ...rest] = items.slice(0, 4);
+    // Feature block for the lead item, then every remaining item in the
+    // section as a compact row -- slice(0, 4) used to cap this at 4 total,
+    // hiding the rest of the section even though the header's count (and
+    // the masthead's total) already counted them all.
+    const [lead, ...rest] = items;
     body = `${featureBlock(lead)}<ul class="compact-list">${rest.map(compactRow).join("")}</ul>`;
   } else {
     body = `<ul class="compact-list">${items.map(compactRow).join("")}</ul>`;
@@ -278,9 +282,11 @@ function setupScroll() {
   }
 }
 
-fetch("data/articles.json", { cache: "no-store" })
-  .then((r) => r.json())
-  .then(render)
+Promise.all([
+  fetch("data/articles.json", { cache: "no-store" }).then((r) => r.json()),
+  ReadState.ready,
+])
+  .then(([data]) => render(data))
   .catch((err) => {
     document.getElementById("feed").innerHTML = `<p class="empty">Couldn't load the feed (${escapeHtml(err.message)}).</p>`;
   });
