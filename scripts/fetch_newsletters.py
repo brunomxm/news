@@ -87,6 +87,11 @@ SECTION_MAP = {
     "Interconnects": "Technology & AI",
     "Interconnects by Nathan Lambert": "Technology & AI",
     "Stratechery": "Technology & AI",
+    "Azeem Azhar": "Technology & AI",
+    "Azeem Azhar, Exponential View": "Technology & AI",
+    "Exponential View": "Technology & AI",
+    "Razib Khan": "World & Ideas",
+    "Razib Khan's Unsupervised Learning": "World & Ideas",
     "Quanta": "Culture",
     "Quanta Magazine": "Culture",
     "Works in Progress": "Culture",
@@ -275,6 +280,7 @@ def extract_articles(html: str, plaintext: str, subject: str):
         hidden.decompose()
 
     seen_href = set()
+    seen_containers = set()
     articles = []
     for a in soup.find_all("a", href=True):
         href = a["href"]
@@ -294,11 +300,20 @@ def extract_articles(html: str, plaintext: str, subject: str):
             continue
 
         container = a.find_parent(["div", "td", "p", "li"]) or a
+        # Long-form essay newsletters (e.g. Francesco Costa, Il Post's evening
+        # digest) put many links inside one shared paragraph. Without this,
+        # every link in that paragraph becomes its own "article" with the
+        # same body, flooding the feed with near-duplicates of one piece.
+        container_key = id(container)
+        if container_key in seen_containers:
+            continue
+
         full_text = clean_text(container.get_text(" "))
         summary = full_text.replace(title, "", 1).strip(" -–—:|")
         if SIGNOFF_RE.search(summary) or SIGNOFF_RE.search(full_text):
             continue
         seen_href.add(href)
+        seen_containers.add(container_key)
         if len(summary) > 400:
             summary = summary[:397].rsplit(" ", 1)[0] + "..."
 
