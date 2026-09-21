@@ -93,6 +93,7 @@ SECTION_MAP = {
     "The New Yorker": "Culture",
     "New Yorker Books": "Culture",
     "Il Post": "Culture",
+    "Il Post - Colonne": "Culture",
     "Water & Music": "Music & Industry",
     "Water and Music": "Music & Industry",
     "Music Business Worldwide": "Music & Industry",
