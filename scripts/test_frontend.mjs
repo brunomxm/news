@@ -282,10 +282,37 @@ test("the collapsed row shows source, time, story count, and a preview -- not ju
   assert.ok(html.includes("First real headline here"), "a preview of the leading stories must be shown");
 });
 
-test("the preview stays compact even when the two leading headlines are both long", () => {
-  // Reported bug: The Conversation's headlines run long, and two of them
-  // joined together wrapped to 6 lines on a phone screen -- the opposite
-  // of the "compact row" this is meant to be.
+test("the preview is only the lead story's own headline -- two stories never get glued into one", () => {
+  // Reported bug: joining two different stories' titles with just a "·"
+  // between them ("...(11 minute read) · From 17ms to 0.04ms: How to
+  // Design...") read as one garbled run-on title, with the second story's
+  // headline mistaken for the first story's own body copy starting.
+  const sandbox = loadAppSandbox();
+  const stories = makeIssueArticles("issue-nomerge", 3, {
+    source: "TLDR Data",
+    titles: [
+      "How we knew COVID was over (and what our models had to unlearn) (11 minute read)",
+      "From 17ms to 0.04ms: How to Design the Right SQL Index (6 minute read)",
+      "Third",
+    ],
+  });
+  const html = sandbox.issueRow(sandbox.groupIntoUnits(stories)[0]);
+  const headlineMatch = html.match(/class="issue-headline"[^>]*>([\s\S]*?)<span class="issue-chevron"/);
+  assert.ok(headlineMatch, html);
+  assert.equal(
+    headlineMatch[1],
+    "How we knew COVID was over (and what our models had to unlearn) (11 minute read)"
+  );
+  assert.ok(
+    !headlineMatch[1].includes("From 17ms"),
+    "the second story's headline must not be appended to the first"
+  );
+});
+
+test("the preview stays compact even when the lead headline alone is long", () => {
+  // Il Post's digest teasers, in particular, can be long, self-contained
+  // sentences that would still wrap several lines on a phone screen -- the
+  // opposite of the "compact row" this is meant to be.
   const sandbox = loadAppSandbox();
   const stories = makeIssueArticles("issue-longpreview", 3, {
     source: "The Conversation",
@@ -300,6 +327,10 @@ test("the preview stays compact even when the two leading headlines are both lon
   assert.ok(headlineMatch, html);
   assert.ok(headlineMatch[1].length <= 141, `preview text is too long to be "compact": ${headlineMatch[1].length} chars`);
   assert.ok(headlineMatch[1].endsWith("…"), "an over-long preview must end with an ellipsis");
+  assert.ok(
+    !headlineMatch[1].includes("troubling reading"),
+    "the second story's headline must not be appended to the first"
+  );
 });
 
 test("the collapsed headline is never styled or colored like a bare hyperlink", () => {

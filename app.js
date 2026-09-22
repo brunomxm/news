@@ -153,15 +153,22 @@ function renderUnit(unit, rowFn) {
 // A roundup issue's own subject line ("Evening Post, le storie di oggi",
 // "TLDR AI") is usually too generic on its own to tell the reader what's
 // actually inside -- source and time alone aren't enough context either, so
-// the collapsed row leads with the first couple of stories' own headlines,
-// which is what a reader actually scans a roundup for.
+// the collapsed row leads with its first story's own headline, which is
+// what a reader actually scans a roundup for.
 function issuePreview(unit) {
-  const combined = unit.stories.slice(0, 2).map((a) => a.title).join(" · ");
-  // Capped at a word boundary: two full headlines back to back can run to
-  // several lines on a phone-width screen (The Conversation's often do),
+  // Just the lead story's own headline -- joining two different stories'
+  // titles with only a "·" between them reads as one run-on sentence, not
+  // two distinct items ("...(11 minute read) · From 17ms to 0.04ms..." was
+  // reported as looking like a single garbled title, the second half
+  // mistaken for the first story's own body copy). The story count is
+  // already shown separately just above, so there's no need to also
+  // squeeze "and N more" in here.
+  const title = unit.stories[0].title;
+  // Capped at a word boundary: Il Post's digest titles in particular can
+  // run long enough on their own to wrap several lines on a phone screen,
   // which reads as anything but the "compact" row this is meant to be.
-  if (combined.length <= 140) return combined;
-  return combined.slice(0, 137).replace(/\s+\S*$/, "") + "…";
+  if (title.length <= 140) return title;
+  return title.slice(0, 137).replace(/\s+\S*$/, "") + "…";
 }
 
 // Plain "·" rather than the "&middot;" entity used elsewhere in this file:
