@@ -11,6 +11,7 @@ Run with:
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -24,11 +25,15 @@ from fetch_newsletters import (
     body_is_just_the_title,
     br_split_groups,
     clean_text,
+    dedupe_images,
     extract_articles,
     extract_full_letter,
+    fetch_og_image,
+    find_image,
     find_view_online_link,
     get_text_no_glue,
     group_index_containing,
+    is_admissible_image_size,
     parse_forwarded_date,
     resolve_reading_time_min,
     stable_id,
@@ -883,6 +888,100 @@ class TLDRReadingTimeConsistency(unittest.TestCase):
         # else keeps the ordinary word-count-based estimate.
         self.assertEqual(resolve_reading_time_min("Il Post", "Un pezzo qualsiasi lungo", wc=600), 3)
         self.assertIsNone(resolve_reading_time_min("Il Post", "Un pezzo breve", wc=30))
+
+
+class ImageSizeAdmission(unittest.TestCase):
+    """We'd rather show no image than a bad one: is_admissible_image_size
+    rejects what only declared width/height give away (find_image's regex
+    checks cover filenames/alt text separately)."""
+
+    def test_tracking_pixel_rejected(self):
+        self.assertFalse(is_admissible_image_size(1, 1))
+
+    def test_logo_scale_rejected(self):
+        self.assertFalse(is_admissible_image_size(140, 40))
+
+    def test_thin_banner_rejected_unless_large(self):
+        # A 700x60 divider is divider-shaped AND too small a long side to
+        # plausibly be a real editorial photo.
+        self.assertFalse(is_admissible_image_size(700, 60))
+
+    def test_large_panorama_allowed(self):
+        # A genuinely large image can be legitimately wide/tall -- only
+        # reject the extreme-aspect-ratio shape when it's ALSO small.
+        self.assertTrue(is_admissible_image_size(1600, 300))
+
+    def test_ordinary_photo_allowed(self):
+        self.assertTrue(is_admissible_image_size(640, 400))
+
+    def test_unknown_dimensions_allowed(self):
+        self.assertTrue(is_admissible_image_size(None, None))
+
+
+class FindImageAdmission(unittest.TestCase):
+    def test_small_declared_size_rejected(self):
+        html = '<div><img src="http://example.com/logo.png" width="120" height="40"></div>'
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertIsNone(find_image(soup.div))
+
+    def test_masthead_alt_text_rejected_even_without_telltale_filename(self):
+        html = '<div><img src="http://example.com/i/abc123.png" alt="Company masthead"></div>'
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertIsNone(find_image(soup.div))
+
+    def test_ordinary_photo_accepted(self):
+        html = '<div><img src="http://example.com/photo.jpg" width="640" height="400" alt="A scene"></div>'
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertEqual(find_image(soup.div), "http://example.com/photo.jpg")
+
+
+class ImageDeduplication(unittest.TestCase):
+    """The same image URL reused across several stories (a shared og:image,
+    a logo that slipped past admission) is kept only on the first story."""
+
+    def test_duplicate_image_dropped_from_later_stories(self):
+        articles = [
+            {"image": "http://example.com/shared.jpg"},
+            {"image": "http://example.com/shared.jpg"},
+            {"image": "http://example.com/unique.jpg"},
+        ]
+        dedupe_images(articles)
+        self.assertEqual(articles[0]["image"], "http://example.com/shared.jpg")
+        self.assertIsNone(articles[1]["image"])
+        self.assertEqual(articles[2]["image"], "http://example.com/unique.jpg")
+
+    def test_no_images_at_all_is_a_no_op(self):
+        articles = [{"image": None}, {"image": None}]
+        dedupe_images(articles)
+        self.assertEqual([a["image"] for a in articles], [None, None])
+
+
+class OgImageFetch(unittest.TestCase):
+    """fetch_og_image never raises out of ingestion -- every failure path
+    (bad scheme, request exception, non-HTML response) returns None."""
+
+    def test_non_http_scheme_never_fetched(self):
+        cache = {}
+        with patch("fetch_newsletters.requests.get") as mock_get:
+            result = fetch_og_image("mailto:someone@example.com", cache)
+        mock_get.assert_not_called()
+        self.assertIsNone(result)
+
+    def test_request_exception_returns_none_and_is_cached(self):
+        import requests
+
+        cache = {}
+        with patch("fetch_newsletters.requests.get", side_effect=requests.ConnectionError()):
+            result = fetch_og_image("http://example.com/article", cache)
+        self.assertIsNone(result)
+        self.assertIn("http://example.com/article", cache)
+
+    def test_second_call_for_same_url_does_not_refetch(self):
+        cache = {"http://example.com/article": "http://example.com/og.jpg"}
+        with patch("fetch_newsletters.requests.get") as mock_get:
+            result = fetch_og_image("http://example.com/article", cache)
+        mock_get.assert_not_called()
+        self.assertEqual(result, "http://example.com/og.jpg")
 
 
 if __name__ == "__main__":

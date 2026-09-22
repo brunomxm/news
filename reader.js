@@ -90,7 +90,7 @@ function render(article) {
         ? `<p class="reader-empty">Full text isn’t available here — read it on the original site below.</p>`
         : `<p class="reader-empty">Full text isn’t available here.</p>`;
   const hero = article.image
-    ? `<div class="reader-hero"><img src="${escapeHtml(article.image)}" alt=""></div>`
+    ? `<div class="reader-hero"><img src="${escapeHtml(article.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
     : "";
   const bylineParts = [dateLabel(article.date), timeOfDay(article.date)];
   if (article.reading_time_min) bylineParts.push(`${article.reading_time_min} MIN READ`);
@@ -109,6 +109,14 @@ function render(article) {
     ${original}
     <a class="reader-mark-unread label-nav" href="#" data-id="${escapeHtml(article.id)}" style="display:block;margin-top:16px;"></a>
   `;
+
+  // content_html's <img> tags come straight from the newsletter's own
+  // sanitized markup, not from a template this file controls, so the
+  // no-referrer/lazy-loading attributes are applied here instead.
+  main.querySelectorAll(".reader-body img").forEach((img) => {
+    img.loading = "lazy";
+    img.referrerPolicy = "no-referrer";
+  });
 
   const markLink = main.querySelector(".reader-mark-unread");
   const updateMarkLink = () => {

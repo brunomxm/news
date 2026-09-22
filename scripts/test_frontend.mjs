@@ -72,6 +72,11 @@ function loadAppSandbox(readState) {
     console,
   };
   vm.createContext(sandbox);
+  // app.js reads its editorial priority rules (SOURCE_PRIORITY, SOURCE_TYPE,
+  // TYPE_HERO_BONUS, IMAGE_HERO_BONUS, LONGREAD_WORD_THRESHOLD) from
+  // config.js, same as the real page does via <script src="config.js">
+  // loading before <script src="app.js">.
+  vm.runInContext(readFile("config.js"), sandbox, { filename: "config.js" });
   // app.js's bottom-of-file fetch(...) bootstrap would throw without a
   // real fetch/DOM -- strip it out; every function above it is pure/DOM-free
   // and is what we're actually testing.
@@ -244,11 +249,11 @@ test("hero and long-read picks skip issue units, leaving them in the section flo
   assert.equal(afterHero.length, 1, "the issue unit must remain in the list, unconsumed");
   assert.equal(afterHero[0].kind, "issue");
 
-  // LONGREAD_WORD_THRESHOLD is a top-level `const` in app.js, so it isn't
+  // LONGREAD_WORD_THRESHOLD is a top-level `const` in config.js, so it isn't
   // exposed on the sandbox object (see READSTATE_SRC's own comment on this);
   // read it straight out of the source instead of hardcoding a copy that
   // could silently drift from the real value.
-  const thresholdMatch = readFile("app.js").match(/LONGREAD_WORD_THRESHOLD = (\d+)/);
+  const thresholdMatch = readFile("config.js").match(/LONGREAD_WORD_THRESHOLD = (\d+)/);
   const threshold = Number(thresholdMatch[1]);
   const { picked: longread } = sandbox.pickFirstArticleUnit(
     units,
@@ -729,6 +734,9 @@ function loadReaderSandbox() {
       addEventListener: () => {},
       set textContent(_v) {},
     }),
+    // render() sets loading/referrerPolicy on every content_html <img> --
+    // no images in these fixtures, so an empty NodeList-like array is enough.
+    querySelectorAll: () => [],
   };
   const replaceCalls = [];
   const markReadCalls = [];

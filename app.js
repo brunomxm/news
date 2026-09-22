@@ -1,5 +1,7 @@
 const SECTION_ORDER = ["Latest", "World & Ideas", "Technology & AI", "Culture", "Music & Industry"];
-const LONGREAD_WORD_THRESHOLD = 300;
+// LONGREAD_WORD_THRESHOLD, SOURCE_PRIORITY, SOURCE_TYPE, TYPE_HERO_BONUS and
+// IMAGE_HERO_BONUS live in config.js -- the one place editorial priority
+// rules are edited.
 
 function escapeHtml(s) {
   return (s || "").replace(/[&<>"']/g, (c) => ({
@@ -146,6 +148,41 @@ function pickFirstArticleUnit(units, predicate = () => true) {
   return { picked, rest };
 }
 
+// Deterministic editorial score for the hero pick -- source priority is the
+// main signal, a type bonus lets a strong analysis/long-form piece outrank a
+// newer but slighter radar item, and image availability only nudges (it must
+// never be the sole reason something becomes the hero). No LLM, no
+// recency term of its own: units already arrive newest-first, and iterating
+// in that order with a strict ">" comparison below means ties fall to the
+// most recent candidate without needing a separate weight for it.
+function heroScore(article) {
+  const priority = SOURCE_PRIORITY[article.source] ?? DEFAULT_SOURCE_PRIORITY;
+  const type = SOURCE_TYPE[article.source] ?? DEFAULT_SOURCE_TYPE;
+  const typeBonus = TYPE_HERO_BONUS[type] ?? 0;
+  const imageBonus = article.image ? IMAGE_HERO_BONUS : 0;
+  return priority + typeBonus + imageBonus;
+}
+
+// Same shape as pickFirstArticleUnit (skips issue units, returns the
+// remaining units untouched) but picks the highest-scoring article instead
+// of simply the newest one -- see heroScore.
+function pickHeroUnit(units) {
+  const rest = units.slice();
+  let bestIdx = -1;
+  let bestScore = -Infinity;
+  rest.forEach((u, i) => {
+    if (u.kind !== "article") return;
+    const score = heroScore(u.article);
+    if (score > bestScore) {
+      bestScore = score;
+      bestIdx = i;
+    }
+  });
+  if (bestIdx === -1) return { picked: null, rest: units };
+  const picked = rest.splice(bestIdx, 1)[0].article;
+  return { picked, rest };
+}
+
 function renderUnit(unit, rowFn) {
   return unit.kind === "issue" ? issueRow(unit) : rowFn(unit.article);
 }
@@ -201,13 +238,18 @@ function issueRow(unit) {
   </li>`;
 }
 
+// A. Big text feature -- when the hero has no editorial image, showing an
+// empty gray placeholder box read as broken, not deliberate. Drop the media
+// box entirely instead and let the headline take the space: wider spacing,
+// no fake image.
 function heroBlock(a) {
   const isRead = ReadState.isRead(a.id);
-  const media = a.image
-    ? `<div class="hero-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
-    : `<div class="hero-media no-image"></div>`;
+  const hasImage = Boolean(a.image);
+  const media = hasImage
+    ? `<div class="hero-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
+    : "";
   const d = dek(a);
-  return `<article class="hero${isRead ? " is-read" : ""}" data-section="${escapeHtml(a.section)}">
+  return `<article class="hero${hasImage ? "" : " hero-text"}${isRead ? " is-read" : ""}" data-section="${escapeHtml(a.section)}">
     <a ${cardLinkAttrs(a)}>
       ${media}
       <span class="label-source">${escapeHtml(a.source)}</span>
@@ -218,31 +260,43 @@ function heroBlock(a) {
   </article>`;
 }
 
+// D. Text-only secondary -- without an image there's no thumbnail to anchor
+// the eye, so a dek and extra whitespace (via the secondary-text class) do
+// that work instead.
 function secondaryBlock(a) {
   const isRead = ReadState.isRead(a.id);
-  const thumb = a.image
-    ? `<div class="secondary-thumb"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
+  const hasImage = Boolean(a.image);
+  const thumb = hasImage
+    ? `<div class="secondary-thumb"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
     : "";
-  return `<article class="secondary${isRead ? " is-read" : ""}">
+  const d = hasImage ? "" : dek(a);
+  return `<article class="secondary${hasImage ? "" : " secondary-text"}${isRead ? " is-read" : ""}">
     <a ${cardLinkAttrs(a)}>
       ${thumb}
       <span class="label-source">${escapeHtml(a.source)}</span>
       <h2 class="secondary-headline">${escapeHtml(a.title)}</h2>
+      ${d ? `<p class="secondary-dek">${escapeHtml(d)}</p>` : ""}
       <p class="label-meta">${metaLine(a, { readingTime: true })}${readGlyph(a, isRead)}</p>
     </a>
   </article>`;
 }
 
+// C. Feature with image / D. text-only secondary treatment, same idea as
+// secondaryBlock: a dek fills the space a missing image would otherwise
+// leave flat.
 function featureBlock(a) {
   const isRead = ReadState.isRead(a.id);
-  const media = a.image
-    ? `<div class="feature-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
+  const hasImage = Boolean(a.image);
+  const media = hasImage
+    ? `<div class="feature-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
     : "";
-  return `<article class="feature${isRead ? " is-read" : ""}">
+  const d = hasImage ? "" : dek(a);
+  return `<article class="feature${hasImage ? "" : " feature-text"}${isRead ? " is-read" : ""}">
     <a ${cardLinkAttrs(a)}>
       ${media}
       <span class="label-source">${escapeHtml(a.source)}</span>
       <h2 class="feature-headline">${escapeHtml(a.title)}</h2>
+      ${d ? `<p class="feature-dek">${escapeHtml(d)}</p>` : ""}
       <p class="label-meta">${metaLine(a, { readingTime: true })}${readGlyph(a, isRead)}</p>
     </a>
   </article>`;
@@ -303,7 +357,16 @@ function renderSection(name, units) {
     const leadHtml = lead ? secondaryBlock(lead) : "";
     body = `${leadHtml}<ul class="compact-list">${rest.map((u) => renderUnit(u, compactRow)).join("")}</ul>`;
   } else if (name === "Technology & AI") {
-    body = `<ul class="compact-list compact-grid-3">${units.map((u) => renderUnit(u, compactRow)).join("")}</ul>`;
+    // The section is otherwise wall-to-wall TLDR radar items -- pulling out
+    // one analysis-type piece (Stratechery, Interconnects, Exponential
+    // View, ...) as a breathing secondary lead keeps it from reading as one
+    // undifferentiated wall of dense rows.
+    const { picked: lead, rest } = pickFirstArticleUnit(
+      units,
+      (a) => SOURCE_TYPE[a.source] === "analysis"
+    );
+    const leadHtml = lead ? secondaryBlock(lead) : "";
+    body = `${leadHtml}<ul class="compact-list compact-grid-3">${rest.map((u) => renderUnit(u, compactRow)).join("")}</ul>`;
   } else if (name === "Culture") {
     // Feature block for the lead item, then every remaining item in the
     // section as a compact row -- slice(0, 4) used to cap this at 4 total,
@@ -352,7 +415,7 @@ function render(data) {
   // multi-story collapsed row, so both picks skip issue units and leave
   // them in place to be rendered as a normal row within their own section.
   const units = groupIntoUnits(articles);
-  const { picked: hero, rest: afterHero } = pickFirstArticleUnit(units);
+  const { picked: hero, rest: afterHero } = pickHeroUnit(units);
 
   let longread = null;
   let remaining = afterHero;

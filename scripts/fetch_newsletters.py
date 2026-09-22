@@ -27,7 +27,9 @@ import re
 import sys
 from datetime import datetime, timedelta, timezone
 from email.utils import parseaddr, parsedate_to_datetime
+from urllib.parse import urljoin, urlparse
 
+import requests
 from bs4 import BeautifulSoup, Tag
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -90,10 +92,58 @@ HERO_BODY_STOP_RE = re.compile(
     re.I,
 )
 TRACKING_IMG_RE = re.compile(
-    r"track|pixel|beacon|open\.gif|spacer|logo|banner|header|footer|"
-    r"icon|avatar|badge|divider|sponsor|\bad\b",
+    r"track|pixel|beacon|open\.gif|clear\.gif|blank\.gif|1x1|spacer|"
+    r"logo|masthead|mast-head|banner|header|footer|"
+    r"icon|avatar|badge|divider|sponsor|\bad\b|"
+    r"social[-_]?(icon|share|link)|share[-_]?(icon|button)|"
+    r"app[-_]?store|play[-_]?store|itunes|googleplay|qr[-_]?code",
     re.I,
 )
+
+# Editorial-image admission: we'd rather show no image than a bad one (a
+# logo, an avatar, a tracking pixel, a promo banner). The filename regex
+# above catches what a URL/alt text gives away; this catches what only
+# width/height metadata gives away -- a newsletter template that sets
+# width="140" height="40" on its own masthead graphic, or width="1"
+# height="1" on a tracking pixel, carries no telltale filename at all.
+# Deliberately conservative: an image with NO size metadata is left to the
+# regex/dedup checks rather than rejected outright, since most editorial
+# images in email HTML never declare width/height.
+MIN_IMAGE_WIDTH = 300
+MIN_IMAGE_HEIGHT = 200
+MAX_ASPECT_RATIO = 4.0  # longest side / shortest side
+MAX_ASPECT_RATIO_LONG_SIDE = 800  # ...unless the long side is big enough to plausibly be editorial
+
+
+def _parse_px(value) -> "int | None":
+    """Parse an <img width>/<img height> attribute, which in real HTML is
+    sometimes "140", sometimes "140px", sometimes "100%", sometimes missing
+    or garbage. Anything that isn't a plain integer count of pixels is
+    treated as unknown rather than guessed at."""
+    if not value:
+        return None
+    match = re.match(r"^\s*(\d+)\s*(?:px)?\s*$", str(value))
+    return int(match.group(1)) if match else None
+
+
+def is_admissible_image_size(width: "int | None", height: "int | None") -> bool:
+    """True unless declared dimensions positively identify the image as too
+    small or too extreme a shape to be a real editorial photo. Returns True
+    (admissible) whenever a dimension is unknown -- this is a rejection
+    filter, not a requirement that every image prove its size."""
+    if width is None or height is None:
+        return True
+    if width <= 0 or height <= 0:
+        return False
+    if width <= 2 and height <= 2:
+        return False  # 1x1-style tracking pixel
+    if width < MIN_IMAGE_WIDTH and height < MIN_IMAGE_HEIGHT:
+        return False  # logo/icon/badge scale, not a photo
+    long_side = max(width, height)
+    short_side = max(1, min(width, height))
+    if long_side / short_side > MAX_ASPECT_RATIO and long_side < MAX_ASPECT_RATIO_LONG_SIDE:
+        return False  # thin banner/divider/spacer shape
+    return True
 
 # Deterministic source -> section mapping. No AI/LLM classification — this is
 # the single place to edit when a new newsletter is labelled "news".
@@ -517,6 +567,11 @@ def raw_text_with_line_breaks(container) -> str:
 
 
 def find_image(container) -> str | None:
+    """Priority 1 of the image admission order: a valid editorial image
+    already sitting in the newsletter's own content. See
+    is_admissible_image_size for the size/shape rejection and
+    TRACKING_IMG_RE for the filename/alt-text rejection; fetch_og_image
+    covers priorities 2/3 (og:image, twitter:image) when this returns None."""
     img = container.find("img")
     if img is None:
         return None
@@ -525,14 +580,103 @@ def find_image(container) -> str | None:
         return None
     if TRACKING_IMG_RE.search(src):
         return None
-    width = img.get("width")
-    height = img.get("height")
-    try:
-        if width and height and int(width) <= 2 and int(height) <= 2:
-            return None
-    except ValueError:
-        pass
+    if TRACKING_IMG_RE.search(img.get("alt") or ""):
+        return None
+    if not is_admissible_image_size(_parse_px(img.get("width")), _parse_px(img.get("height"))):
+        return None
     return src
+
+
+# Priority 2/3 of the image admission order (see module docstring / find_image
+# above): og:image, then twitter:image, read from the *linked* article's own
+# page when the newsletter content itself had no usable image.
+OG_IMAGE_META = (("property", "og:image:secure_url"), ("property", "og:image"))
+TWITTER_IMAGE_META = (("name", "twitter:image:src"), ("name", "twitter:image"))
+PAGE_FETCH_TIMEOUT = 6  # seconds -- a single slow page must never stall the whole run
+PAGE_FETCH_MAX_BYTES = 2_000_000  # only the page's own HTML, never an image binary
+PAGE_FETCH_USER_AGENT = "Mozilla/5.0 (compatible; NewsFeedBot/1.0; static reader, no tracking)"
+
+
+def _first_meta_content(soup, specs) -> "str | None":
+    for attr, value in specs:
+        tag = soup.find("meta", attrs={attr: value})
+        content = tag.get("content") if tag else None
+        if content and content.strip():
+            return content.strip()
+    return None
+
+
+def fetch_og_image(page_url: str, cache: dict) -> "str | None":
+    """Best-effort og:image/twitter:image lookup for a linked article page.
+    Deterministic HTML metadata parsing only -- no image binaries are ever
+    downloaded, no JS is executed. Every failure (non-http(s) scheme,
+    timeout, connection error, non-HTML response, no usable tag, a
+    resolved URL that still looks like tracking/logo junk) returns None
+    rather than raising, so one unreachable page can never abort the whole
+    ingestion run. `cache` is a plain dict the caller keeps for the
+    duration of one run, so a link shared by several newsletter items (or
+    reused across issues) is fetched at most once."""
+    if page_url in cache:
+        return cache[page_url]
+
+    result = None
+    if urlparse(page_url).scheme in ("http", "https"):
+        try:
+            resp = requests.get(
+                page_url,
+                timeout=PAGE_FETCH_TIMEOUT,
+                headers={"User-Agent": PAGE_FETCH_USER_AGENT},
+                allow_redirects=True,
+                stream=True,
+            )
+            content_type = resp.headers.get("Content-Type", "")
+            if resp.status_code < 400 and "html" in content_type.lower():
+                raw = resp.raw.read(PAGE_FETCH_MAX_BYTES, decode_content=True)
+                page_soup = BeautifulSoup(raw, "html.parser")
+                candidate = _first_meta_content(page_soup, OG_IMAGE_META) or _first_meta_content(
+                    page_soup, TWITTER_IMAGE_META
+                )
+                if candidate:
+                    resolved = urljoin(page_url, candidate)
+                    if urlparse(resolved).scheme in ("http", "https") and not TRACKING_IMG_RE.search(
+                        resolved
+                    ):
+                        result = resolved
+            resp.close()
+        except requests.RequestException:
+            result = None
+        except Exception:
+            # Malformed HTML, decoding errors, etc. -- never let a single
+            # unreachable/odd page take down the whole ingestion run.
+            result = None
+
+    cache[page_url] = result
+    return result
+
+
+def dedupe_images(articles: list) -> None:
+    """We'd rather show no image than the same image on several stories.
+    A newsletter's own masthead/promo graphic can resolve as the og:image
+    for more than one linked article, or a logo can slip past the
+    admission filters above -- either way, repeating it down the page
+    reads as a mistake, not as a real photo for each story. Mutates
+    `articles` in place, keeping the image only on the first occurrence in
+    the (already date-sorted, newest-first) list and dropping it from
+    every later one."""
+    counts: dict = {}
+    for a in articles:
+        img = a.get("image")
+        if img:
+            counts[img] = counts.get(img, 0) + 1
+    seen = set()
+    for a in articles:
+        img = a.get("image")
+        if not img or counts[img] <= 1:
+            continue
+        if img in seen:
+            a["image"] = None
+        else:
+            seen.add(img)
 
 
 # A sentence opening with one of these is a syntactic continuation of the one
@@ -1174,6 +1318,10 @@ def main():
 
     cutoff = datetime.now(timezone.utc) - timedelta(days=args.days)
     all_articles = []
+    # One run, one cache: several stories -- even across different issues --
+    # can link to pages on the same host or the very same URL, and this
+    # keeps each distinct page fetched at most once (see fetch_og_image).
+    og_image_cache: dict = {}
 
     for mid in message_ids:
         msg = service.users().messages().get(userId="me", id=mid, format="full").execute()
@@ -1235,6 +1383,14 @@ def main():
             aid = stable_id(mid, item.get("id_link", item["link"]))
             wc = word_count(item.get("content_html"))
             reading_time_min = resolve_reading_time_min(source_name, item["title"], wc)
+            # Priority order (see find_image / fetch_og_image docstrings):
+            # 1. an editorial image already in the newsletter content
+            # 2/3. og:image, then twitter:image, from the linked article's
+            #    own page -- only attempted when priority 1 came up empty
+            #    and there's actually a link to fetch.
+            image = item["image"]
+            if not image and item["link"]:
+                image = fetch_og_image(item["link"], og_image_cache)
             all_articles.append(
                 {
                     "id": aid,
@@ -1245,7 +1401,7 @@ def main():
                     "title": item["title"],
                     "summary": item["summary"],
                     "link": item["link"],
-                    "image": item["image"],
+                    "image": image,
                     "content_html": item.get("content_html"),
                     "word_count": wc,
                     "reading_time_min": reading_time_min,
@@ -1267,6 +1423,7 @@ def main():
     all_articles = deduped
 
     all_articles.sort(key=lambda a: a["date"], reverse=True)
+    dedupe_images(all_articles)
 
     os.makedirs(args.data_dir, exist_ok=True)
     with open(articles_path, "w") as f:

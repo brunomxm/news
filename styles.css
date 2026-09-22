@@ -10,6 +10,15 @@
   --accent: #8A2B20;
   --image-bg: #E8E1D6;
 
+  /* Restrained per-section accents -- see config.js's SOURCE_TYPE/section
+     mapping for which sources land in which section. Muted on purpose:
+     these are rule segments and hover states, never fills or badges. */
+  --accent-latest: #8A2B20;      /* muted oxblood/brick */
+  --accent-world: #8A2B20;       /* same family as Latest -- both wire/world */
+  --accent-tech: #33506E;        /* muted cobalt / deep blue */
+  --accent-culture: #4E3355;     /* dark plum / aubergine */
+  --accent-music: #93602C;       /* burnt ochre / muted amber */
+
   --font-serif: "Source Serif 4", "Source Serif Pro", Charter, "Iowan Old Style", Georgia, serif;
   --font-sans: "Libre Franklin", "Helvetica Neue", Arial, system-ui, sans-serif;
 
@@ -20,6 +29,19 @@
 }
 
 * { box-sizing: border-box; }
+
+/* Any element carrying data-section (.section, .hero, .longread-band, the
+   jumpline links) sets --section-accent for itself and everything nested
+   inside it -- a custom property inherits down the tree, so a compact row
+   inside <section data-section="Culture"> picks it up without needing the
+   attribute on every descendant. Falls back to --accent (Latest/World's
+   oxblood) wherever a var(--section-accent, var(--accent)) reference is used
+   outside any data-section scope. */
+[data-section="Latest"] { --section-accent: var(--accent-latest); }
+[data-section="World & Ideas"] { --section-accent: var(--accent-world); }
+[data-section="Technology & AI"] { --section-accent: var(--accent-tech); }
+[data-section="Culture"] { --section-accent: var(--accent-culture); }
+[data-section="Music & Industry"] { --section-accent: var(--accent-music); }
 
 html, body {
   margin: 0;
@@ -155,7 +177,7 @@ a { color: inherit; text-decoration: none; }
 }
 .jumpline a { color: var(--text-muted); }
 .jumpline a:hover,
-.jumpline a.active { color: var(--accent); }
+.jumpline a.active { color: var(--section-accent, var(--accent)); }
 .section-hidden { display: none; }
 @media (min-width: 768px) {
   .jumpline { justify-content: center; gap: 0 36px; padding: 14px 0; }
@@ -189,7 +211,7 @@ main#feed {
   left: 0;
   width: 24px;
   height: 2px;
-  background: var(--accent);
+  background: var(--section-accent, var(--accent));
 }
 .section-title { margin: 0; }
 .section-count { }
@@ -207,11 +229,6 @@ main#feed {
   overflow: hidden;
 }
 .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; }
-.hero-media.no-image {
-  background: var(--bg-alt);
-  aspect-ratio: auto;
-  height: 96px;
-}
 .hero-headline {
   font-family: var(--font-serif);
   font-weight: 700;
@@ -222,6 +239,15 @@ main#feed {
 }
 @media (min-width: 768px) {
   .hero-headline { font-size: 50px; }
+}
+/* A. Big text feature -- no media box at all when there's no editorial
+   image (see heroBlock in app.js): extra top spacing and a larger headline
+   fill the space a placeholder box would otherwise fake. */
+.hero-text .label-source { margin-top: 12px; display: inline-block; }
+.hero-text .hero-headline { font-size: 36px; margin: 10px 0 12px; }
+@media (min-width: 768px) {
+  .hero-text .label-source { margin-top: 20px; }
+  .hero-text .hero-headline { font-size: 56px; }
 }
 .hero-dek {
   font-family: var(--font-serif);
@@ -266,6 +292,13 @@ main#feed {
   color: var(--text-dek);
   margin: 0 0 6px;
 }
+/* D. Text-only secondary -- no thumbnail to anchor the eye, so a stronger
+   top rule and extra padding do that work instead, and the dek (added only
+   when there's no image, see secondaryBlock in app.js) gives it room to
+   breathe rather than reading like a plain compact row that grew a headline. */
+.secondary-text { border-top: 1px solid var(--rule-strong); padding-top: 24px; }
+.secondary + .secondary-text,
+.secondary-text + .secondary { border-top: 1px solid var(--rule-strong); }
 
 /* ---------- Compact ---------- */
 ul.compact-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
@@ -297,7 +330,7 @@ a:hover .hero-headline,
 a:hover .radar-headline,
 a:hover .feature-headline {
   text-decoration: underline;
-  text-decoration-color: var(--accent);
+  text-decoration-color: var(--section-accent, var(--accent));
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
@@ -344,6 +377,10 @@ ul.radar-list a { display: block; min-height: 44px; }
   color: var(--text-dek);
   margin: 0 0 6px;
 }
+/* Same idea as .secondary-text: no image, so the dek and extra whitespace
+   carry the composition instead of a flat headline-then-meta block. */
+.feature-text { padding-bottom: 28px; }
+.feature-text .feature-headline { margin-top: 8px; }
 
 /* ---------- Long read band ---------- */
 .longread-band {
@@ -357,7 +394,7 @@ ul.radar-list a { display: block; min-height: 44px; }
   .longread-band { margin: 80px 0; padding: 32px; }
 }
 .longread-tag {
-  color: var(--accent);
+  color: var(--section-accent, var(--accent));
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 11px;
@@ -440,18 +477,18 @@ li.issue-row { border-bottom: 1px solid var(--rule); }
 @media (hover: hover) and (pointer: fine) {
   .issue-toggle:hover .issue-headline {
     text-decoration: underline;
-    text-decoration-color: var(--accent);
+    text-decoration-color: var(--section-accent, var(--accent));
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
   }
 }
 .issue-toggle:focus-visible .issue-headline {
   text-decoration: underline;
-  text-decoration-color: var(--accent);
+  text-decoration-color: var(--section-accent, var(--accent));
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
-.issue-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.issue-toggle:focus-visible { outline: 2px solid var(--section-accent, var(--accent)); outline-offset: 2px; }
 .issue-meta { display: block; }
 .issue-headline {
   display: block;
