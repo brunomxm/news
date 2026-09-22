@@ -188,6 +188,15 @@ TLDR_ITEM_MARKER_RE = re.compile(
 )
 TLDR_SPONSOR_MARKER_RE = re.compile(r"\(sponsor\)\s*$", re.I)
 
+# The reading time in TLDR's own marker is about the *linked* article; our
+# own reading_time_min is computed from word_count() of the few sentences of
+# teaser text we actually extracted, which is a different, much shorter
+# text -- showing both at once ("12 minute read" in the headline, "1 MIN
+# READ" in the byline right under it) reads as a contradiction, not two
+# facts. When the marker itself states a number of minutes, trust that
+# number instead of our own word-count guess so both places agree.
+TLDR_TITLE_MINUTES_RE = re.compile(r"\((\d+)\s+minute\s+(?:read|listen|video|watch)\)\s*$", re.I)
+
 # Gmail-forwarded newsletters (subject starts with "Fwd:"/"Fw:") carry the
 # real sender in a quoted header block in the plaintext body, not in the
 # message's own From header -- without this, every forwarded issue gets
@@ -380,6 +389,47 @@ def clean_text(s: str) -> str:
     return re.sub(r"\s+([.,;:!?»”’)])", r"\1", collapsed)
 
 
+# Block-level tags whose boundary really is a line break when the markup is
+# flattened to plain text -- unlike an inline tag (a/span/font/em/strong/b/...)
+# whose boundary carries no such break of its own.
+_BLOCK_LEVEL_TAGS = {
+    "p", "div", "td", "tr", "li", "h1", "h2", "h3", "h4", "h5", "h6",
+    "ul", "ol", "table", "blockquote",
+}
+
+
+def _append_text_no_glue(node, parts: list) -> None:
+    if isinstance(node, Tag):
+        if node.name == "br":
+            parts.append("\n")
+            return
+        is_block = node.name in _BLOCK_LEVEL_TAGS
+        if is_block and parts and not parts[-1][-1:].isspace():
+            parts.append(" ")
+        for child in node.children:
+            _append_text_no_glue(child, parts)
+        if is_block and parts and not parts[-1][-1:].isspace():
+            parts.append(" ")
+    else:
+        parts.append(str(node))
+
+
+def get_text_no_glue(container) -> str:
+    """Like container.get_text(" ") but without get_text's habit of inserting
+    its separator between *every* pair of text nodes regardless of whether
+    real whitespace ever sat between them in the source. Il Post's tracking
+    template sometimes splits a single word across two adjacent inline tags
+    with nothing between them at all -- "un caso" as
+    <a>u</a><span><a>n caso...</a></span> -- and get_text(" ") would glue in a
+    space that was never there, turning it into "u n caso". Only real block
+    boundaries (p/div/td/li/...) and <br> still get an inserted separator, so
+    genuinely distinct lines/paragraphs don't run together instead."""
+    parts: list = []
+    for child in container.children:
+        _append_text_no_glue(child, parts)
+    return "".join(parts)
+
+
 def parse_forwarded_date(date_str: str, fallback_tz=timezone.utc) -> "datetime | None":
     """Parse Gmail's own human-readable forwarded-header date, e.g. "Sat,
     Sep 19, 2026 at 8:16 AM". Returns None if it doesn't match that shape
@@ -435,18 +485,17 @@ def group_index_containing(groups, anchor) -> int | None:
 
 
 def raw_text_with_line_breaks(container) -> str:
-    """Like container.get_text(" ") but a <br> becomes a real "\\n" instead
-    of just another word-separator -- get_text's separator is inserted
-    between every text node regardless of whether a <br> was actually
-    there, so it can't otherwise tell a deliberate line break (e.g. Il
-    Post's "Ok Boomer!" stacking three unrelated titles in one <td> with
-    <br> and no punctuation between them) from two halves of one sentence
-    split across adjacent inline tags. Reparses a copy so the original
-    container (still needed for sanitize_fragment/find_image) is untouched."""
+    """Like get_text_no_glue but guarantees a real "\\n" at every <br> --
+    needed so a deliberate line break (e.g. Il Post's "Ok Boomer!" stacking
+    three unrelated titles in one <td> with <br> and no punctuation between
+    them) reads differently from two halves of one sentence split across
+    adjacent inline tags. get_text_no_glue already does this internally, so
+    this is now just a documented alias kept for callers that specifically
+    care about the <br>-as-"\\n" behavior (sentence_containing's splitting).
+    Reparses a copy so the original container (still needed for
+    sanitize_fragment/find_image) is untouched."""
     frag = BeautifulSoup(str(container), "html.parser")
-    for br in frag.find_all("br"):
-        br.replace_with("\n")
-    return frag.get_text(" ")
+    return get_text_no_glue(frag)
 
 
 def find_image(container) -> str | None:
@@ -468,19 +517,53 @@ def find_image(container) -> str | None:
     return src
 
 
+# A sentence opening with one of these is a syntactic continuation of the one
+# before it -- "E che oggi compie 50 anni" (And who turns 50 today) has no
+# subject of its own, it's dangling off the sentence before. A short sentence
+# WITHOUT one of these, though, can be a complete, self-contained teaser on
+# its own -- "A Berlino ha vinto la sinistra, per la prima volta." (52 chars)
+# reads fine alone; merging in the *previous*, unrelated teaser ("Quelle
+# tedesche in Meclemburgo...") under a length threshold alone put two
+# different stories' text under one story's link. Checked against Il Post's
+# digest corpus (see probe-shortsent.py output): every short sentence that
+# actually needs its predecessor for context starts with one of these; every
+# short sentence that doesn't need it starts with something else.
+SENTENCE_CONTINUATION_RE = re.compile(
+    r"^(e|ma|anche|però|eppure|comunque|o|oppure|infatti|quindi|così|insomma|"
+    r"intanto|inoltre|beh)[,\s]",
+    re.I,
+)
+
+
 def sentence_containing(full_text: str, fragment: str) -> str | None:
     """Return the full sentence inside full_text that contains fragment,
-    with the sentence right before it merged in when the match on its own
-    is too short to stand as a headline, or None if fragment can't be
-    found. Used to recover real context for titles that are just a link
-    fragment sitting mid-sentence or mid-teaser:
+    with the sentence right before it merged in when the match is itself a
+    dangling continuation with no context of its own, or None if fragment
+    can't be found. Used to recover real context for titles that are just a
+    link fragment sitting mid-sentence or mid-teaser:
     - Reuters-style briefings run several headlines as one flowing
       paragraph, so an anchor's own text is often just the tail half of its
       sentence ("parliamentary election" inside a much longer sentence
       about Russia).
     - Il Post's short digest items often split one teaser across two short
-      sentences ("Uno che correva fortissimo. E che oggi compie 50 anni."),
-      with the link only on the second -- that half means nothing alone.
+      sentences, in three shapes: a coordinating conjunction ("Uno che
+      correva fortissimo. E che oggi compie 50 anni.") with the link only on
+      the second half; a question-and-answer pair ("Come fa Remco Evenepoel a
+      essere così forte a cronometro? C'entra anche la sua pelle.") with the
+      link on the answer; or a bare one/two-word reaction ("...gli ottavi
+      contro la Danimarca. Preparatevi.") that's grammatically complete but
+      means nothing on its own. Either way that half means nothing alone.
+
+    A short sentence that ISN'T one of those two shapes, though, can be a
+    complete, self-contained teaser on its own -- "A Berlino ha vinto la
+    sinistra, per la prima volta." reads fine alone, right after an unrelated
+    teaser about Meclemburgo's own election; merging the previous sentence in
+    under a bare length threshold, with no check for either shape, put two
+    different stories' text under one story's link. The question-answer
+    merge is also capped to a short answer sentence, or it would swallow an
+    unrelated item that merely happens to follow a "?" (Il Post's digest ends
+    several sections with a one-line question before moving to a new, long,
+    unrelated headline).
 
     Sentences are also split right before "(" so a glued-on UI badge like
     TLDR's "(12 minute read)" can't accidentally splice two unrelated
@@ -501,9 +584,23 @@ def sentence_containing(full_text: str, fragment: str) -> str | None:
         # otherwise miss.
         if fragment.lower() in clean_text(s).lower():
             result = clean_text(s)
-            if i > 0 and len(result) < 60:
+            if i > 0:
                 prev = clean_text(sentences[i - 1])
-                if prev and len(prev) < 120:
+                is_continuation = bool(SENTENCE_CONTINUATION_RE.match(result))
+                is_answer_to_question = prev.endswith("?") and len(result) < 60
+                # A one- or two-word sentence ("Preparatevi.") is too terse to
+                # be its own headline regardless of how it's introduced --
+                # it's a reaction/imperative that only means something next
+                # to what came before it ("...gli ottavi contro la Danimarca.
+                # Preparatevi."), not an independent statement the way a
+                # short-but-complete sentence like "A Berlino ha vinto la
+                # sinistra, per la prima volta." is.
+                is_too_terse_alone = len(result.split()) <= 2
+                if (
+                    (is_continuation or is_answer_to_question or is_too_terse_alone)
+                    and prev
+                    and len(prev) < 120
+                ):
                     result = f"{prev} {result}"
             return result
     return None
@@ -844,7 +941,7 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
             if order.get(id(a), 0) < news_start or in_unclassed_cell(a):
                 continue
         strong = a.find(["strong", "b"])
-        title = clean_text(strong.get_text(" ") if strong else a.get_text(" "))
+        title = clean_text(get_text_no_glue(strong) if strong else get_text_no_glue(a))
         if len(title) < 8 or TITLE_IS_URL_RE.match(title):
             continue
         if "→" in title or "➡️" in title or "↗️" in title:
@@ -906,7 +1003,7 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
         if news_label is None and container_key in seen_containers:
             continue
 
-        full_text = clean_text(content_container.get_text(" "))
+        full_text = clean_text(get_text_no_glue(content_container))
         # The anchor's own text is frequently just part of its real
         # headline -- a mid-sentence fragment ("parliamentary election" in
         # Reuters' flowing briefing prose), or half of a two-sentence
@@ -1002,6 +1099,29 @@ def word_count(content_html: str | None) -> int:
     return len(text.split())
 
 
+def resolve_reading_time_min(source_name: str, title: str, wc: int) -> "int | None":
+    """The reading-time byline shown under an article's headline. Ordinarily
+    a word-count guess over our own extracted body -- but TLDR bakes its own
+    stated reading time for the *linked* article right into the title
+    ("... (12 minute read)"), and that's a different, much longer text than
+    the couple of teaser sentences we actually extracted. Showing both at
+    once (headline: "12 minute read", byline right under it: "1 MIN READ")
+    reads as a contradiction, not two facts, so when TLDR's own marker states
+    a number of minutes, use that number instead of the word-count guess.
+    When it states a non-minute kind ("GitHub Repo", "Website", "tool",
+    "video", "podcast") there's no comparable minutes figure at all, so show
+    nothing rather than a guess that would still contradict the label."""
+    default = max(1, round(wc / 200)) if wc >= 60 else None
+    if not source_name.startswith("TLDR"):
+        return default
+    minutes_match = TLDR_TITLE_MINUTES_RE.search(title)
+    if minutes_match:
+        return int(minutes_match.group(1))
+    if TLDR_ITEM_MARKER_RE.search(title):
+        return None
+    return default
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--label", default="news", help="Gmail label to fetch (default: news)")
@@ -1081,6 +1201,7 @@ def main():
                 continue
             aid = stable_id(mid, item.get("id_link", item["link"]))
             wc = word_count(item.get("content_html"))
+            reading_time_min = resolve_reading_time_min(source_name, item["title"], wc)
             all_articles.append(
                 {
                     "id": aid,
@@ -1093,7 +1214,7 @@ def main():
                     "image": item["image"],
                     "content_html": item.get("content_html"),
                     "word_count": wc,
-                    "reading_time_min": max(1, round(wc / 200)) if wc >= 60 else None,
+                    "reading_time_min": reading_time_min,
                     "section": SECTION_MAP.get(source_name, DEFAULT_SECTION),
                 }
             )

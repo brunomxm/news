@@ -54,6 +54,21 @@ async function testAsync(name, fn) {
 function loadAppSandbox() {
   const sandbox = {
     ReadState: { isRead: () => false },
+    document: {
+      // Used by app.js's stripTags() (hasReadableContent's body check).
+      createElement: (tag) => {
+        assert.equal(tag, "div");
+        let html = "";
+        return {
+          set innerHTML(v) {
+            html = v;
+          },
+          get textContent() {
+            return html.replace(/<[^>]+>/g, "");
+          },
+        };
+      },
+    },
     console,
   };
   vm.createContext(sandbox);
@@ -97,6 +112,39 @@ test("Culture section header count matches the number of items passed in", () =>
   const items = Array.from({ length: 29 }, (_, i) => makeArticle(i, "Culture"));
   const html = sandbox.renderSection("Culture", items);
   assert.ok(html.includes(">29<"), 'section header should show the count "29"');
+});
+
+test("a card for a teaser with nothing to show links straight to the original, not article.html", () => {
+  const sandbox = loadAppSandbox();
+  const teaser = {
+    id: "teaser-1",
+    source: "Il Post",
+    title: "Uno che correva fortissimo. E che oggi compie 50 anni.",
+    summary: "",
+    link: "https://x.ilpost.it/re?l=abc",
+    image: null,
+    date: new Date().toISOString(),
+    reading_time_min: null,
+    content_html: null,
+    section: "Culture",
+  };
+  const attrs = sandbox.cardLinkAttrs(teaser);
+  assert.ok(attrs.includes('href="https://x.ilpost.it/re?l=abc"'), attrs);
+  assert.ok(attrs.includes('target="_blank"'), "must open in a new tab, not replace the feed");
+  assert.ok(attrs.includes(`data-mark-read="teaser-1"`), "must be wired up to mark itself read on click");
+  assert.ok(!attrs.includes("article.html"));
+});
+
+test("a card for an article with a real body or summary still links to article.html", () => {
+  const sandbox = loadAppSandbox();
+  const withBody = makeArticle(1, "Culture");
+  const attrsBody = sandbox.cardLinkAttrs({ ...withBody, content_html: "<p>Real, distinct body text here.</p>" });
+  assert.ok(attrsBody.includes("article.html?id=id-Culture-1"));
+  assert.ok(!attrsBody.includes("data-mark-read"));
+
+  const withSummary = makeArticle(2, "Culture");
+  const attrsSummary = sandbox.cardLinkAttrs({ ...withSummary, content_html: null });
+  assert.ok(attrsSummary.includes("article.html?id=id-Culture-2"));
 });
 
 // ---------------------------------------------------------------------
@@ -234,10 +282,18 @@ function loadReaderSandbox() {
       set textContent(_v) {},
     }),
   };
+  const replaceCalls = [];
+  const markReadCalls = [];
   const sandbox = {
-    ReadState: { isRead: () => false, markRead: () => {} },
+    ReadState: {
+      isRead: () => false,
+      markRead: (id) => markReadCalls.push(id),
+    },
     SITE_NAME: "The Daily",
-    location: { search: "" },
+    location: {
+      search: "",
+      replace: (url) => replaceCalls.push(url),
+    },
     document: {
       title: "",
       getElementById: (id) => (id === "reader" ? readerEl : null),
@@ -263,28 +319,59 @@ function loadReaderSandbox() {
     "\n"
   );
   vm.runInContext(src, sandbox, { filename: "reader.js" });
+  sandbox._replaceCalls = replaceCalls;
+  sandbox._markReadCalls = markReadCalls;
   return sandbox;
 }
 
-test("a body that's just the title sentence falls back to the empty-state message", () => {
+// ---------------------------------------------------------------------
+// Item 2 (2026-09-22 request): a teaser with nothing to show beyond its own
+// headline must never render a page whose only content is "read it on the
+// original site" -- it should go straight there, marking the id read first.
+// ---------------------------------------------------------------------
+
+test("a teaser with no body and no summary redirects straight to the original link", () => {
   const sandbox = loadReaderSandbox();
   const article = {
     id: "a1",
     source: "Il Post",
-    title: "Uno che correva fortissimo. E che oggi compie 50 anni .",
+    title: "Uno che correva fortissimo. E che oggi compie 50 anni.",
     summary: "",
-    link: "https://example.com/a1",
+    link: "https://x.ilpost.it/re?l=abc",
     image: null,
     date: new Date().toISOString(),
     reading_time_min: null,
-    content_html: 'Uno che correva fortissimo. <a href="https://example.com/x">E che oggi compie 50 anni</a> .',
+    content_html: 'Uno che correva fortissimo. <a href="https://example.com/x">E che oggi compie 50 anni</a>.',
   };
   const reader = sandbox.document.getElementById("reader");
   sandbox.render(article);
+  assert.deepEqual(sandbox._replaceCalls, ["https://x.ilpost.it/re?l=abc"]);
+  assert.deepEqual(sandbox._markReadCalls, ["a1"], "read state must be recorded before redirecting away");
   assert.ok(
-    reader.innerHTML.includes("Full text isn"),
-    "expected the empty-state fallback message, got the title repeated as body"
+    !reader.innerHTML.includes("Full text isn"),
+    "must never render the empty-state page when a redirect is possible"
   );
+});
+
+test("a teaser with no body, no summary and no link still shows the plain empty-state message", () => {
+  // There's nowhere to send the reader, so this is the one case where
+  // showing the page (rather than redirecting away from it) is correct.
+  const sandbox = loadReaderSandbox();
+  const article = {
+    id: "a1",
+    source: "Il Post",
+    title: "Uno che correva fortissimo. E che oggi compie 50 anni.",
+    summary: "",
+    link: "",
+    image: null,
+    date: new Date().toISOString(),
+    reading_time_min: null,
+    content_html: 'Uno che correva fortissimo. <a href="https://example.com/x">E che oggi compie 50 anni</a>.',
+  };
+  const reader = sandbox.document.getElementById("reader");
+  sandbox.render(article);
+  assert.equal(sandbox._replaceCalls.length, 0);
+  assert.ok(reader.innerHTML.includes("Full text isn"));
   assert.ok(
     !reader.innerHTML.includes('reader-body">Uno che correva fortissimo. <a'),
     "body must not just repeat the title sentence"

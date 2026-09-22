@@ -22,11 +22,14 @@ from fetch_newsletters import (
     FULL_LETTER_SENDERS,
     body_is_just_the_title,
     br_split_groups,
+    clean_text,
     extract_articles,
     extract_full_letter,
     find_view_online_link,
+    get_text_no_glue,
     group_index_containing,
     parse_forwarded_date,
+    resolve_reading_time_min,
     sanitize_fragment,
     sentence_containing,
 )
@@ -81,6 +84,61 @@ class SentenceRecovery(unittest.TestCase):
         full_text = "Uno che correva fortissimo. E che oggi compie 50 anni ."
         result = sentence_containing(full_text, "E che oggi compie 50 anni")
         self.assertEqual(result, "Uno che correva fortissimo. E che oggi compie 50 anni.")
+
+    def test_merges_a_short_answer_to_the_question_before_it(self):
+        # Il Post's other two-sentence teaser style: a question, then a short
+        # answer with no connector word at all ("C'entra" has no antecedent
+        # of its own -- it means nothing without the question).
+        full_text = "Come fa Remco Evenepoel a essere così forte a cronometro? C'entra anche la sua pelle."
+        result = sentence_containing(full_text, "C'entra anche la sua pelle")
+        self.assertEqual(result, full_text)
+
+    def test_merges_a_bare_one_word_reaction_with_the_sentence_before_it(self):
+        # Real fragment (Evening Post, 21 Sept 2026): "Preparatevi." on its
+        # own has no connector and no question before it, but at one word
+        # it's too terse to stand as its own headline -- it only means
+        # anything next to the sentence it's reacting to.
+        full_text = (
+            "Ha vinto tutte e cinque le partite e domenica sera giocherà gli ottavi "
+            "contro la Danimarca. Preparatevi."
+        )
+        result = sentence_containing(full_text, "Preparatevi")
+        self.assertEqual(result, full_text)
+
+    def test_merges_a_beh_comma_hedge_with_the_sentence_before_it(self):
+        # Real fragment (Evening Post, 21 Sept 2026): "Beh," (well,) is a
+        # discourse-hedge continuation just like "Ma"/"E", but followed by a
+        # comma rather than by whitespace before the rest of the sentence.
+        full_text = "Un canale broadcast. Beh, si capisce meglio qui."
+        result = sentence_containing(full_text, "si capisce meglio qui")
+        self.assertEqual(result, full_text)
+
+    def test_a_short_self_contained_sentence_does_not_borrow_the_one_before_it(self):
+        # Real fragment (Evening Post, 21 Sept 2026): two *separate* stories,
+        # Meclemburgo's regional election and Berlin's, told back to back
+        # with no connector and no question mark -- merging them under a
+        # bare length threshold alone put both stories' text under the
+        # Berlino link (published article id 1bc5211d6ae5ca9e).
+        full_text = (
+            "Quelle tedesche in Meclemburgo invece sono state eccezionali per almeno tre motivi. "
+            "A Berlino ha vinto la sinistra, per la prima volta."
+        )
+        result = sentence_containing(full_text, "per la prima volta")
+        self.assertEqual(result, "A Berlino ha vinto la sinistra, per la prima volta.")
+
+    def test_a_long_sentence_after_a_question_is_not_swept_in_either(self):
+        # Il Post's digest often ends a short aside with a question right
+        # before moving on to a new, unrelated, much longer headline -- the
+        # question-answer merge must stay capped to a short answer, or it
+        # would glue that unrelated headline onto the question instead.
+        full_text = (
+            "Per chi c'era, invece, qui ci sono un sacco di belle foto: vi trovate? "
+            "Giovedì a Novara Stefano Nazzi presenta il suo nuovo libro, Profeti del "
+            "buio, alla rassegna Il Castello di Miramare, con moltissimi altri dettagli."
+        )
+        result = sentence_containing(full_text, "Giovedì a Novara")
+        self.assertTrue(result.startswith("Giovedì a Novara"), result)
+        self.assertNotIn("vi trovate", result)
 
     def test_does_not_pull_in_glued_ui_badge(self):
         # TLDR-style: the anchor text itself already includes "(N minute
@@ -598,6 +656,147 @@ class IlPostEveningDigest(unittest.TestCase):
         html = self.DIGEST.replace("<em>Le notizie.</em> ", "")
         titles = [a["title"] for a in extract_articles(html, "", "Colonne", "Il Post - Colonne")]
         self.assertTrue(any("piovuto" in t or "Faenza" in t for t in titles))
+
+
+class IlPostRealEmailFragments(unittest.TestCase):
+    """Regression tests built from verbatim HTML pulled from the actual
+    label:news mailbox (Il Post's "Evening Post", 21 Sept 2026 issue), not
+    hand-simplified fixtures -- so a fix that only works on a simplified
+    shape doesn't mask the real one. Reproduces the two issues found in
+    published article id 1bc5211d6ae5ca9e and in the audit of the same
+    message's "Roggero"/"femminicidi" teasers."""
+
+    def test_two_short_teasers_sharing_a_sentence_boundary_stay_separate(self):
+        # "Quelle tedesche in Meclemburgo..." and "A Berlino ha vinto la
+        # sinistra..." are two separate stories, each with its own link, with
+        # no <br> between them -- only a sentence boundary. The live site's
+        # article 1bc5211d6ae5ca9e combined both sentences under the
+        # "per la prima volta" (Berlino) link, because that sentence alone
+        # was short enough to trip the old "merge with previous sentence"
+        # heuristic even though it's a complete sentence on its own.
+        html = (
+            '<html><body><table><tr><td class="dmText">'
+            '<font color="#000000" face="georgia, serif">'
+            '<em><span style="font-size:18px">Le notizie.</span></em><br/>'
+            "<span style=\"font-size:18px\">Le elezioni parlamentari in Russia sono andate "
+            '<a href="http://x/ru">nell’unico modo possibile</a>.<br/>Quelle tedesche </span>'
+            '<span style="font-size:18px">in Meclemburgo invece </span>'
+            '<span style="font-size:18px">sono state eccezionali per '
+            '<a href="http://x/de">almeno tre motivi</a>. </span>'
+            '<span style="font-size:18px">A Berlino ha vinto la sinistra, '
+            '<a href="http://x/berlin">per la prima volta</a>.</span>'
+            "</font></td></tr></table></body></html>"
+        )
+        articles = extract_articles(html, "", "Evening Post", "Il Post")
+        by_link = {a["link"]: a["title"] for a in articles}
+        self.assertIn("http://x/de", by_link)
+        self.assertIn("http://x/berlin", by_link)
+        self.assertTrue(
+            by_link["http://x/berlin"].startswith("A Berlino"),
+            by_link["http://x/berlin"],
+        )
+        self.assertNotIn(
+            "Meclemburgo",
+            by_link["http://x/berlin"],
+            f"Berlino's own title must not carry the Meclemburgo story: {by_link['http://x/berlin']!r}",
+        )
+        self.assertTrue(
+            by_link["http://x/de"].startswith("Quelle tedesche"),
+            by_link["http://x/de"],
+        )
+        self.assertNotIn("Berlino", by_link["http://x/de"])
+
+    def test_words_split_across_adjacent_anchors_are_not_pulled_apart(self):
+        # Il Post's per-link tracking wraps each link separately even when
+        # the link boundary sits mid-word -- "un caso" is genuinely
+        # <a>u</a><span><a>n caso simile...</a></span> in the source, with no
+        # whitespace between the two anchors at all. get_text(" ")'s habit of
+        # inserting a separator between every text node turned this into
+        # "u n caso simile...", audited live as "C'è u n caso simile a quello
+        # di Mario Roggero".
+        html = (
+            '<html><body><table><tr><td class="dmText">'
+            "<span style=\"font-size:18px\">C’è "
+            '<a href="http://x/u">u</a></span>'
+            '<span style="font-size:18px">'
+            '<a href="http://x/ncaso">n caso simile a quello di Mario Roggero</a>, '
+            "e sempre in provincia di Cuneo.</span>"
+            "</td></tr></table></body></html>"
+        )
+        articles = extract_articles(html, "", "Qualcosa", "Qualcuno")
+        titles = " | ".join(a["title"] for a in articles)
+        self.assertIn("un caso simile", titles, titles)
+        self.assertNotIn("u n caso", titles, titles)
+
+    def test_nove_femminicidi_word_split_is_also_preserved(self):
+        # Same bug, same newsletter, a different word: "nove" (nine) split as
+        # <a>n</a><span><a>ove femminicidi molto simili</a></span>, audited
+        # live as "In Sudafrica ci sono stati n ove femminicidi molto simili".
+        html = (
+            '<html><body><table><tr><td class="dmText">'
+            '<span style="font-size:18px">In Sudafrica ci sono stati '
+            '<a href="http://x/n">n</a></span>'
+            '<span style="font-size:18px">'
+            '<a href="http://x/ove">ove femminicidi molto simili</a> in due mesi.</span>'
+            "</td></tr></table></body></html>"
+        )
+        articles = extract_articles(html, "", "Qualcosa", "Qualcuno")
+        titles = " | ".join(a["title"] for a in articles)
+        self.assertIn("nove femminicidi", titles, titles)
+        self.assertNotIn("n ove femminicidi", titles, titles)
+
+
+class GetTextNoGlue(unittest.TestCase):
+    """Direct unit coverage for the helper behind the word-split fix above."""
+
+    def test_no_separator_between_flush_adjacent_inline_tags(self):
+        html = '<td><span>C’è <a href="x">u</a></span><span><a href="y">n caso simile</a>, e sempre.</span></td>'
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertIn("un caso simile", get_text_no_glue(soup.td))
+
+    def test_real_whitespace_in_the_source_is_kept(self):
+        html = '<p>ha vinto <a href="x">per la prima volta</a>.</p>'
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertEqual(get_text_no_glue(soup.p), "ha vinto per la prima volta.")
+
+    def test_br_still_becomes_a_real_newline(self):
+        html = "<td>Riga uno<br>Riga due</td>"
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertEqual(get_text_no_glue(soup.td), "Riga uno\nRiga due")
+
+    def test_block_level_boundaries_still_get_a_separator(self):
+        # Two <p>s glued with no whitespace in the markup must not run
+        # together into one word salad the way flush inline tags should.
+        html = "<td><p>First paragraph.</p><p>Second paragraph.</p></td>"
+        soup = BeautifulSoup(html, "html.parser")
+        self.assertEqual(
+            clean_text(get_text_no_glue(soup.td)), "First paragraph. Second paragraph."
+        )
+
+
+class TLDRReadingTimeConsistency(unittest.TestCase):
+    """The byline's own word-count guess over our short extracted teaser must
+    never contradict the reading time TLDR itself already put in the title."""
+
+    def test_uses_the_titles_own_minutes_when_present(self):
+        # Real title from the labelled mailbox (TLDR Data). Our own teaser
+        # extract is a couple of sentences -- nowhere near 11 minutes by
+        # word count -- so showing our own guess instead would contradict
+        # the newsletter's own stated time for the linked article.
+        title = "How we knew COVID was over (and what our models had to unlearn) (11 minute read)"
+        self.assertEqual(resolve_reading_time_min("TLDR Data", title, wc=40), 11)
+        self.assertEqual(resolve_reading_time_min("TLDR Data", title, wc=300), 11)
+
+    def test_non_minute_marker_suppresses_the_word_count_guess(self):
+        # "(GitHub Repo)" has no comparable "minutes" figure at all.
+        title = "AX (GitHub Repo)"
+        self.assertIsNone(resolve_reading_time_min("TLDR AI", title, wc=90))
+
+    def test_non_tldr_sources_are_unaffected(self):
+        # Only TLDR bakes its own reading time into the title -- everyone
+        # else keeps the ordinary word-count-based estimate.
+        self.assertEqual(resolve_reading_time_min("Il Post", "Un pezzo qualsiasi lungo", wc=600), 3)
+        self.assertIsNone(resolve_reading_time_min("Il Post", "Un pezzo breve", wc=30))
 
 
 if __name__ == "__main__":

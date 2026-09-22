@@ -38,6 +38,45 @@ function href(a) {
   return `article.html?id=${encodeURIComponent(a.id)}`;
 }
 
+function stripTags(htmlStr) {
+  const div = document.createElement("div");
+  div.innerHTML = htmlStr || "";
+  return (div.textContent || "").trim();
+}
+
+function normalizeForCompare(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/[.!?,;:'’"“”\-–—…]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// Mirrors reader.js's own hasBody/hasSummary checks -- true only when there's
+// actually something to show beyond the headline itself (a real body, or a
+// summary that isn't just the title again).
+function hasReadableContent(a) {
+  const bodyText = a.content_html ? stripTags(a.content_html) : "";
+  const isBodyJustTheTitle = bodyText && normalizeForCompare(bodyText) === normalizeForCompare(a.title);
+  const hasBody = Boolean(a.content_html) && !isBodyJustTheTitle;
+  const summaryText = (a.summary || "").trim();
+  const hasSummary = summaryText && summaryText.toLowerCase() !== a.title.trim().toLowerCase();
+  return hasBody || hasSummary;
+}
+
+// A teaser with nothing to show beyond its own headline (many of Il Post's
+// digest items: one sentence, one link, no further body) used to still open
+// our own article.html, which then had nothing to render but "read it on the
+// original site below" -- a page whose only content is an instruction to
+// leave it. Send the reader straight to the original instead; mark-as-read
+// is wired up separately since this never visits reader.js to do it.
+function cardLinkAttrs(a) {
+  if (!hasReadableContent(a) && a.link) {
+    return `href="${escapeHtml(a.link)}" target="_blank" rel="noopener noreferrer" data-mark-read="${escapeHtml(a.id)}"`;
+  }
+  return `href="${href(a)}"`;
+}
+
 function readGlyph(a, isRead) {
   if (!isRead) return "";
   return ` <span class="read-mark" data-read-toggle="${escapeHtml(a.id)}" role="button" tabindex="0" aria-label="Mark as unread" title="Mark as unread">&#10003;</span>`;
@@ -50,7 +89,7 @@ function heroBlock(a) {
     : `<div class="hero-media no-image"></div>`;
   const d = dek(a);
   return `<article class="hero${isRead ? " is-read" : ""}" data-section="${escapeHtml(a.section)}">
-    <a href="${href(a)}">
+    <a ${cardLinkAttrs(a)}>
       ${media}
       <span class="label-source">${escapeHtml(a.source)}</span>
       <h1 class="hero-headline">${escapeHtml(a.title)}</h1>
@@ -66,7 +105,7 @@ function secondaryBlock(a) {
     ? `<div class="secondary-thumb"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
     : "";
   return `<article class="secondary${isRead ? " is-read" : ""}">
-    <a href="${href(a)}">
+    <a ${cardLinkAttrs(a)}>
       ${thumb}
       <span class="label-source">${escapeHtml(a.source)}</span>
       <h2 class="secondary-headline">${escapeHtml(a.title)}</h2>
@@ -81,7 +120,7 @@ function featureBlock(a) {
     ? `<div class="feature-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy"></div>`
     : "";
   return `<article class="feature${isRead ? " is-read" : ""}">
-    <a href="${href(a)}">
+    <a ${cardLinkAttrs(a)}>
       ${media}
       <span class="label-source">${escapeHtml(a.source)}</span>
       <h2 class="feature-headline">${escapeHtml(a.title)}</h2>
@@ -92,7 +131,7 @@ function featureBlock(a) {
 
 function compactRow(a) {
   const isRead = ReadState.isRead(a.id);
-  return `<li class="${isRead ? "is-read" : ""}"><a href="${href(a)}">
+  return `<li class="${isRead ? "is-read" : ""}"><a ${cardLinkAttrs(a)}>
     <span class="compact-headline">${escapeHtml(a.title)}</span>
     <span class="label-meta compact-meta">${metaLine(a)}${readGlyph(a, isRead)}</span>
   </a></li>`;
@@ -100,7 +139,7 @@ function compactRow(a) {
 
 function radarRow(a) {
   const isRead = ReadState.isRead(a.id);
-  return `<li class="${isRead ? "is-read" : ""}"><a href="${href(a)}">
+  return `<li class="${isRead ? "is-read" : ""}"><a ${cardLinkAttrs(a)}>
     <span class="label-meta radar-meta">${escapeHtml(a.source)} &middot; ${timeOfDay(a.date)}${readGlyph(a, isRead)}</span>
     <span class="radar-headline">${escapeHtml(a.title)}</span>
   </a></li>`;
@@ -110,7 +149,7 @@ function longreadBand(a) {
   const isRead = ReadState.isRead(a.id);
   const d = dek(a);
   return `<section class="longread-band${isRead ? " is-read" : ""}" data-section="${escapeHtml(a.section)}">
-    <a href="${href(a)}">
+    <a ${cardLinkAttrs(a)}>
       <span class="longread-tag">Long read</span>
       <span class="label-source"> &middot; ${escapeHtml(a.source)}</span>
       <h2 class="longread-headline">${escapeHtml(a.title)}</h2>
@@ -248,8 +287,33 @@ function setupReadToggle() {
     return true;
   }
 
+  // A card whose link goes straight to the original (see cardLinkAttrs)
+  // never visits reader.js, so nothing else marks it read -- do it here,
+  // on the same click that opens the new tab, and update this card in
+  // place so the feed doesn't need a reload to show it as read.
+  function handleExternal(target) {
+    const link = target.closest("a[data-mark-read]");
+    if (!link) return false;
+    const id = link.dataset.markRead;
+    if (ReadState.isRead(id)) return false;
+    ReadState.markRead(id);
+    const card = link.closest("article, li, .longread-band");
+    if (card && !card.classList.contains("is-read")) {
+      card.classList.add("is-read");
+      const meta = card.querySelector(".label-meta");
+      if (meta && !meta.querySelector(".read-mark")) {
+        meta.insertAdjacentHTML("beforeend", readGlyph({ id }, true));
+      }
+    }
+    return true;
+  }
+
   feed.addEventListener("click", (e) => {
-    if (handle(e.target)) e.preventDefault();
+    if (handle(e.target)) {
+      e.preventDefault();
+      return;
+    }
+    handleExternal(e.target);
   });
   feed.addEventListener("keydown", (e) => {
     if (e.key !== "Enter" && e.key !== " ") return;

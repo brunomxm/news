@@ -63,7 +63,6 @@ function render(article) {
   // just duplicates the headline and reads as broken. Say plainly that
   // there's nothing more here instead, and point at the original link.
   const hasSummary = summaryText && summaryText.toLowerCase() !== article.title.trim().toLowerCase();
-  const d = hasBody ? "" : (hasSummary ? dek(article.summary) : "");
   // Some newsletters (e.g. Il Post's forwarded table templates, Reuters'
   // briefing) never include a genuine "read online" permalink -- every
   // other link in them points at a cited article or a tracking redirect,
@@ -72,6 +71,17 @@ function render(article) {
   // don't render a "Read the original" link that would send the reader
   // somewhere unrelated to what they just read.
   const hasLink = Boolean(article.link);
+  // The feed itself links these straight to the original (see app.js's
+  // cardLinkAttrs) so this page is normally skipped entirely, but a
+  // teaser with nothing to show can still be reached directly -- a stale
+  // bookmark, a shared link, a search hit. Don't show a page whose only
+  // content is an instruction to leave it; just leave. markRead already
+  // ran above, so the read state is recorded before the redirect fires.
+  if (!hasBody && !hasSummary && hasLink) {
+    location.replace(article.link);
+    return;
+  }
+  const d = hasBody ? "" : (hasSummary ? dek(article.summary) : "");
   const body = hasBody
     ? article.content_html
     : hasSummary
