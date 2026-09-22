@@ -412,6 +412,59 @@ ul.radar-list a { display: block; min-height: 44px; }
   ul.compact-grid-3 li:nth-child(-n+3) { border-top: none; }
 }
 
+/* ---------- Issue row (a roundup email collapsed to one row) ---------- */
+li.issue-row { border-bottom: 1px solid var(--rule); }
+.issue-toggle {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 16px 0;
+  margin: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+.issue-toggle:hover .issue-headline,
+.issue-toggle:focus-visible .issue-headline {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.issue-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.issue-meta { display: block; }
+.issue-headline {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.26;
+  margin: 4px 0 0;
+}
+@media (min-width: 768px) {
+  .issue-headline { font-size: 20px; }
+}
+.issue-chevron {
+  display: inline-block;
+  margin-left: 6px;
+  color: var(--text-muted);
+  transition: transform 0.15s ease;
+}
+.issue-toggle[aria-expanded="true"] .issue-chevron { transform: rotate(180deg); }
+ul.issue-stories {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0 0 0 var(--page-margin);
+  border-left: 2px solid var(--rule-strong);
+}
+ul.issue-stories li { border-bottom: 1px solid var(--rule); }
+ul.issue-stories li:last-child { border-bottom: none; }
+ul.issue-stories a { display: block; padding: 12px 0; min-height: 44px; }
+li.issue-row.is-read .issue-headline { color: var(--text-muted); }
+
 /* ---------- Read state ---------- */
 .is-read .hero-headline,
 .is-read .secondary-headline,

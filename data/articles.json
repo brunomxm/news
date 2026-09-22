@@ -1,22 +1,399 @@
 {
-  "generated_at": "2026-09-22T09:15:07.106231+00:00",
+  "generated_at": "2026-09-22T12:39:51.676077+00:00",
   "articles": [
     {
-      "id": "ae0e617ffa83d32f",
-      "source": "Il Post",
-      "subject": "Come hai scoperto il Post?",
-      "date": "2026-09-22T09:14:35+00:00",
-      "title": "Vai al sondaggio",
-      "summary": "",
-      "link": "https://x.ilpost.it/re?l=D4I5w2250I20i1i3oI0ITmucgjvi9I5si09w&s=FJPGOOIGJLLHIFOE&req=dmc_cid%3D3683%26cv_id%3D578998",
+      "id": "908e79bad20c5452",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "Googlebooks launch October 4 starting at $899—here are the five models you can preorder today (15 minute read)",
+      "summary": "Google's new Android-powered Googlebooks laptops are intended to be 'real' computers with premium hardware, on-device apps, and powerful development tools. The first Googlebooks are now available from several OEMs. While Chromebooks were mostly budget machines, Googlebooks are priced much higher, with only one model under a grand. AI is a core part of the Googlebooks experience - Gemini models...",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Farstechnica.com%2Fgadgets%2F2026%2F09%2Fgooglebook-laptops-launch-october-4-starting-at-899-preorders-for-five-models-live-today%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/3zHBCm2WGvzd9zpAhm_JD1OU4oB765KJx3S23Aw6PSA=452",
       "image": null,
-      "content_html": null,
-      "word_count": 0,
-      "reading_time_min": null,
+      "content_html": "Google's new Android-powered Googlebooks laptops are intended to be 'real' computers with premium hardware, on-device apps, and powerful development tools. The first Googlebooks are now available from several OEMs. While Chromebooks were mostly budget machines, Googlebooks are priced much higher, with only one model under a grand. AI is a core part of the Googlebooks experience - Gemini models are going to be deeply integrated with the software.",
+      "word_count": 68,
+      "reading_time_min": 15,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "814454e56b0dae71",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "SpaceXAI releases Grok 4.7 for coding and knowledge work (2 minute read)",
+      "summary": "SpaceXAI has released Grok 4.7, a model for coding and knowledge work. Access is now open in Cursor, Grok Build, the Grok API, third-party coding harnesses, model routers, and cloud platforms. Pricing starts at $2 per million input tokens and $6 per million output tokens. There is a 'fast' variant that offers twice the output speed at twice the price.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.testingcatalog.com%2Fspacexai-releases-grok-4-7-for-coding-and-knowledge-work%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/ap8eGWxK4gvF3ld_cXr_U_0m6CyBcYZKev2LpIZttYk=452",
+      "image": null,
+      "content_html": "SpaceXAI has released Grok 4.7, a model for coding and knowledge work. Access is now open in Cursor, Grok Build, the Grok API, third-party coding harnesses, model routers, and cloud platforms. Pricing starts at $2 per million input tokens and $6 per million output tokens. There is a 'fast' variant that offers twice the output speed at twice the price.",
+      "word_count": 60,
+      "reading_time_min": 2,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "2bcd22106c7780d9",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "A Rocket Supply Crunch Is Making It Harder to Hitch a Ride to Space (7 minute read)",
+      "summary": "Many rockets under development are behind schedule. Prices for many missions are rising. SpaceX is winding down the Falcon 9 to focus on its new Starship vehicle. The company has stopped selling missions where several companies share space on a Falcon 9. Launch demand is set to outstrip supply at least through the end of the decade.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FBGxQjD/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/b9BJQ_OkHKtp7v3yM8O_kc4e96wFY4fcuPYp2EcLF9k=452",
+      "image": null,
+      "content_html": "Many rockets under development are behind schedule. Prices for many missions are rising. SpaceX is winding down the Falcon 9 to focus on its new Starship vehicle. The company has stopped selling missions where several companies share space on a Falcon 9. Launch demand is set to outstrip supply at least through the end of the decade.",
+      "word_count": 57,
+      "reading_time_min": 7,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "979571d3dc483c16",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "Agility Robotics: Inside the First US Humanoid Company to Go Public (7 minute read)",
+      "summary": "Agility Robotics is going public through a merger with Michael Klein's Churchill Capital XI at a $2.5 billion pre-money valuation. The company's robots are deployed in a few places today and can do tasks such as moving totes, feeding lines, and tending machines. Its Digit v5 robot will be out later this year. The new robot will be able to work alongside humans rather than in a cage/workcell....",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.tanayj.com%2Fp%2Fagility-robotics-inside-the-first%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/te_xNGK0VqqevAl4Y-_N9-pA9AAITQTlubFcEBaH3jI=452",
+      "image": null,
+      "content_html": "Agility Robotics is going public through a merger with Michael Klein's Churchill Capital XI at a $2.5 billion pre-money valuation. The company's robots are deployed in a few places today and can do tasks such as moving totes, feeding lines, and tending machines. Its Digit v5 robot will be out later this year. The new robot will be able to work alongside humans rather than in a cage/workcell. It will also support fast charging, a higher payload, and swappable end effectors.",
+      "word_count": 81,
+      "reading_time_min": 7,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "6bc54db08d269876",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "Jev introduces a new shape of LLM—System One, aka Decision Models (5 minute read)",
+      "summary": "Jev is a new category of model called 'System One models' that accepts text inputs, but only returns floating point numbers corresponding to categories, yes/no questions, ratings, and associated confidence scores. It is fast and really cheap - output is free, and input is $0.042 per million tokens. The model was released just under a week ago, but the amount of activity around it has been...",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fsimonwillison.net%2F2026%2FSep%2F21%2Fjev%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/wZ921jleoB6LKk4Qkl4YaMVzGWBZwYfClcttu8JB7vw=452",
+      "image": null,
+      "content_html": "Jev is a new category of model called 'System One models' that accepts text inputs, but only returns floating point numbers corresponding to categories, yes/no questions, ratings, and associated confidence scores. It is fast and really cheap - output is free, and input is $0.042 per million tokens. The model was released just under a week ago, but the amount of activity around it has been extremely impressive.",
+      "word_count": 68,
+      "reading_time_min": 5,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "8c0aeaf4f215611d",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "A summer of AI optimization (5 minute read)",
+      "summary": "Several open source projects recently started running faster due to being optimized with the help of AI. The techniques used to optimize these projects were well known. However, it is likely developers never tried them because it would be too risky. AI has made it cheap to try new ideas.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flemire.me%2Fblog%2F2026%2F09%2F22%2Fa-summer-of-ai-optimization%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/Bh1OGlel7CThJWZ508gLf4OAOLh6pcmlkxSlbVx9Q-o=452",
+      "image": null,
+      "content_html": "Several open source projects recently started running faster due to being optimized with the help of AI. The techniques used to optimize these projects were well known. However, it is likely developers never tried them because it would be too risky. AI has made it cheap to try new ideas.",
+      "word_count": 50,
+      "reading_time_min": 5,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "873af0386dca81aa",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "The Business of Building God (13 minute read)",
+      "summary": "It is extremely likely that AI will change employment, society, culture, and the world. However, businesses built around it will remain subject to ordinary constraints. We will soon have new superintelligences that can solve impossible problems and help with new miracles. This will open up a lot of niches to fill.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.strangeloopcanon.com%2Fp%2Fthe-business-of-building-god%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/nPaYGyGVlX0iFb9DoiItP0LgEUawg2guT1rIA-oyPNw=452",
+      "image": null,
+      "content_html": "It is extremely likely that AI will change employment, society, culture, and the world. However, businesses built around it will remain subject to ordinary constraints. We will soon have new superintelligences that can solve impossible problems and help with new miracles. This will open up a lot of niches to fill.",
+      "word_count": 51,
+      "reading_time_min": 13,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "44081853e9e179e8",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "An undercover Google analyst infiltrated a notorious supply-chain hacking gang (13 minute read)",
+      "summary": "The hacker group known as TeamPCP tainted hundreds of open-source programs with its malware, stole developer accounts to perpetuate that software supply-chain hacking, and released a Dune-themed worm to automate the process. They ultimately breached more than a thousand companies. During a key moment of the group's rampage, an undercover researcher from Google infiltrated the group. This...",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Farstechnica.com%2Fsecurity%2F2026%2F09%2Fan-undercover-google-analyst-infiltrated-a-notorious-supply-chain-hacking-gang%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/njebx2bezM2Cb70GuPokcYAeFDOq3JgjEgXhGaxDUYw=452",
+      "image": null,
+      "content_html": "The hacker group known as TeamPCP tainted hundreds of open-source programs with its malware, stole developer accounts to perpetuate that software supply-chain hacking, and released a Dune-themed worm to automate the process. They ultimately breached more than a thousand companies. During a key moment of the group's rampage, an undercover researcher from Google infiltrated the group. This allowed Google to monitor the hacking spree from the inside, warn targets, and help disrupt TeamPCP's attempts to exploit victims.",
+      "word_count": 77,
+      "reading_time_min": 13,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "183702a3cb7bc7d2",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "Frontier Overhangs (20 minute read)",
+      "summary": "Pacing the frontier happens to address several distinct problems faced by the frontier lab.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fstratechery.com%2F2026%2Ffrontier-overhangs%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/HCO1GbNgdggO-b3viOZIFSplbeNLhrYUVFMLO_JaIeU=452",
+      "image": null,
+      "content_html": "Pacing the frontier happens to address several distinct problems faced by the frontier lab.",
+      "word_count": 14,
+      "reading_time_min": 20,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "4e927bef782e778b",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "Meta's Muse is outpacing ChatGPT's early mobile launch (4 minute read)",
+      "summary": "Meta's Muse app on mobile devices has been downloaded more times in the US and Canada in its first 12 days on the market than ChatGPT was in the 12 days after its debut.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftechcrunch.com%2F2026%2F09%2F21%2Fmetas-muse-is-outpacing-chatgpts-early-mobile-launch%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/P-McGaN_zuPhZ5DAxm-00mk2ZgSmEr_sYqwbfJCHirc=452",
+      "image": null,
+      "content_html": "Meta's Muse app on mobile devices has been downloaded more times in the US and Canada in its first 12 days on the market than ChatGPT was in the 12 days after its debut.",
+      "word_count": 34,
+      "reading_time_min": 4,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "c7931ea78f73b2bb",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "Why Didn't Google Build Muse? (8 minute read)",
+      "summary": "We are likely just a few months away from some kind of personal assistant AI within Google Search.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fspyglass.org%2Fwhy-didnt-google-build-muse%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/JwciQTPbRQtTudir2wQcjvzTyNSNGqySQ8cp-qDsgLA=452",
+      "image": null,
+      "content_html": "We are likely just a few months away from some kind of personal assistant AI within Google Search.",
+      "word_count": 18,
+      "reading_time_min": 8,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "74ac41e9837cf844",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "dlab Open Source Week: Frontier AI on Your Own Hardware (20 minute read)",
+      "summary": "Models that were previously out of reach are starting to be able to run on hardware people already own.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftimdettmers.com%2F2026%2F09%2F21%2Fdlab-open-source-week%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/U0ZmSZ-QH0ei8M5HWMA8piafFa3gBhXdScDsEOAqzz8=452",
+      "image": null,
+      "content_html": "Models that were previously out of reach are starting to be able to run on hardware people already own.",
+      "word_count": 19,
+      "reading_time_min": 20,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "cdbde45c1bd73652",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "Meta's AI agent has been blocked from using Amazon.com (2 minute read)",
+      "summary": "Amazon's Conditions of Use do not allow continued access by unauthorized AI agents.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Ftechcrunch.com%2F2026%2F09%2F21%2Fmetas-ai-agent-has-been-blocked-from-using-amazon-com%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/bXHEiWKCU0PI3xFV8fXJaBnNMEsob1E2iidVM4WKrC0=452",
+      "image": null,
+      "content_html": "Amazon's Conditions of Use do not allow continued access by unauthorized AI agents.",
+      "word_count": 13,
+      "reading_time_min": 2,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "2ed6e3ef115bd6cd",
+      "issue_id": "66227d5b5176d5de",
+      "source": "TLDR",
+      "subject": "Googlebooks 💻, Grok 4.7 🤖, Google infiltrates hackers 👨‍💻",
+      "date": "2026-09-22T11:38:32+00:00",
+      "title": "Markdown in /src (8 minute read)",
+      "summary": "Markdown has many nice properties that make it similar to traditional source code.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fhtmx.org%2Fessays%2Fmarkdown-in-src%2F%3Futm_source=tldrnewsletter/1/010001a0c8e90fa8-eb280c13-03d9-4413-82a5-b45c30dbcb9a-000000/IKKlP0ynp1-6RAk1A-S3S20WgCJVXmPR5ek65GYz0Vk=452",
+      "image": null,
+      "content_html": "Markdown has many nice properties that make it similar to traditional source code.",
+      "word_count": 13,
+      "reading_time_min": 8,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "9e51e9826ebe5336",
+      "issue_id": "c9283fe9ffcd289e",
+      "source": "Works in Progress",
+      "subject": "The 1970s law holding back modern biotechnology",
+      "date": "2026-09-22T11:05:09+00:00",
+      "title": "The 1970s law holding back modern biotechnology",
+      "summary": "We’ve invented microbes that can eat plastic, detect landmines, and extract rare metals. They’ve been swallowed by a black hole. This piece was featured in Issue 25 of Works in Progress. Subscribe today to get Issue 26, and an issue every two months after, delivered straight to your home or workplace. In 1983, a biochemical company called AGS filed an application to release genetically modified or",
+      "link": "https://substack.com/app-link/post?publication_id=90387&post_id=216875764&utm_source=post-email-title&utm_campaign=email-post-title&isFreemail=true&r=8mm3j1&token=eyJ1c2VyX2lkIjo1MjE3MTE5NjUsInBvc3RfaWQiOjIxNjg3NTc2NCwiaWF0IjoxNzkwMDc5NTUzLCJleHAiOjE3OTI2NzE1NTMsImlzcyI6InB1Yi05MDM4NyIsInN1YiI6InBvc3QtcmVhY3Rpb24ifQ.MrfH0XvT2573Sq0NFcY_HIXZWHlI6d8t-OoWhL_vo08",
+      "image": null,
+      "content_html": "<h3>We’ve invented microbes that can eat plastic, detect landmines, and extract rare metals. They’ve been swallowed by a black hole.</h3><p><em>This piece was featured in Issue 25 of Works in Progress. <a href=\"https://substack.com/redirect/aff8a9fb-0c9f-425e-9540-3ceb4bf672be?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">Subscribe today</a> to get Issue 26, and an issue every two months after, delivered straight to your home or workplace.</em></p><p>In 1983, a biochemical company called AGS filed an application to release genetically modified organisms into the environment. AGS had deleted a single gene from a common leaf-dwelling microbe that encoded a protein around which ice crystals nucleate. By removing it and spraying the <a href=\"https://substack.com/redirect/b418d9eb-4a83-43f4-8330-b308a842b7a9?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">modified microbes</a> onto plants, AGS hoped to prevent ice from forming on crops during cold California mornings.</p><p>At the time, there was no dedicated regulatory process for engineered microbes, so applications defaulted to the National Institutes of Health (NIH), which had laid out voluntary rules and approved AGS’s request to run field trials. But an activist named Jeremy Rifkin then <a href=\"https://substack.com/redirect/b541518d-cf3b-4654-9065-c54fb65d875c?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">sued</a> to stop the experiments, arguing that the NIH had skipped a required Environmental Impact Statement and that the engineered microbes could scatter into the wild with ‘possible effects on rainfall’. AGS eventually won the right to <a href=\"https://substack.com/redirect/9dc2c593-8116-458a-9c07-c9e1254dfcd1?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">begin trials</a> on strawberry plants in California in 1987, only for a group of activists to cut through the chain-link fence around the field and <a href=\"https://substack.com/redirect/9dc2c593-8116-458a-9c07-c9e1254dfcd1?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">uproot about 2,000</a> of the 2,400 plants.</p><p>Rifkin’s lawsuit forced the question of how engineered microbes should be regulated. After the court case, staff at the White House gathered lawyers and regulators from the Environmental Protection Agency (EPA) and the United States Department of Agriculture (USDA) to figure out how to handle engineered microbes moving forward. They concluded that no new laws were needed: the Toxic Substances Control Act (TSCA), written in 1976 for industrial chemicals, would apply to engineered microbes as well. These civil servants essentially decided that since genomes are made of chemicals, and novel chemicals are already regulated under the TSCA, engineered microbes with modified genomes were likewise covered.</p><p><a href=\"https://substack.com/redirect/1ac478b1-1eb5-4948-ac8f-212a8d510098?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">Subscribe to print</a></p><p>Since that decision, development of microbes covered by the law has frozen. The TSCA is a regulatory black hole: between 1987 and 2018, researchers filed more than 240 applications. Only a few were ever approved for widespread use.</p><p>The world has produced all kinds of marvelous microbes in the last forty years. Genetically engineered microorganisms, for example, can pull nitrogen from the air and detect buried landmines by releasing gases visible to satellites. But almost none have been used, thanks to an American law never meant to regulate biology.</p><p>In 2016, Japanese researchers discovered a microbe, <em>Ideonella sakaiensis,</em> growing near a recycling plant. That microbe is able to <a href=\"https://substack.com/redirect/e00abf75-b9b7-4cc5-83f8-8bd4dff5433e?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">digest PET</a>, the plastic in water bottles and most polyester clothing. Though technically recyclable, PET must first be shredded, melted, and remolded into new forms, so most just accumulates in landfill.</p><p>These wild microbes took an existing protein that degrades cutin (the waxy material on plant leaves) and evolved it to eat plastic instead. But natural forms of the PET-eating enzymes are slow; when the microbes were cultured on top of a thin PET film and incubated at 30 degrees centigrade, it took them six weeks to break it down.</p><p>Engineers at the University of Texas at Austin therefore took these PET-eating enzymes and used computational tools to make an <a href=\"https://substack.com/redirect/cabb561e-434b-4097-b2af-032f33220453?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">improved variant</a>, called FAST-PETase. This enzyme is 98 percent identical to the natural version but digests PET plastics in less than 24 hours. The next step could be to place FAST-PETase back into living cells and release them onto landfills. But even putting the gene back into its original host, <em>I. sakaiensis</em>, triggers TSCA, ensuring that the reconstituted organism can’t be used.</p><p>Engineered microbes could also be employed to detect heavy metals in streams and rivers at low concentrations far more cheaply than existing methods. Researchers have already created <em>E. coli</em> that can <a href=\"https://substack.com/redirect/d756d354-34c5-42b2-adde-3f8c71a8a30d?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">detect</a> as little as five parts per billion of cadmium ions. In 2010, Chinese students engineered <em>E. coli</em> cells to <a href=\"https://substack.com/redirect/1fc3fafc-f290-41fe-a048-317c68061f58?j=eyJ1IjoiOG1tM2oxIn0.Q2gokbKsFE1One4CcOl8d1HgbXFwMKPzl3w6kBEndyQ\">sense mercury ions</a> in water down to a seven-nanomolar concentration, seven times lower than the EPA’s contamination threshold. But none of these strains can be used outside the lab as all contain intergeneric DNA sequences, meaning they fall under TSCA.</p>",
+      "word_count": 706,
+      "reading_time_min": 4,
       "section": "Culture"
     },
     {
+      "id": "b7503a9267aabb1b",
+      "issue_id": "7aeefb7a931876a6",
+      "source": "Reuters Daily Briefing",
+      "subject": "The Trump UNGA show",
+      "date": "2026-09-22T10:59:17+00:00",
+      "title": "The Trump UNGA show",
+      "summary": "Hello. Trump is set for whirlwind UN meetings, with wars in Iran and Ukraine on the agenda. The US, Denmark, and Greenland are expected to sign a deal in a bid to end the Arctic standoff. And the Houthis push for control of the Yemeni highlands. Plus, the world's biggest beer festival kicks off. Nigerian prison guards sprayed an unidentified substance into a crowded cell where dozens of detainees ",
+      "link": "",
+      "image": null,
+      "content_html": "<p>\r\nHello. Trump is set for <a href=\"https://newslink.reuters.com/click/47593668.339416/aHR0cHM6Ly93d3cucmV1dGVycy5jb20vd29ybGQvYW1lcmljYXMvdHJ1bXAtc2V0LXdoaXJsd2luZC11bi1tZWV0aW5ncy13aXRoLXdhcnMtaXJhbi11a3JhaW5lLWFnZW5kYS0yMDI2LTA5LTIyLz91dG1fc291cmNlPVNhaWx0aHJ1JnV0bV9tZWRpdW09TmV3c2xldHRlciZ1dG1fY2FtcGFpZ249RGFpbHktQnJpZWZpbmcmdXRtX3Rlcm09MDkyMjI2JnV0bV9jb250ZW50PTA5MjIyNiZsY3RnPTZhYWZhM2IzMDVjNzNlYTBlNDA0YjNkMyZ1c2VyX2VtYWlsPWU4MmIxOWUwYWU1YWI2N2MwMmJjZDQyODdmZDM1Mzk2MjBkNmQ4YTNlNDdhNjJjZDJiNjgxNzk1MWYxZjVlNTQ/6aafa3b305c73ea0e404b3d3Bae855409\">whirlwind UN meetings,</a> with wars in <a href=\"https://newslink.reuters.com/click/47593668.339416/aHR0cHM6Ly93d3cucmV1dGVycy5jb20vd29ybGQvdXMvdHdvLXJlcHVibGljYW4tc2VuYXRlLWNhbmRpZGF0ZXMtY2FsbC1zd2lmdC1lbmQtaXJhbi13YXItZGl2ZXJnaW5nLXRydW1wLTIwMjYtMDktMjEvP3V0bV9zb3VyY2U9U2FpbHRocnUmdXRtX21lZGl1bT1OZXdzbGV0dGVyJnV0bV9jYW1wYWlnbj1EYWlseS1CcmllZmluZyZ1dG1fdGVybT0wOTIyMjYmdXRtX2NvbnRlbnQ9MDkyMjI2JmxjdGc9NmFhZmEzYjMwNWM3M2VhMGU0MDRiM2QzJnVzZXJfZW1haWw9ZTgyYjE5ZTBhZTVhYjY3YzAyYmNkNDI4N2ZkMzUzOTYyMGQ2ZDhhM2U0N2E2MmNkMmI2ODE3OTUxZjFmNWU1NA/6aafa3b305c73ea0e404b3d3B891a2b8d\">Iran</a> and <a href=\"https://newslink.reuters.com/click/47593668.339416/aHR0cHM6Ly93d3cucmV1dGVycy5jb20vd29ybGQvZXVyb3BlL3plbGVuc2tpeS1tZWV0LXRydW1wLXVuLXB1c2gtZW5lcmd5LXRydWNlLXdpdGgtcnVzc2lhLTIwMjYtMDktMjIvP3V0bV9zb3VyY2U9U2FpbHRocnUmdXRtX21lZGl1bT1OZXdzbGV0dGVyJnV0bV9jYW1wYWlnbj1EYWlseS1CcmllZmluZyZ1dG1fdGVybT0wOTIyMjYmdXRtX2NvbnRlbnQ9MDkyMjI2JmxjdGc9NmFhZmEzYjMwNWM3M2VhMGU0MDRiM2QzJnVzZXJfZW1haWw9ZTgyYjE5ZTBhZTVhYjY3YzAyYmNkNDI4N2ZkMzUzOTYyMGQ2ZDhhM2U0N2E2MmNkMmI2ODE3OTUxZjFmNWU1NA/6aafa3b305c73ea0e404b3d3B2a361341\">Ukraine</a> on the agenda. The US, Denmark, and Greenland <a href=\"https://newslink.reuters.com/click/47593668.339416/aHR0cHM6Ly93d3cucmV1dGVycy5jb20vd29ybGQvZXVyb3BlL3RydW1wLWRlbm1hcmstZ3JlZW5sYW5kLXNpZ24tZGVhbC1iaWQtZW5kLWFyY3RpYy1zdGFuZG9mZi0yMDI2LTA5LTIyLz91dG1fc291cmNlPVNhaWx0aHJ1JnV0bV9tZWRpdW09TmV3c2xldHRlciZ1dG1fY2FtcGFpZ249RGFpbHktQnJpZWZpbmcmdXRtX3Rlcm09MDkyMjI2JnV0bV9jb250ZW50PTA5MjIyNiZsY3RnPTZhYWZhM2IzMDVjNzNlYTBlNDA0YjNkMyZ1c2VyX2VtYWlsPWU4MmIxOWUwYWU1YWI2N2MwMmJjZDQyODdmZDM1Mzk2MjBkNmQ4YTNlNDdhNjJjZDJiNjgxNzk1MWYxZjVlNTQ/6aafa3b305c73ea0e404b3d3Bda65e4aa\">are expected to sign a deal</a> in a bid to end the Arctic standoff. And the <a href=\"https://newslink.reuters.com/click/47593668.339416/aHR0cHM6Ly93d3cucmV1dGVycy5jb20vd29ybGQvbWlkZGxlLWVhc3QvaG91dGhpcy1wdXNoLWNvbnRyb2wteWVtZW4taGlnaGxhbmRzLXRydW1wLXJlcG9ydGVkLWhhdmUtY2FsbGVkLW9mZi1haXJzdHJpa2VzLTIwMjYtMDktMjEvP3V0bV9zb3VyY2U9U2FpbHRocnUmdXRtX21lZGl1bT1OZXdzbGV0dGVyJnV0bV9jYW1wYWlnbj1EYWlseS1CcmllZmluZyZ1dG1fdGVybT0wOTIyMjYmdXRtX2NvbnRlbnQ9MDkyMjI2JmxjdGc9NmFhZmEzYjMwNWM3M2VhMGU0MDRiM2QzJnVzZXJfZW1haWw9ZTgyYjE5ZTBhZTVhYjY3YzAyYmNkNDI4N2ZkMzUzOTYyMGQ2ZDhhM2U0N2E2MmNkMmI2ODE3OTUxZjFmNWU1NA/6aafa3b305c73ea0e404b3d3Bd4e8d7bd\">Houthis push for control</a> of the Yemeni highlands.\r\n</p><p>Plus, the <a href=\"https://newslink.reuters.com/click/47593668.339416/aHR0cHM6Ly93d3cucmV1dGVycy5jb20vcGljdHVyZXMvbGVkZXJob3Nlbi1kaXJuZGxzLWZpbGwtbXVuaWNoLW9rdG9iZXJmZXN0LWtpY2tzLW9mZi0yMDI2LTA5LTIxLz91dG1fc291cmNlPVNhaWx0aHJ1JnV0bV9tZWRpdW09TmV3c2xldHRlciZ1dG1fY2FtcGFpZ249RGFpbHktQnJpZWZpbmcmdXRtX3Rlcm09MDkyMjI2JnV0bV9jb250ZW50PTA5MjIyNiZsY3RnPTZhYWZhM2IzMDVjNzNlYTBlNDA0YjNkMyZ1c2VyX2VtYWlsPWU4MmIxOWUwYWU1YWI2N2MwMmJjZDQyODdmZDM1Mzk2MjBkNmQ4YTNlNDdhNjJjZDJiNjgxNzk1MWYxZjVlNTQ/6aafa3b305c73ea0e404b3d3B08d31946\">world's biggest beer festival</a> kicks off.</p><p>Nigerian prison guards sprayed an unidentified substance into a crowded cell where dozens of detainees died and kept the doors locked, ignoring cries for help, according to three survivors.</p><p>\r\nThe 37 deaths, which included many teenagers working in artisanal gold mines, ‌have <a href=\"https://newslink.reuters.com/click/47593668.339416/aHR0cHM6Ly93d3cucmV1dGVycy5jb20vd29ybGQvYWZyaWNhL3Byb3Rlc3RzLWVydXB0LW5pZ2VyaWEtYWZ0ZXItMzMtbWluZXJzLWRpZS1jdXN0b2R5LXBhcmFtaWxpdGFyeS1hZ2VuY3ktMjAyNi0wOS0xOC8_dXRtX3NvdXJjZT1TYWlsdGhydSZ1dG1fbWVkaXVtPU5ld3NsZXR0ZXImdXRtX2NhbXBhaWduPURhaWx5LUJyaWVmaW5nJnV0bV90ZXJtPTA5MjIyNiZ1dG1fY29udGVudD0wOTIyMjYmbGN0Zz02YWFmYTNiMzA1YzczZWEwZTQwNGIzZDMmdXNlcl9lbWFpbD1lODJiMTllMGFlNWFiNjdjMDJiY2Q0Mjg3ZmQzNTM5NjIwZDZkOGEzZTQ3YTYyY2QyYjY4MTc5NTFmMWY1ZTU0/6aafa3b305c73ea0e404b3d3B9a0cebff\">triggered protests</a> in Nigeria, raising fresh concerns about <a href=\"https://newslink.reuters.com/click/47593668.339416/aHR0cHM6Ly93d3cucmV1dGVycy5jb20vd29ybGQvYWZyaWNhL21vcmUtdGhhbi0xMDAtaW5tYXRlcy1lc2NhcGUtbmlnZXJpYS1wcmlzb24tYWZ0ZXItcmFpbi1kYW1hZ2VzLWZhY2lsaXR5LTIwMjQtMDQtMjUvP3V0bV9zb3VyY2U9U2FpbHRocnUmdXRtX21lZGl1bT1OZXdzbGV0dGVyJnV0bV9jYW1wYWlnbj1EYWlseS1CcmllZmluZyZ1dG1fdGVybT0wOTIyMjYmdXRtX2NvbnRlbnQ9MDkyMjI2JmxjdGc9NmFhZmEzYjMwNWM3M2VhMGU0MDRiM2QzJnVzZXJfZW1haWw9ZTgyYjE5ZTBhZTVhYjY3YzAyYmNkNDI4N2ZkMzUzOTYyMGQ2ZDhhM2U0N2E2MmNkMmI2ODE3OTUxZjFmNWU1NA/6aafa3b305c73ea0e404b3d3B38fb622f\">conditions in detention facilities</a> and how the country's security agencies treat suspects who are often held for extended periods while awaiting trial.\r\n</p><p>The world's largest beer festival opened in Munich drawing visitors in traditional Bavarian dress for two weeks of celebrations expected to attract millions.</p>",
+      "word_count": 149,
+      "reading_time_min": 1,
+      "section": "Latest"
+    },
+    {
+      "id": "79787db759b54d94",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "Caring vs. Knowing (5 minute read)",
+      "summary": "While AI lowers software development costs, supporting a growing audience demands continuous learning and quality standards. Developers face challenges in managing user diversity and the risks of unchecked customization. Ultimately, maintaining quality requires an ongoing commitment.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Flinks.tldrnewsletter.com%2FBsKnwq/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/o7xSlXUXz1MEqv3drKiDrhRf4lZXeriIgC_C8MDpzOQ=452",
+      "image": null,
+      "content_html": "While AI lowers software development costs, supporting a growing audience demands continuous learning and quality standards. Developers face challenges in managing user diversity and the risks of unchecked customization. Ultimately, maintaining quality requires an ongoing commitment.",
+      "word_count": 36,
+      "reading_time_min": 5,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "7fb56c708ffb1786",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "The stakeholder who matters most (6 minute read)",
+      "summary": "The industry overlooks the primary stakeholder: the user. Current evaluation metrics measure machine functionality rather than whether an agent actually reduces effort for humans. Consequently, companies fail to instrument the complete customer journey, leading to hidden inference costs and unmeasured user abandonment.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fconvivastage.wpengine.com%2Fresource%2Fi-gave-two-talks-at-dreamforce-a-show-where-the-stakeholder-who-matters-most-never-came-up%2F%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/svY38NF8muSs0wWsSK9mHZJl1eA3IxJttPxH9VUrYUQ=452",
+      "image": null,
+      "content_html": "The industry overlooks the primary stakeholder: the user. Current evaluation metrics measure machine functionality rather than whether an agent actually reduces effort for humans. Consequently, companies fail to instrument the complete customer journey, leading to hidden inference costs and unmeasured user abandonment.",
+      "word_count": 42,
+      "reading_time_min": 6,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "6c53caf673d25da0",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "‘Not enough usage': your biggest churn reason is a broken habit loop (16 minute read)",
+      "summary": "\"Not enough usage\" is the primary driver of subscription app churn, often accounting for 26% to 40% of cancellations. This churn reason is frequently due to a broken habit loop rather than a pricing problem. Using discounts to fix usage churn is ineffective because lowering the price does not restore user value or engagement.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.revenuecat.com%2Fblog%2Fgrowth%2Fnot-enough-usage-churn%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/tYjtDJ5AAAG_9LRApW1y2RIsjk2tqQOpNwc-tgfM81A=452",
+      "image": null,
+      "content_html": "\"Not enough usage\" is the primary driver of subscription app churn, often accounting for 26% to 40% of cancellations. This churn reason is frequently due to a broken habit loop rather than a pricing problem. Using discounts to fix usage churn is ineffective because lowering the price does not restore user value or engagement.",
+      "word_count": 54,
+      "reading_time_min": 16,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "b1caa439c90663ee",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "Not every question deserves a study (8 minute read)",
+      "summary": "Every research question should be assigned a specific price in minutes, days, or an owned risk before any investigation begins. By implementing a five-step routing discipline, product teams can determine whether an answer already exists in organizational memory, warrants a rapid study, or should be bypassed entirely with an accepted risk written down.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.thevoiceofuser.com%2Fnot-every-question-deserves-a-study%2F%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/nx3F0tEVXVNnY2koxNOwqlZQ2MerQTnZccbSu1aJp1g=452",
+      "image": null,
+      "content_html": "Every research question should be assigned a specific price in minutes, days, or an owned risk before any investigation begins. By implementing a five-step routing discipline, product teams can determine whether an answer already exists in organizational memory, warrants a rapid study, or should be bypassed entirely with an accepted risk written down.",
+      "word_count": 53,
+      "reading_time_min": 8,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "4955ce1a048e4bd4",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "Designing AI Products and Features: Study Guide (6 minute read)",
+      "summary": "The guide highlights key strategies for defining value propositions, crafting prompt assistance, and optimizing feature design to deliver meaningful user experiences.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.nngroup.com%2Farticles%2Fdesigning-ai-study-guide%2F%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/BnR32fTj8XgYB1M9RgGeQYTXBPVCifzXCKFwklDhLaw=452",
+      "image": null,
+      "content_html": "The guide highlights key strategies for defining value propositions, crafting prompt assistance, and optimizing feature design to deliver meaningful user experiences.",
+      "word_count": 21,
+      "reading_time_min": 6,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "208f18fc33c88065",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "How Zapier's CEO grades PMs on AI fluency (74 minute video)",
+      "summary": "Wade Chambers discusses the company's updated AI fluency rubric, outlining expectations for PMs across capable, adaptive, and transformative levels. Zapier expects PMs to operate primarily in the adaptive tier while running occasional experiments or building transformative systems, such as company-wide AI agent frameworks.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.aakashg.com%2Fhow-zapiers-ceo-grades-pms-on-ai-fluency%2F%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/dfxvJWUn4ZnnNeL1NEafJnS7CF_S2X__6yngl4OzCg8=452",
+      "image": null,
+      "content_html": "Wade Chambers discusses the company's updated AI fluency rubric, outlining expectations for PMs across capable, adaptive, and transformative levels. Zapier expects PMs to operate primarily in the adaptive tier while running occasional experiments or building transformative systems, such as company-wide AI agent frameworks.",
+      "word_count": 43,
+      "reading_time_min": 74,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "c6ea96ea571f88ef",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "The Problem With Putting People in Boxes (6 minute read)",
+      "summary": "Personality labels can hide how much behavior depends on context. Understanding what causes people to switch modes may tell you more than knowing their “type.”",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fcutlefish.substack.com%2Fp%2Ftbm-440-the-problem-with-putting%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/A_TN1lMhqefTm4z3znDab2RPsJVGLL2iLmAZbPY-kJY=452",
+      "image": null,
+      "content_html": "Personality labels can hide how much behavior depends on context. Understanding what causes people to switch modes may tell you more than knowing their “type.”",
+      "word_count": 25,
+      "reading_time_min": 6,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "e7c334ec3f719c8d",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "AI on Top of a Dysfunctional System (1): The Product Backlog (14 minute read)",
+      "summary": "Applying generative AI to a dysfunctional product backlog masks underlying flaws by polishing artifacts without resolving root causes like missing customer evidence or decision authority. AI-generated user stories obscure a lack of real product discovery. To remain effective, product teams must maintain clear direction, authentic authority, and feedback loops tied to real outcomes.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.scrum.org%2Fresources%2Fblog%2Fai-top-dysfunctional-system-1-product-backlog%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/Iy7pE81vMsNgm1zgoVfPII0BmvregX87yMKMkVlfkDA=452",
+      "image": null,
+      "content_html": "Applying generative AI to a dysfunctional product backlog masks underlying flaws by polishing artifacts without resolving root causes like missing customer evidence or decision authority. AI-generated user stories obscure a lack of real product discovery. To remain effective, product teams must maintain clear direction, authentic authority, and feedback loops tied to real outcomes.",
+      "word_count": 53,
+      "reading_time_min": 14,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "ca943b071019d661",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "Extracting product design decisions and domain models using AI browser tools (1 minute read)",
+      "summary": "Tools like Codex Browser Use and the Claude Chrome Extension excel at extracting design and product decisions from existing products.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fthreadreaderapp.com%2Fthread%2F2101627512757596578.html%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/YVIsf0cLpsSoB5pmmQKKMyIdVceXBKObVMaoSDy4E7k=452",
+      "image": null,
+      "content_html": "Tools like Codex Browser Use and the Claude Chrome Extension excel at extracting design and product decisions from existing products.",
+      "word_count": 20,
+      "reading_time_min": 1,
+      "section": "Technology & AI"
+    },
+    {
+      "id": "f6d8bc1592698abe",
+      "issue_id": "cf1f2e6d070e7a25",
+      "source": "TLDR Product",
+      "subject": "Caring vs knowing 🚨, the stakeholder who matters most 👑, grading PMs on AI fluency ⚡",
+      "date": "2026-09-22T10:17:56+00:00",
+      "title": "How to write an outcome-based OKR when your user is an AI agent (3 minute read)",
+      "summary": "Writing outcome-based OKRs for AI agent products requires measuring human behavior rather than agent activity.",
+      "link": "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fjeffgothelf.com%2Fblog%2Fhow-to-write-an-outcome-based-okr-when-your-user-is-an-ai-agent%2F%3Futm_source=tldrproduct/1/010001a0c89f45c8-9efb1887-1f24-4e2d-a1ed-58debcf19932-000000/dDkExZWQFkbyiKAPfbhKGThBmBhUK8ZXeSt4dUPLe98=452",
+      "image": null,
+      "content_html": "Writing outcome-based OKRs for AI agent products requires measuring human behavior rather than agent activity.",
+      "word_count": 15,
+      "reading_time_min": 3,
+      "section": "Technology & AI"
+    },
+    {
       "id": "1714197ae686d777",
+      "issue_id": "f4865df87d2bfe71",
       "source": "The Conversation",
       "subject": "Trump and Xi: the touchy subjects on summit agenda",
       "date": "2026-09-22T06:32:32+00:00",
@@ -31,6 +408,7 @@
     },
     {
       "id": "df7bc4cbaf481045",
+      "issue_id": "f4865df87d2bfe71",
       "source": "The Conversation",
       "subject": "Trump and Xi: the touchy subjects on summit agenda",
       "date": "2026-09-22T06:32:32+00:00",
@@ -45,6 +423,7 @@
     },
     {
       "id": "d033201833d04d26",
+      "issue_id": "f4865df87d2bfe71",
       "source": "The Conversation",
       "subject": "Trump and Xi: the touchy subjects on summit agenda",
       "date": "2026-09-22T06:32:32+00:00",
@@ -59,6 +438,7 @@
     },
     {
       "id": "fb3a5dffeecb073f",
+      "issue_id": "f4865df87d2bfe71",
       "source": "The Conversation",
       "subject": "Trump and Xi: the touchy subjects on summit agenda",
       "date": "2026-09-22T06:32:32+00:00",
@@ -73,6 +453,7 @@
     },
     {
       "id": "a96a999490c3eea2",
+      "issue_id": "f4865df87d2bfe71",
       "source": "The Conversation",
       "subject": "Trump and Xi: the touchy subjects on summit agenda",
       "date": "2026-09-22T06:32:32+00:00",
@@ -87,6 +468,7 @@
     },
     {
       "id": "e8aa06ae9f69012f",
+      "issue_id": "f4865df87d2bfe71",
       "source": "The Conversation",
       "subject": "Trump and Xi: the touchy subjects on summit agenda",
       "date": "2026-09-22T06:32:32+00:00",
@@ -101,6 +483,7 @@
     },
     {
       "id": "9134bf635abd5f5e",
+      "issue_id": "f4865df87d2bfe71",
       "source": "The Conversation",
       "subject": "Trump and Xi: the touchy subjects on summit agenda",
       "date": "2026-09-22T06:32:32+00:00",
@@ -115,6 +498,7 @@
     },
     {
       "id": "00829fbd31253c02",
+      "issue_id": "f4865df87d2bfe71",
       "source": "The Conversation",
       "subject": "Trump and Xi: the touchy subjects on summit agenda",
       "date": "2026-09-22T06:32:32+00:00",
@@ -128,21 +512,8 @@
       "section": "World & Ideas"
     },
     {
-      "id": "d3f614202ab9bc4f",
-      "source": "The Conversation",
-      "subject": "Trump and Xi: the touchy subjects on summit agenda",
-      "date": "2026-09-22T06:32:32+00:00",
-      "title": "You’re receiving this newsletter from The Conversation",
-      "summary": "",
-      "link": "https://clicks.theconversation.com/f/a/ebX8Vm85R3wLZRHz2JlTpw~~/AAQRxRA~/P-3F2C3mTZCL4S6iIZY62zVR5MiRxCAY6kPGeaF1ruvfNFZh-zvZRMgeN_KlEYrztqo3zGc31mhc52dZBvK6ExqXYBBQwA78OtdT1bauIoitmcDORob8pfOSGnCpFzHzaefxntH8j-osmG8pj7f8GRw9dQu2NeRMJljl_EafzHUnFQplqEu9pTWVWEz5Hcd5k_OPsr5YL4qMZh0CuggMJNv7WWPy-xdQPkjYnMA9tUq6OIv2VmVoJ_8fmuVda8A-zgjWdnUIIkCipnwulqiQk7qwi4Aqknm33AkExKuCDH86ifezeE8UdxxJ4zq9CFBo",
-      "image": null,
-      "content_html": null,
-      "word_count": 0,
-      "reading_time_min": null,
-      "section": "World & Ideas"
-    },
-    {
       "id": "9a7a59583c1374db",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -157,6 +528,7 @@
     },
     {
       "id": "273609a4b78dd141",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -171,6 +543,7 @@
     },
     {
       "id": "1bc5211d6ae5ca9e",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -185,6 +558,7 @@
     },
     {
       "id": "994a533c9014b84a",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -199,6 +573,7 @@
     },
     {
       "id": "50a58e0d9f286ddd",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -213,6 +588,7 @@
     },
     {
       "id": "1143dadcc79e801d",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -227,6 +603,7 @@
     },
     {
       "id": "083ee013d501bbb9",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -241,6 +618,7 @@
     },
     {
       "id": "2ca86896ac2cb9c5",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -255,6 +633,7 @@
     },
     {
       "id": "187bc3fc7a2623f8",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -269,6 +648,7 @@
     },
     {
       "id": "9fe6be94e385f3cd",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -283,6 +663,7 @@
     },
     {
       "id": "053dbfcf76a80b0a",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -297,6 +678,7 @@
     },
     {
       "id": "d555a9a0840bf413",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -311,6 +693,7 @@
     },
     {
       "id": "e62b1aac4626320b",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -325,6 +708,7 @@
     },
     {
       "id": "8b5f0aa952e8d0ee",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -339,6 +723,7 @@
     },
     {
       "id": "2164a9104d1c9157",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -353,6 +738,7 @@
     },
     {
       "id": "8e1da334e4bd0a07",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -367,6 +753,7 @@
     },
     {
       "id": "c1717cd2528657c6",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -381,6 +768,7 @@
     },
     {
       "id": "38f56d922482231f",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -395,6 +783,7 @@
     },
     {
       "id": "f4110d4ec37de15a",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -409,6 +798,7 @@
     },
     {
       "id": "207144dc67d41dd9",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -423,6 +813,7 @@
     },
     {
       "id": "f6324bb7d0c71e9c",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -437,6 +828,7 @@
     },
     {
       "id": "cdb899de3b9dd2b4",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -451,6 +843,7 @@
     },
     {
       "id": "cf4ed977b8fc9729",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -465,6 +858,7 @@
     },
     {
       "id": "e12dfa6aed38372f",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -479,6 +873,7 @@
     },
     {
       "id": "ce011efb7374f8c7",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -493,6 +888,7 @@
     },
     {
       "id": "6de926dd1ca312af",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -507,6 +903,7 @@
     },
     {
       "id": "0ba0c9eda8edbf33",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -521,6 +918,7 @@
     },
     {
       "id": "1e481e138f5daf17",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -535,6 +933,7 @@
     },
     {
       "id": "1995b228ddf7a365",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -549,6 +948,7 @@
     },
     {
       "id": "4f9e91bf2857aafa",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -563,6 +963,7 @@
     },
     {
       "id": "3c02df2d9d022b95",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -577,6 +978,7 @@
     },
     {
       "id": "5e5b6a9ec0d93554",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -591,6 +993,7 @@
     },
     {
       "id": "bd47e520df3a57b4",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -605,6 +1008,7 @@
     },
     {
       "id": "84e7d59235f843a6",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -619,6 +1023,7 @@
     },
     {
       "id": "21e086c8c38f9021",
+      "issue_id": "5d0174129cab507d",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-21T16:28:22+00:00",
@@ -633,6 +1038,7 @@
     },
     {
       "id": "e32284e1d4ff1887",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -647,6 +1053,7 @@
     },
     {
       "id": "a0083aaff4ba8013",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -661,6 +1068,7 @@
     },
     {
       "id": "ff1f75ac52cc5706",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -675,6 +1083,7 @@
     },
     {
       "id": "cc4d6c920db6853f",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -689,6 +1098,7 @@
     },
     {
       "id": "4b5577a412ac0b18",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -703,6 +1113,7 @@
     },
     {
       "id": "ce297a5439295596",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -717,6 +1128,7 @@
     },
     {
       "id": "e11717d89059f965",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -731,6 +1143,7 @@
     },
     {
       "id": "940bbb636984c19b",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -745,6 +1158,7 @@
     },
     {
       "id": "c923fcbfe082be53",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -759,6 +1173,7 @@
     },
     {
       "id": "a1c829eb07e20e83",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -773,6 +1188,7 @@
     },
     {
       "id": "9d7e05e7292d4ed5",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -787,6 +1203,7 @@
     },
     {
       "id": "8cb5d092f30df85c",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -801,6 +1218,7 @@
     },
     {
       "id": "c517694177b2887a",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -815,6 +1233,7 @@
     },
     {
       "id": "9d3080c00c640542",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -829,6 +1248,7 @@
     },
     {
       "id": "1855da4ec9c6b096",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -843,6 +1263,7 @@
     },
     {
       "id": "cace3491f6e84812",
+      "issue_id": "f5e32dec2e03110c",
       "source": "TLDR AI",
       "subject": "Muse connectors 🤖, Meta SAM 3.1 🖼️, Gemini hacks companies 🔓",
       "date": "2026-09-21T14:18:14+00:00",
@@ -857,6 +1278,7 @@
     },
     {
       "id": "f2d0fb5b6973a643",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -871,6 +1293,7 @@
     },
     {
       "id": "b4cb545ef74e8fe8",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -885,6 +1308,7 @@
     },
     {
       "id": "f86a26f596f5f51c",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -899,6 +1323,7 @@
     },
     {
       "id": "0ce1198e6d083679",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -913,6 +1338,7 @@
     },
     {
       "id": "873a8062582c1264",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -927,6 +1353,7 @@
     },
     {
       "id": "923e4a9e96c4f276",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -941,6 +1368,7 @@
     },
     {
       "id": "57a7d9a35bb3103b",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -955,6 +1383,7 @@
     },
     {
       "id": "89182b1e3a1b9f82",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -969,6 +1398,7 @@
     },
     {
       "id": "36482ba6cf02b66f",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -983,6 +1413,7 @@
     },
     {
       "id": "3f86dc27d06bb3a5",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -997,6 +1428,7 @@
     },
     {
       "id": "640f36d54d8062ba",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -1011,6 +1443,7 @@
     },
     {
       "id": "d011748e69b79a81",
+      "issue_id": "053c5332ed58f59f",
       "source": "TLDR Hardware",
       "subject": "Apple eyes NVLink 🔗, Crusoe targets modular datacenters 🏗️, How Apple silicon got faster ⚡",
       "date": "2026-09-21T13:57:01+00:00",
@@ -1025,6 +1458,7 @@
     },
     {
       "id": "8c1706ca12d77911",
+      "issue_id": "e11c7bd1d6c1c9e6",
       "source": "Works in Progress",
       "subject": "Why Arab armies don’t win wars",
       "date": "2026-09-21T13:26:44+00:00",
@@ -1039,6 +1473,7 @@
     },
     {
       "id": "ffc5110cb4a118a2",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1053,6 +1488,7 @@
     },
     {
       "id": "b42b486e32f34d8d",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1067,6 +1503,7 @@
     },
     {
       "id": "bb4be2ca23ff4fc6",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1081,6 +1518,7 @@
     },
     {
       "id": "d7368d73280bca99",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1095,6 +1533,7 @@
     },
     {
       "id": "b2477efa7209a613",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1109,6 +1548,7 @@
     },
     {
       "id": "0cba7ab9cd9b3791",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1123,6 +1563,7 @@
     },
     {
       "id": "0c631cc0acd3f3ca",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1137,6 +1578,7 @@
     },
     {
       "id": "cc9d349ec34e32d6",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1151,6 +1593,7 @@
     },
     {
       "id": "fe852ca121bfcd8a",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1165,6 +1608,7 @@
     },
     {
       "id": "46d0f91cd2e2a67c",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1179,6 +1623,7 @@
     },
     {
       "id": "e5c2ce99e9a5ae7f",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1193,6 +1638,7 @@
     },
     {
       "id": "6b4ba392cb9508d8",
+      "issue_id": "700540f32b2fa9b8",
       "source": "TLDR Founders",
       "subject": "AI benchmarks 📊, PostHog self-driving 🔄, app growth 📈",
       "date": "2026-09-21T12:42:27+00:00",
@@ -1207,6 +1653,7 @@
     },
     {
       "id": "3b0712f4dde11345",
+      "issue_id": "b482d1be574b5a0e",
       "source": "Il Post - Ok Boomer!",
       "subject": "In ricchezza e in povertà",
       "date": "2026-09-21T12:02:00+02:00",
@@ -1221,6 +1668,7 @@
     },
     {
       "id": "1eb24c5761d999fc",
+      "issue_id": "aa76e07fe554bf36",
       "source": "Interconnects by Nathan Lambert",
       "subject": "The current balance of power in open models",
       "date": "2026-09-21T11:56:56+00:00",
@@ -1235,6 +1683,7 @@
     },
     {
       "id": "d8cdcc86411a9891",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1249,6 +1698,7 @@
     },
     {
       "id": "e3ec120f457ef564",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1263,6 +1713,7 @@
     },
     {
       "id": "b75548706d7a1afc",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1277,6 +1728,7 @@
     },
     {
       "id": "c3d73c71c3a1d711",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1291,6 +1743,7 @@
     },
     {
       "id": "c075e8114958a333",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1305,6 +1758,7 @@
     },
     {
       "id": "a126eda38cfe5d7b",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1319,6 +1773,7 @@
     },
     {
       "id": "b762b9921cc08247",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1333,6 +1788,7 @@
     },
     {
       "id": "2c3bdbf02cdbe187",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1347,6 +1803,7 @@
     },
     {
       "id": "8f712490cebe1b4c",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1361,6 +1818,7 @@
     },
     {
       "id": "d42aa9518ed9277e",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1375,6 +1833,7 @@
     },
     {
       "id": "66e1bc22511555de",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1389,6 +1848,7 @@
     },
     {
       "id": "5f26bee3cac72dc5",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1403,6 +1863,7 @@
     },
     {
       "id": "b1073ae74336e19a",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1417,6 +1878,7 @@
     },
     {
       "id": "a70b7337079ca2a6",
+      "issue_id": "4fa79497c906c59d",
       "source": "TLDR",
       "subject": "Anthropic wet lab 🧬, Apple home device 🏠, senior dev death spiral 👨‍💻",
       "date": "2026-09-21T11:52:29+00:00",
@@ -1431,6 +1893,7 @@
     },
     {
       "id": "0c2f85109dc87c02",
+      "issue_id": "41fdbe4b9a0fcd10",
       "source": "Azeem Azhar, Exponential View",
       "subject": "📈 Monday data: More AI numbers, more clarity?",
       "date": "2026-09-21T11:34:13+00:00",
@@ -1445,6 +1908,7 @@
     },
     {
       "id": "d00190d1f37cca55",
+      "issue_id": "c95eaa5d054e15ae",
       "source": "Reuters Daily Briefing",
       "subject": "'Disaster' election in Germany",
       "date": "2026-09-21T10:59:26+00:00",
@@ -1459,6 +1923,7 @@
     },
     {
       "id": "49754cc75f46bb4a",
+      "issue_id": "cdbcc47888df3c29",
       "source": "Il Post",
       "subject": "Come lo facciamo, il Post",
       "date": "2026-09-21T09:13:55+00:00",
@@ -1473,6 +1938,7 @@
     },
     {
       "id": "d37419002b09c1d4",
+      "issue_id": "7b9b05f296b04e4d",
       "source": "Interconnects by Nathan Lambert",
       "subject": "Where I stand on RSI",
       "date": "2026-09-19T15:42:20+00:00",
@@ -1487,6 +1953,7 @@
     },
     {
       "id": "5a57cd0d7833b269",
+      "issue_id": "8d543ae2c5c89236",
       "source": "Azeem Azhar, Exponential View",
       "subject": "To err is human!",
       "date": "2026-09-19T14:45:05+00:00",
@@ -1501,6 +1968,7 @@
     },
     {
       "id": "05b422bce3105906",
+      "issue_id": "b12d99ddec0eac7e",
       "source": "Azeem Azhar, Exponential View",
       "subject": "🔮 AI politics & the future of growth ++ #602",
       "date": "2026-09-19T14:22:55+00:00",
@@ -1515,6 +1983,7 @@
     },
     {
       "id": "4567d13942c5c92c",
+      "issue_id": "fd6920fad1e945da",
       "source": "Francesco Costa",
       "subject": "Sta per succedere qualcosa?",
       "date": "2026-09-19T08:16:00+02:00",
@@ -1529,6 +1998,7 @@
     },
     {
       "id": "57203c3db2d0f5a8",
+      "issue_id": "24434d7ff5aed6be",
       "source": "Azeem Azhar, Exponential View",
       "subject": "🚨 AI doesn’t need a mind to run amok",
       "date": "2026-09-19T06:34:04+00:00",
@@ -1543,6 +2013,7 @@
     },
     {
       "id": "401b0007c2267b24",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1557,6 +2028,7 @@
     },
     {
       "id": "74eb163f16e6f083",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1571,6 +2043,7 @@
     },
     {
       "id": "ecf7e522f3eb5a8c",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1585,6 +2058,7 @@
     },
     {
       "id": "17468a2bb4bc8cb8",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1599,6 +2073,7 @@
     },
     {
       "id": "d38ba15f1e57466b",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1613,6 +2088,7 @@
     },
     {
       "id": "f1eeb77161c903af",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1627,6 +2103,7 @@
     },
     {
       "id": "b0d2ec4571bf2b2b",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1641,6 +2118,7 @@
     },
     {
       "id": "734e23680fa27586",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1655,6 +2133,7 @@
     },
     {
       "id": "be09afc33e2b34ad",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1669,6 +2148,7 @@
     },
     {
       "id": "96d360f337d4b401",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1683,6 +2163,7 @@
     },
     {
       "id": "c9cfc394540bf09a",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1697,6 +2178,7 @@
     },
     {
       "id": "2982b8bff10a54b7",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1711,6 +2193,7 @@
     },
     {
       "id": "edf29111e9a792ed",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1725,6 +2208,7 @@
     },
     {
       "id": "4052d5b58371c440",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1739,6 +2223,7 @@
     },
     {
       "id": "2cbaeb6cd92deb5e",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1753,6 +2238,7 @@
     },
     {
       "id": "b0a2344c06e1f0b6",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1767,6 +2253,7 @@
     },
     {
       "id": "68d66f243dedaf28",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1781,6 +2268,7 @@
     },
     {
       "id": "cfbfc6cbf45ff0be",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1795,6 +2283,7 @@
     },
     {
       "id": "bb0c9ddc24cf2dab",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1809,6 +2298,7 @@
     },
     {
       "id": "b4f4ff277739d0a8",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1823,6 +2313,7 @@
     },
     {
       "id": "f57cb96f0de85abc",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1837,6 +2328,7 @@
     },
     {
       "id": "6c45d737c14ddea4",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1851,6 +2343,7 @@
     },
     {
       "id": "9f7a8915dc02f8fa",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1865,6 +2358,7 @@
     },
     {
       "id": "ea0a131280a0f300",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1879,6 +2373,7 @@
     },
     {
       "id": "3de5dae14b9d6b3d",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1893,6 +2388,7 @@
     },
     {
       "id": "1e0453f8974448b3",
+      "issue_id": "32683595af4cccfc",
       "source": "Il Post",
       "subject": "Evening Post, le storie di oggi",
       "date": "2026-09-18T18:30:00+02:00",
@@ -1907,6 +2403,7 @@
     },
     {
       "id": "9c4dbe9c57762afd",
+      "issue_id": "8d049f9bfeb74260",
       "source": "Razib Khan's Unsupervised Learning",
       "subject": "Theo Jaffee: monitoring the “singularity”",
       "date": "2026-09-18T15:21:54+00:00",
@@ -1921,6 +2418,7 @@
     },
     {
       "id": "289d6086bb9eba8a",
+      "issue_id": "99eddf5f9f80d1ad",
       "source": "The AI Musicpreneur",
       "subject": "⏳ Suno made 92.8% of AI music on streaming",
       "date": "2026-09-18T14:31:23+00:00",
@@ -1935,6 +2433,7 @@
     },
     {
       "id": "72fc639512723f0a",
+      "issue_id": "99eddf5f9f80d1ad",
       "source": "The AI Musicpreneur",
       "subject": "⏳ Suno made 92.8% of AI music on streaming",
       "date": "2026-09-18T14:31:23+00:00",
@@ -1949,6 +2448,7 @@
     },
     {
       "id": "63d0f643ebfa696b",
+      "issue_id": "99eddf5f9f80d1ad",
       "source": "The AI Musicpreneur",
       "subject": "⏳ Suno made 92.8% of AI music on streaming",
       "date": "2026-09-18T14:31:23+00:00",
@@ -1963,6 +2463,7 @@
     },
     {
       "id": "46bebabfe5a978b8",
+      "issue_id": "99eddf5f9f80d1ad",
       "source": "The AI Musicpreneur",
       "subject": "⏳ Suno made 92.8% of AI music on streaming",
       "date": "2026-09-18T14:31:23+00:00",
@@ -1977,6 +2478,7 @@
     },
     {
       "id": "fdfdeb56bb907de2",
+      "issue_id": "99eddf5f9f80d1ad",
       "source": "The AI Musicpreneur",
       "subject": "⏳ Suno made 92.8% of AI music on streaming",
       "date": "2026-09-18T14:31:23+00:00",
@@ -1991,6 +2493,7 @@
     },
     {
       "id": "78a022763c5c56ae",
+      "issue_id": "99eddf5f9f80d1ad",
       "source": "The AI Musicpreneur",
       "subject": "⏳ Suno made 92.8% of AI music on streaming",
       "date": "2026-09-18T14:31:23+00:00",
@@ -2005,6 +2508,7 @@
     },
     {
       "id": "48eb5fa452f9fe0c",
+      "issue_id": "99eddf5f9f80d1ad",
       "source": "The AI Musicpreneur",
       "subject": "⏳ Suno made 92.8% of AI music on streaming",
       "date": "2026-09-18T14:31:23+00:00",
@@ -2019,6 +2523,7 @@
     },
     {
       "id": "b0dc240368a59a29",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2033,6 +2538,7 @@
     },
     {
       "id": "0da5fca91da35d2e",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2047,6 +2553,7 @@
     },
     {
       "id": "a20a9dc8dd6824d5",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2061,6 +2568,7 @@
     },
     {
       "id": "d2fa34b259cf5336",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2075,6 +2583,7 @@
     },
     {
       "id": "bb9bddf5cd4c9d90",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2089,6 +2598,7 @@
     },
     {
       "id": "f7d6deffa755bbc4",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2103,6 +2613,7 @@
     },
     {
       "id": "be04f0bd752ef349",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2117,6 +2628,7 @@
     },
     {
       "id": "39411dcd3ef1bb6d",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2131,6 +2643,7 @@
     },
     {
       "id": "24a7e9d11f06e35f",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2145,6 +2658,7 @@
     },
     {
       "id": "bebfe4b6ed67bbd2",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2159,6 +2673,7 @@
     },
     {
       "id": "2c769c6e0c3f65f1",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2173,6 +2688,7 @@
     },
     {
       "id": "3ae877f52a2d9229",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2187,6 +2703,7 @@
     },
     {
       "id": "4988bc61a40c9abb",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2201,6 +2718,7 @@
     },
     {
       "id": "6f8d8448dd20e75c",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2215,6 +2733,7 @@
     },
     {
       "id": "48c8e8595e5f77a4",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2229,6 +2748,7 @@
     },
     {
       "id": "e5cf7e080861be5f",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2243,6 +2763,7 @@
     },
     {
       "id": "8e8292e9033af791",
+      "issue_id": "e86949eb3da69428",
       "source": "TLDR AI",
       "subject": "Claude Projects v2 💼, Google family agent 👨‍👩‍👧‍👦, ",
       "date": "2026-09-18T14:00:44+00:00",
@@ -2257,6 +2778,7 @@
     },
     {
       "id": "1996037377a7a0c5",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2271,6 +2793,7 @@
     },
     {
       "id": "6d59f9dd884b4d0a",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2285,6 +2808,7 @@
     },
     {
       "id": "f4cb2c1536c9c3a3",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2299,6 +2823,7 @@
     },
     {
       "id": "b87fd4e350de3584",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2313,6 +2838,7 @@
     },
     {
       "id": "a9b315427ce36fc3",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2327,6 +2853,7 @@
     },
     {
       "id": "0639059efbc1850a",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2341,6 +2868,7 @@
     },
     {
       "id": "b800687ffda0e456",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2355,6 +2883,7 @@
     },
     {
       "id": "523e04bcca63ab8d",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2369,6 +2898,7 @@
     },
     {
       "id": "43de6a5d5c98ed64",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2383,6 +2913,7 @@
     },
     {
       "id": "f42f601c24e9c54b",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2397,6 +2928,7 @@
     },
     {
       "id": "ba3ac1563cdd3054",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2411,6 +2943,7 @@
     },
     {
       "id": "ce9c21cfaa52ba46",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2425,6 +2958,7 @@
     },
     {
       "id": "5bb58e3f1ca2c1f7",
+      "issue_id": "61510dbf2383145c",
       "source": "TLDR Hardware",
       "subject": "SK Hynix goes to the US 🇺🇸, Figure walks into homes 🏠, Run models on SSDs 💾",
       "date": "2026-09-18T13:41:16+00:00",
@@ -2439,6 +2973,7 @@
     },
     {
       "id": "0a714afc496113a5",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2453,6 +2988,7 @@
     },
     {
       "id": "ec4c3960e9880391",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2467,6 +3003,7 @@
     },
     {
       "id": "e3f58538939d6271",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2481,6 +3018,7 @@
     },
     {
       "id": "9cfa10031350f224",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2495,6 +3033,7 @@
     },
     {
       "id": "407a7830e637cdd0",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2509,6 +3048,7 @@
     },
     {
       "id": "2eb9505c9783ef8b",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2523,6 +3063,7 @@
     },
     {
       "id": "a63b10eff9a246d1",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2537,6 +3078,7 @@
     },
     {
       "id": "10239fea6c5532b7",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2551,6 +3093,7 @@
     },
     {
       "id": "eda7a463df39b962",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2565,6 +3108,7 @@
     },
     {
       "id": "15ac13ac68834b37",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2579,6 +3123,7 @@
     },
     {
       "id": "75630514a55d1078",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2593,6 +3138,7 @@
     },
     {
       "id": "03012702a4b0ac5c",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2607,6 +3153,7 @@
     },
     {
       "id": "f6a425ba73e119e1",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2621,6 +3168,7 @@
     },
     {
       "id": "d412bdceafea1d20",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2635,6 +3183,7 @@
     },
     {
       "id": "30d6d1d92d69b39a",
+      "issue_id": "d1f47c03ac5bc6c0",
       "source": "TLDR Founders",
       "subject": "Harness margins 🤖, AI kingmakers 👑, Mercury Books 📊",
       "date": "2026-09-18T12:42:00+00:00",
@@ -2649,6 +3198,7 @@
     },
     {
       "id": "164dd5111e8665f3",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2663,6 +3213,7 @@
     },
     {
       "id": "481c10c9be0f8f80",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2677,6 +3228,7 @@
     },
     {
       "id": "551968bf9a630256",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2691,6 +3243,7 @@
     },
     {
       "id": "6d27b6b126641611",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2705,6 +3258,7 @@
     },
     {
       "id": "2e2faa63ea20a066",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2719,6 +3273,7 @@
     },
     {
       "id": "7722683e66bd490a",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2733,6 +3288,7 @@
     },
     {
       "id": "c785b4ce850bd8d6",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2747,6 +3303,7 @@
     },
     {
       "id": "9ef5d9b94cf8d768",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2761,6 +3318,7 @@
     },
     {
       "id": "01145ab88b40a9e8",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2775,6 +3333,7 @@
     },
     {
       "id": "ef7a320db6f680b7",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2789,6 +3348,7 @@
     },
     {
       "id": "23010c9c1f1878b8",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2803,6 +3363,7 @@
     },
     {
       "id": "9b4dc7f6300b0d5b",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2817,6 +3378,7 @@
     },
     {
       "id": "a5407837afe95c6c",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2831,6 +3393,7 @@
     },
     {
       "id": "3237be42dffd4abc",
+      "issue_id": "502345cbdca87e8a",
       "source": "TLDR",
       "subject": "Hacking OpenAI 👨‍💻, Claude leads R&D 🤖, Safari MCP 🌍",
       "date": "2026-09-18T11:48:32+00:00",
@@ -2845,6 +3408,7 @@
     },
     {
       "id": "53f19be2b13305c7",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2859,6 +3423,7 @@
     },
     {
       "id": "e8e8b20d793d36f3",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2873,6 +3438,7 @@
     },
     {
       "id": "2d1ea706b44280a6",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2887,6 +3453,7 @@
     },
     {
       "id": "6bd64ee5b8b0a69e",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2901,6 +3468,7 @@
     },
     {
       "id": "1313dadeb231b3b7",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2915,6 +3483,7 @@
     },
     {
       "id": "f77993245fb4dbd1",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2929,6 +3498,7 @@
     },
     {
       "id": "f0d34dfc0c76d5aa",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2943,6 +3513,7 @@
     },
     {
       "id": "0ce0b2508ab26228",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2957,6 +3528,7 @@
     },
     {
       "id": "a17e521c1816ebf8",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2971,6 +3543,7 @@
     },
     {
       "id": "64019dbbbccf2264",
+      "issue_id": "f6a983a87df4cc75",
       "source": "TLDR Product",
       "subject": "The barbell-ification of software 🏋️, a human router 🌐, evals and experiment variants 🧪",
       "date": "2026-09-18T10:17:27+00:00",
@@ -2985,6 +3558,7 @@
     },
     {
       "id": "c6654c3d0eea0937",
+      "issue_id": "f522239f55ee00e5",
       "source": "Understanding AI",
       "subject": "How a single tweet transformed the AI safety debate",
       "date": "2026-09-17T20:21:40+00:00",
@@ -2999,6 +3573,7 @@
     },
     {
       "id": "3284eec8c07a9167",
+      "issue_id": "00471fb93710771d",
       "source": "Dwarkesh Patel",
       "subject": "Noam Brown – Agent swarms, alignment, & recursive self-improvement",
       "date": "2026-09-17T16:03:27+00:00",
@@ -3013,6 +3588,7 @@
     },
     {
       "id": "2d820b9e205804f1",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3027,6 +3603,7 @@
     },
     {
       "id": "f70b6e15ee0c43bf",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3041,6 +3618,7 @@
     },
     {
       "id": "aaf2f7bde30764cf",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3055,6 +3633,7 @@
     },
     {
       "id": "15f92555578be8e4",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3069,6 +3648,7 @@
     },
     {
       "id": "32596751d17c2fbc",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3083,6 +3663,7 @@
     },
     {
       "id": "eb3b655f978d8556",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3097,6 +3678,7 @@
     },
     {
       "id": "f90a03145dc348ce",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3111,6 +3693,7 @@
     },
     {
       "id": "410d4cd2dbf12f21",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3125,6 +3708,7 @@
     },
     {
       "id": "3cb61877051d9999",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3139,6 +3723,7 @@
     },
     {
       "id": "9d6a3719c35013e2",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3153,6 +3738,7 @@
     },
     {
       "id": "558c7a1f994bb75e",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3167,6 +3753,7 @@
     },
     {
       "id": "5d4b728993a61f42",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3181,6 +3768,7 @@
     },
     {
       "id": "9cf3563ce51e93e5",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3195,6 +3783,7 @@
     },
     {
       "id": "b4b6aca8fd8bd3b1",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3209,6 +3798,7 @@
     },
     {
       "id": "29426eb18d3396f9",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3223,6 +3813,7 @@
     },
     {
       "id": "003136f5d2c2ec05",
+      "issue_id": "71e45995c6124a2d",
       "source": "TLDR AI",
       "subject": "Claude + Cowork merge 🛠️, ChatGPT sponsored agents 💰, harness tax 🤖 ",
       "date": "2026-09-17T14:01:13+00:00",
@@ -3237,6 +3828,7 @@
     },
     {
       "id": "2d811adbb533eb1c",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3251,6 +3843,7 @@
     },
     {
       "id": "d539839558167ff5",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3265,6 +3858,7 @@
     },
     {
       "id": "8fcefb43165bd308",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3279,6 +3873,7 @@
     },
     {
       "id": "3adacf18b9f490dd",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3293,6 +3888,7 @@
     },
     {
       "id": "bfd8f0fb33062a3d",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3307,6 +3903,7 @@
     },
     {
       "id": "17597b18c68d4c44",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3321,6 +3918,7 @@
     },
     {
       "id": "6480f05611fe0458",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3335,6 +3933,7 @@
     },
     {
       "id": "d0b97727f8ffff4a",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3349,6 +3948,7 @@
     },
     {
       "id": "e71dc0b642187462",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3363,6 +3963,7 @@
     },
     {
       "id": "c7dca8f4f8d74706",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3377,6 +3978,7 @@
     },
     {
       "id": "3753be32eb101480",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3391,6 +3993,7 @@
     },
     {
       "id": "b7698cf9c99f4d28",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3405,6 +4008,7 @@
     },
     {
       "id": "1520b99e702a82f0",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3419,6 +4023,7 @@
     },
     {
       "id": "2e74bcafa076b287",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3433,6 +4038,7 @@
     },
     {
       "id": "70d514f079f46a35",
+      "issue_id": "c0f46fa8d29b3702",
       "source": "TLDR",
       "subject": "Apple AI servers 🖥️, Snap Specs 👓, Google Home MCP 👨‍💻",
       "date": "2026-09-17T11:40:16+00:00",
@@ -3447,6 +4053,7 @@
     },
     {
       "id": "dcdaece86905fcfc",
+      "issue_id": "c83fe3ef0fc68ac6",
       "source": "Azeem Azhar, Exponential View",
       "subject": "🧠 I do not want your brains to rot",
       "date": "2026-09-17T11:00:57+00:00",
@@ -3461,6 +4068,7 @@
     },
     {
       "id": "8151d33ef7f2ffa8",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3475,6 +4083,7 @@
     },
     {
       "id": "b413537fc52a2d15",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3489,6 +4098,7 @@
     },
     {
       "id": "2160d235dfe0214f",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3503,6 +4113,7 @@
     },
     {
       "id": "7fecaaff1ec237d9",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3517,6 +4128,7 @@
     },
     {
       "id": "906fd4bb3dcee068",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3531,6 +4143,7 @@
     },
     {
       "id": "e1916ab0c16ff6ea",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3545,6 +4158,7 @@
     },
     {
       "id": "0a119ab7d082c2aa",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3559,6 +4173,7 @@
     },
     {
       "id": "58e1bb65ff9a646d",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3573,6 +4188,7 @@
     },
     {
       "id": "5a822d9b12975aeb",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3587,6 +4203,7 @@
     },
     {
       "id": "ce5b43e8959afb0e",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3601,6 +4218,7 @@
     },
     {
       "id": "b778485f28b7caeb",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3615,6 +4233,7 @@
     },
     {
       "id": "da319f6a4a5f7a55",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3629,6 +4248,7 @@
     },
     {
       "id": "879a9bf2a77bf807",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3643,6 +4263,7 @@
     },
     {
       "id": "1194fd8122281bc5",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3657,6 +4278,7 @@
     },
     {
       "id": "bb51696b7fdb0ebe",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3671,6 +4293,7 @@
     },
     {
       "id": "2575bb0d51c53833",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3685,6 +4308,7 @@
     },
     {
       "id": "91336c6e746aa878",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3699,6 +4323,7 @@
     },
     {
       "id": "bb4737abaf07de9b",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3713,6 +4338,7 @@
     },
     {
       "id": "92f5e8002ac4f187",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3727,6 +4353,7 @@
     },
     {
       "id": "fedae2cceff0cb71",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3741,6 +4368,7 @@
     },
     {
       "id": "969ff274e84c932a",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3755,6 +4383,7 @@
     },
     {
       "id": "e39b760603b88536",
+      "issue_id": "a3d7edc4bb7f4919",
       "source": "TLDR AI",
       "subject": "Amodei slows frontier 🛑, ARC-AGI-4 🧠, Cursor Projects 👨‍💻",
       "date": "2026-09-14T14:17:01+00:00",
@@ -3769,6 +4398,7 @@
     },
     {
       "id": "a621b1820aa0b210",
+      "issue_id": "5340f5b1d1b87a8e",
       "source": "Dwarkesh Patel",
       "subject": "Ajeya Cotra – Inside the OpenAI agent swarm that hacked Hugging Face",
       "date": "2026-09-01T16:06:33+00:00",
@@ -3783,6 +4413,7 @@
     },
     {
       "id": "1e1fd9ff91a5572c",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3797,6 +4428,7 @@
     },
     {
       "id": "535843c1bfec6981",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3811,6 +4443,7 @@
     },
     {
       "id": "b4735f8ba25e99ca",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3825,6 +4458,7 @@
     },
     {
       "id": "af37915988a3fd9d",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3839,6 +4473,7 @@
     },
     {
       "id": "a0e582d034601ef9",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3853,6 +4488,7 @@
     },
     {
       "id": "ac4e305e22c628a5",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3867,6 +4503,7 @@
     },
     {
       "id": "a1d232b654a17ca9",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3881,6 +4518,7 @@
     },
     {
       "id": "db1cd1cfdf32cd4a",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3895,6 +4533,7 @@
     },
     {
       "id": "4d86c32ae4433887",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3909,6 +4548,7 @@
     },
     {
       "id": "949e92b94c53b3a1",
+      "issue_id": "325ed4daa4093250",
       "source": "TLDR Product",
       "subject": "Automating a PM workday ⚡🦾, -1 to 0 🌀, AI needs structure 🧱",
       "date": "2026-09-01T10:16:36+00:00",
@@ -3923,6 +4563,7 @@
     },
     {
       "id": "c2ca775849b5cdad",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -3937,6 +4578,7 @@
     },
     {
       "id": "7c3d74a57c2b3467",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -3951,6 +4593,7 @@
     },
     {
       "id": "3352487391301775",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -3965,6 +4608,7 @@
     },
     {
       "id": "aa0017b5ef4fc135",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -3979,6 +4623,7 @@
     },
     {
       "id": "6a20ae33d399137a",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -3993,6 +4638,7 @@
     },
     {
       "id": "1b83e1c6eb92e2e6",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4007,6 +4653,7 @@
     },
     {
       "id": "6f52f8ca5ca971ac",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4021,6 +4668,7 @@
     },
     {
       "id": "e9a02fe462ad4a1f",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4035,6 +4683,7 @@
     },
     {
       "id": "c4a2b220986c4e20",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4049,6 +4698,7 @@
     },
     {
       "id": "b44df004d9827ef4",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4063,6 +4713,7 @@
     },
     {
       "id": "2ed6043f6cfa0f52",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4077,6 +4728,7 @@
     },
     {
       "id": "91de359822d89cb5",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4091,6 +4743,7 @@
     },
     {
       "id": "48c813d1c6838ab1",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4105,6 +4758,7 @@
     },
     {
       "id": "03df9dd4b4e4c767",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4119,6 +4773,7 @@
     },
     {
       "id": "b74030f924de42b7",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4133,6 +4788,7 @@
     },
     {
       "id": "94a875811e620f45",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4147,6 +4803,7 @@
     },
     {
       "id": "2ff39631e1320a97",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4161,6 +4818,7 @@
     },
     {
       "id": "560e91686fc06962",
+      "issue_id": "ea251319edb4d959",
       "source": "TLDR AI",
       "subject": "Gemini Omni 1.1 🎬, Cohere Parse 📄, Codex persistent mode 👨‍💻",
       "date": "2026-08-28T13:51:58+00:00",
@@ -4175,6 +4833,7 @@
     },
     {
       "id": "d6163f65180ae7fc",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4189,6 +4848,7 @@
     },
     {
       "id": "795104ede583e040",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4203,6 +4863,7 @@
     },
     {
       "id": "cf22adf94280fb6a",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4217,6 +4878,7 @@
     },
     {
       "id": "eaa52ed2dd5f3f28",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4231,6 +4893,7 @@
     },
     {
       "id": "89daac1293b63e2a",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4245,6 +4908,7 @@
     },
     {
       "id": "835dd12034f80d16",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4259,6 +4923,7 @@
     },
     {
       "id": "b0947fa7f35e890f",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4273,6 +4938,7 @@
     },
     {
       "id": "60a4cfb70ba1fad3",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4287,6 +4953,7 @@
     },
     {
       "id": "576b27d0b08225ee",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4301,6 +4968,7 @@
     },
     {
       "id": "a817353e5f5ee2f0",
+      "issue_id": "d0b20c7b3414f639",
       "source": "TLDR Product",
       "subject": "From AI demo to AI product 🎁, 5 decisions to 1M+ users 📈, pricing per token 💰",
       "date": "2026-08-28T10:16:00+00:00",
@@ -4315,6 +4983,7 @@
     },
     {
       "id": "f91db5489f4974e9",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4329,6 +4998,7 @@
     },
     {
       "id": "12e5e7b6e5c3143d",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4343,6 +5013,7 @@
     },
     {
       "id": "fee19cb126c126da",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4357,6 +5028,7 @@
     },
     {
       "id": "e9f4932793c21799",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4371,6 +5043,7 @@
     },
     {
       "id": "f2960f399b498058",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4385,6 +5058,7 @@
     },
     {
       "id": "53a436e73ed9b988",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4399,6 +5073,7 @@
     },
     {
       "id": "c628b726e9dc2dd9",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4413,6 +5088,7 @@
     },
     {
       "id": "ee4953a3f692ff19",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4427,6 +5103,7 @@
     },
     {
       "id": "9252a3e5ae6d5bba",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4441,6 +5118,7 @@
     },
     {
       "id": "4fbb69b85f66bbf2",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4455,6 +5133,7 @@
     },
     {
       "id": "2b2c330574064e5b",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4469,6 +5148,7 @@
     },
     {
       "id": "5651b98c078c8b24",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4483,6 +5163,7 @@
     },
     {
       "id": "9be333ebdf194acd",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4497,6 +5178,7 @@
     },
     {
       "id": "0f60ea1f6f2d23be",
+      "issue_id": "22575914096d0f0c",
       "source": "TLDR",
       "subject": "Nvidia buys Hugging Face 💰, Inside OpenAI 🤖, making LLMs faster ⚡",
       "date": "2026-08-27T11:04:52+00:00",
@@ -4511,6 +5193,7 @@
     },
     {
       "id": "f464dbd9e931bb6d",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4525,6 +5208,7 @@
     },
     {
       "id": "39ada1805c07f3b2",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4539,6 +5223,7 @@
     },
     {
       "id": "75a9d929d2860589",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4553,6 +5238,7 @@
     },
     {
       "id": "72ce3a188500739c",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4567,6 +5253,7 @@
     },
     {
       "id": "e8b20ac73216fbe6",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4581,6 +5268,7 @@
     },
     {
       "id": "e065918114d6fff2",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4595,6 +5283,7 @@
     },
     {
       "id": "74b685fdd27e5e26",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4609,6 +5298,7 @@
     },
     {
       "id": "103bc4018eaa29bd",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4623,6 +5313,7 @@
     },
     {
       "id": "75bdaee20d6c8011",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4637,6 +5328,7 @@
     },
     {
       "id": "27414b8216dd8d7f",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4651,6 +5343,7 @@
     },
     {
       "id": "918de4bbaf7bba63",
+      "issue_id": "b98cec08c804f714",
       "source": "TLDR Founders",
       "subject": "B2B pricing models 💰, founder sales guide 🤝, refinding PMF 📈",
       "date": "2026-08-26T12:28:44+00:00",
@@ -4665,6 +5358,7 @@
     },
     {
       "id": "68c64590ec1898d6",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4679,6 +5373,7 @@
     },
     {
       "id": "463e3bd411b1d006",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4693,6 +5388,7 @@
     },
     {
       "id": "498625f06b90abde",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4707,6 +5403,7 @@
     },
     {
       "id": "4b0cb71b006bea44",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4721,6 +5418,7 @@
     },
     {
       "id": "7306446a6c557e71",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4735,6 +5433,7 @@
     },
     {
       "id": "c61a9e7d732b928f",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4749,6 +5448,7 @@
     },
     {
       "id": "43cca1c8289d8f21",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4763,6 +5463,7 @@
     },
     {
       "id": "21f16338bd80642e",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4777,6 +5478,7 @@
     },
     {
       "id": "f4b789e0981e3cb9",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4791,6 +5493,7 @@
     },
     {
       "id": "79f822b6d75e960c",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4805,6 +5508,7 @@
     },
     {
       "id": "62be058687f3fcb6",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4819,6 +5523,7 @@
     },
     {
       "id": "0b042750dcfe78f9",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4833,6 +5538,7 @@
     },
     {
       "id": "d9b562a8af318b07",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4847,6 +5553,7 @@
     },
     {
       "id": "462033273b24894a",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4861,6 +5568,7 @@
     },
     {
       "id": "48ee72d6ed7fc6d7",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4875,6 +5583,7 @@
     },
     {
       "id": "f0b6f014fb4e4d0b",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4889,6 +5598,7 @@
     },
     {
       "id": "8fb5c593151e5367",
+      "issue_id": "7476e85e9431dc5b",
       "source": "TLDR AI",
       "subject": "DeepSeek Flash Vision 👀, Claude Mythos security 🛡️, inside Grok Bot 🤖",
       "date": "2026-08-24T14:04:57+00:00",
@@ -4903,6 +5613,7 @@
     },
     {
       "id": "570915088a153937",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -4917,6 +5628,7 @@
     },
     {
       "id": "7c35f0e178318a84",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -4931,6 +5643,7 @@
     },
     {
       "id": "58c3e6e15130e1fe",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -4945,6 +5658,7 @@
     },
     {
       "id": "7e5c093439f4d0c2",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -4959,6 +5673,7 @@
     },
     {
       "id": "13b789e80fbc13a6",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -4973,6 +5688,7 @@
     },
     {
       "id": "efdf9b6d76f9201e",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -4987,6 +5703,7 @@
     },
     {
       "id": "7440b4835d352274",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -5001,6 +5718,7 @@
     },
     {
       "id": "2c27fef0c92efb04",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -5015,6 +5733,7 @@
     },
     {
       "id": "2ae30d9d7111c1a7",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -5029,6 +5748,7 @@
     },
     {
       "id": "f3dc4e58bd9450ce",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -5043,6 +5763,7 @@
     },
     {
       "id": "635013cd14704565",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -5057,6 +5778,7 @@
     },
     {
       "id": "8ec1a4057ed79f0f",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -5071,6 +5793,7 @@
     },
     {
       "id": "d9eeffe6613e3329",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",
@@ -5085,6 +5808,7 @@
     },
     {
       "id": "5ef1d03a61bb9b39",
+      "issue_id": "548786b3e514a8ce",
       "source": "TLDR Data",
       "subject": "The Politics Behind Metrics 🏛️, Unlearning Pandemic Demand 🦠, The Art of Indexing ⚡",
       "date": "2026-08-24T10:23:08+00:00",

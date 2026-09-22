@@ -82,6 +82,105 @@ function readGlyph(a, isRead) {
   return ` <span class="read-mark" data-read-toggle="${escapeHtml(a.id)}" role="button" tabindex="0" aria-label="Mark as unread" title="Mark as unread">&#10003;</span>`;
 }
 
+// Group the flat, already date-sorted article list into render units: a
+// roundup email (several articles sharing one issue_id) becomes ONE "issue"
+// unit that renders as a single collapsible row instead of N separate cards;
+// a single-essay email (Understanding AI, Da Costa a Costa, ...) stays an
+// ordinary "article" unit -- explicitly not wrapped in a one-item accordion.
+// Grouping is driven entirely by issue_id (set during extraction from the
+// Gmail message id), never by sender name, so this doesn't need updating
+// when a new roundup-style sender is added.
+//
+// Built with one pass that assigns each issue to the position of its FIRST
+// story in the (date-sorted) article list, rather than assuming stories of
+// one issue sit contiguously -- correct today because extraction appends one
+// message's articles together and the later sort is stable, but not an
+// invariant worth depending on silently.
+function groupIntoUnits(articles) {
+  const byIssue = new Map();
+  for (const a of articles) {
+    if (!byIssue.has(a.issue_id)) byIssue.set(a.issue_id, []);
+    byIssue.get(a.issue_id).push(a);
+  }
+  const seen = new Set();
+  const units = [];
+  for (const a of articles) {
+    if (seen.has(a.issue_id)) continue;
+    seen.add(a.issue_id);
+    const stories = byIssue.get(a.issue_id);
+    if (stories.length > 1) {
+      units.push({
+        kind: "issue",
+        issueId: a.issue_id,
+        stories,
+        section: a.section,
+        date: a.date,
+        source: a.source,
+        subject: a.subject,
+      });
+    } else {
+      units.push({ kind: "article", article: a, section: a.section, date: a.date });
+    }
+  }
+  return units;
+}
+
+// Removes and returns the first "article"-kind unit matching `predicate`
+// (default: any), leaving issue units untouched in the returned `rest` --
+// used everywhere a single big treatment (hero, longread band, a section's
+// featured lead) needs one ordinary article and must never pick an issue
+// row for it. Returns { picked: null, rest: units } if nothing matches.
+function pickFirstArticleUnit(units, predicate = () => true) {
+  const rest = units.slice();
+  const idx = rest.findIndex((u) => u.kind === "article" && predicate(u.article));
+  if (idx === -1) return { picked: null, rest: units };
+  const picked = rest.splice(idx, 1)[0].article;
+  return { picked, rest };
+}
+
+function renderUnit(unit, rowFn) {
+  return unit.kind === "issue" ? issueRow(unit) : rowFn(unit.article);
+}
+
+// A roundup issue's own subject line ("Evening Post, le storie di oggi",
+// "TLDR AI") is usually too generic on its own to tell the reader what's
+// actually inside -- source and time alone aren't enough context either, so
+// the collapsed row leads with the first couple of stories' own headlines,
+// which is what a reader actually scans a roundup for.
+function issuePreview(unit) {
+  return unit.stories.slice(0, 2).map((a) => a.title).join(" · ");
+}
+
+// Plain "·" rather than the "&middot;" entity used elsewhere in this file:
+// this string is later reassigned wholesale via textContent (see
+// refreshIssueProgress), which never decodes HTML entities.
+function issueMetaBase(unit) {
+  return `${timeOfDay(unit.date)} · ${unit.stories.length} stories`;
+}
+
+function issueRow(unit) {
+  const total = unit.stories.length;
+  const readCount = unit.stories.filter((a) => ReadState.isRead(a.id)).length;
+  const allRead = readCount === total;
+  const toggleId = `issue-${unit.issueId}-toggle`;
+  const panelId = `issue-${unit.issueId}-stories`;
+  const metaBase = issueMetaBase(unit);
+  const progress = readCount > 0 ? ` · ${readCount}/${total} read` : "";
+  const label = `${unit.source}, ${timeOfDay(unit.date)}, ${total} stories${
+    readCount > 0 ? `, ${readCount} of ${total} read` : ""
+  }: ${issuePreview(unit)}`;
+  return `<li class="issue-row${allRead ? " is-read" : ""}" data-issue="${escapeHtml(unit.issueId)}">
+    <button type="button" class="issue-toggle" id="${toggleId}" aria-expanded="false" aria-controls="${panelId}" aria-label="${escapeHtml(label)}">
+      <span class="label-source">${escapeHtml(unit.source)}</span>
+      <span class="label-meta issue-meta" data-base="${escapeHtml(metaBase)}">${metaBase}${progress}</span>
+      <span class="issue-headline" aria-hidden="true">${escapeHtml(issuePreview(unit))}<span class="issue-chevron">&#9662;</span></span>
+    </button>
+    <ul class="compact-list issue-stories" id="${panelId}" role="group" aria-labelledby="${toggleId}" hidden>
+      ${unit.stories.map((a) => compactRow(a)).join("")}
+    </ul>
+  </li>`;
+}
+
 function heroBlock(a) {
   const isRead = ReadState.isRead(a.id);
   const media = a.image
@@ -167,28 +266,37 @@ function sectionHeader(name, count) {
   </div>`;
 }
 
-function renderSection(name, items) {
-  if (!items.length) return "";
+// A section header's count is a count of *stories*, not of rendered rows --
+// collapsing a 14-story roundup into one row shouldn't make the section
+// header (or the masthead total) look like content vanished.
+function unitStoryCount(units) {
+  return units.reduce((n, u) => n + (u.kind === "issue" ? u.stories.length : 1), 0);
+}
+
+function renderSection(name, units) {
+  if (!units.length) return "";
   let body = "";
   if (name === "Latest") {
-    body = `<ul class="radar-list">${items.map(radarRow).join("")}</ul>`;
+    body = `<ul class="radar-list">${units.map((u) => renderUnit(u, radarRow)).join("")}</ul>`;
   } else if (name === "World & Ideas") {
-    const [lead, ...rest] = items;
-    body = `${secondaryBlock(lead)}<ul class="compact-list">${rest.map(compactRow).join("")}</ul>`;
+    const { picked: lead, rest } = pickFirstArticleUnit(units);
+    const leadHtml = lead ? secondaryBlock(lead) : "";
+    body = `${leadHtml}<ul class="compact-list">${rest.map((u) => renderUnit(u, compactRow)).join("")}</ul>`;
   } else if (name === "Technology & AI") {
-    body = `<ul class="compact-list compact-grid-3">${items.map(compactRow).join("")}</ul>`;
+    body = `<ul class="compact-list compact-grid-3">${units.map((u) => renderUnit(u, compactRow)).join("")}</ul>`;
   } else if (name === "Culture") {
     // Feature block for the lead item, then every remaining item in the
     // section as a compact row -- slice(0, 4) used to cap this at 4 total,
     // hiding the rest of the section even though the header's count (and
     // the masthead's total) already counted them all.
-    const [lead, ...rest] = items;
-    body = `${featureBlock(lead)}<ul class="compact-list">${rest.map(compactRow).join("")}</ul>`;
+    const { picked: lead, rest } = pickFirstArticleUnit(units);
+    const leadHtml = lead ? featureBlock(lead) : "";
+    body = `${leadHtml}<ul class="compact-list">${rest.map((u) => renderUnit(u, compactRow)).join("")}</ul>`;
   } else {
-    body = `<ul class="compact-list">${items.map(compactRow).join("")}</ul>`;
+    body = `<ul class="compact-list">${units.map((u) => renderUnit(u, compactRow)).join("")}</ul>`;
   }
   return `<section class="section" data-section="${escapeHtml(name)}">
-    ${sectionHeader(name, items.length)}
+    ${sectionHeader(name, unitStoryCount(units))}
     <div class="section-body">${body}</div>
   </section>`;
 }
@@ -219,21 +327,30 @@ function render(data) {
 
   renderMasthead(articles, data.generated_at);
 
-  const remaining = articles.slice();
-  const hero = remaining.shift();
+  // A roundup issue is never the hero or the long-read band -- those are
+  // single-story treatments (one image, one dek) that don't fit a
+  // multi-story collapsed row, so both picks skip issue units and leave
+  // them in place to be rendered as a normal row within their own section.
+  const units = groupIntoUnits(articles);
+  const { picked: hero, rest: afterHero } = pickFirstArticleUnit(units);
 
   let longread = null;
-  const longreadIdx = remaining.findIndex((a) => a.word_count >= LONGREAD_WORD_THRESHOLD);
-  if (longreadIdx !== -1) {
-    longread = remaining.splice(longreadIdx, 1)[0];
+  let remaining = afterHero;
+  const { picked: longreadPick, rest: afterLongread } = pickFirstArticleUnit(
+    afterHero,
+    (a) => a.word_count >= LONGREAD_WORD_THRESHOLD
+  );
+  if (longreadPick) {
+    longread = longreadPick;
+    remaining = afterLongread;
   }
 
   const bySection = {};
-  for (const a of remaining) {
-    (bySection[a.section] ||= []).push(a);
+  for (const u of remaining) {
+    (bySection[u.section] ||= []).push(u);
   }
 
-  let html = heroBlock(hero);
+  let html = hero ? heroBlock(hero) : "";
   for (const name of SECTION_ORDER) {
     html += renderSection(name, bySection[name] || []);
     if (name === "Technology & AI" && longread) {
@@ -247,6 +364,7 @@ function render(data) {
 
   setupScroll();
   setupReadToggle();
+  setupIssueToggle();
   setupSectionFilter();
 }
 
@@ -273,6 +391,24 @@ function setupSectionFilter() {
   });
 }
 
+// If `card` is one story inside a collapsed issue's panel, recompute that
+// issue's own aggregate progress display and its dimmed/read state from the
+// stories now marked read in the DOM -- this is display-only bookkeeping:
+// it never calls ReadState itself and never adds a way to mark the whole
+// issue read or unread in one action.
+function refreshIssueProgress(card) {
+  const issueLi = card.closest(".issue-row");
+  if (!issueLi) return;
+  const panel = issueLi.querySelector(".issue-stories");
+  const metaEl = issueLi.querySelector(".issue-meta");
+  if (!panel || !metaEl) return;
+  const total = panel.children.length;
+  const readCount = panel.querySelectorAll(":scope > .is-read").length;
+  issueLi.classList.toggle("is-read", total > 0 && readCount === total);
+  const base = metaEl.dataset.base || metaEl.textContent;
+  metaEl.textContent = base + (readCount > 0 ? ` · ${readCount}/${total} read` : "");
+}
+
 function setupReadToggle() {
   const feed = document.getElementById("feed");
 
@@ -282,7 +418,10 @@ function setupReadToggle() {
     const id = mark.dataset.readToggle;
     ReadState.markUnread(id);
     const card = mark.closest("article, li, .longread-band");
-    if (card) card.classList.remove("is-read");
+    if (card) {
+      card.classList.remove("is-read");
+      refreshIssueProgress(card);
+    }
     mark.remove();
     return true;
   }
@@ -304,6 +443,7 @@ function setupReadToggle() {
       if (meta && !meta.querySelector(".read-mark")) {
         meta.insertAdjacentHTML("beforeend", readGlyph({ id }, true));
       }
+      refreshIssueProgress(card);
     }
     return true;
   }
@@ -318,6 +458,23 @@ function setupReadToggle() {
   feed.addEventListener("keydown", (e) => {
     if (e.key !== "Enter" && e.key !== " ") return;
     if (handle(e.target)) e.preventDefault();
+  });
+}
+
+// Disclosure widget for a collapsed issue row: a real <button> so Enter/
+// Space activation and focus come for free, toggling `hidden` on the
+// stories panel and its own aria-expanded -- the WAI-ARIA APG "disclosure"
+// pattern. Never touches ReadState: expanding/collapsing must not mark
+// anything read.
+function setupIssueToggle() {
+  const feed = document.getElementById("feed");
+  feed.addEventListener("click", (e) => {
+    const toggle = e.target.closest(".issue-toggle");
+    if (!toggle) return;
+    const panel = document.getElementById(toggle.getAttribute("aria-controls"));
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!expanded));
+    if (panel) panel.hidden = expanded;
   });
 }
 

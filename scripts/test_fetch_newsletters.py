@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bs4 import BeautifulSoup
 
 from fetch_newsletters import (
+    BORING_RE,
     FORWARDED_DATE_RE,
     FORWARDED_SUBJECT_RE,
     FULL_LETTER_SENDERS,
@@ -30,6 +31,8 @@ from fetch_newsletters import (
     group_index_containing,
     parse_forwarded_date,
     resolve_reading_time_min,
+    stable_id,
+    stable_issue_id,
     sanitize_fragment,
     sentence_containing,
 )
@@ -538,6 +541,89 @@ class SubscriptionConfirmations(unittest.TestCase):
         )
         articles = extract_articles(html, "", "Benvenuti nell'era dei data center", "Qualcuno")
         self.assertEqual(len(articles), 1)
+
+
+class SurveyRequestAndFooterFiltering(unittest.TestCase):
+    """Two non-article shapes narrowly reproduced from the real mailbox: a
+    reader-engagement survey request (Il Post's "Come hai scoperto il Post?",
+    2026-09-22), and a self-referential "why you're getting this" footer line
+    sitting inside an otherwise-real digest (The Conversation's "Trump and Xi:
+    the touchy subjects on summit agenda", same date)."""
+
+    def test_survey_request_email_yields_no_articles(self):
+        # Real fragment: the message is nothing but a thank-you note and one
+        # CTA button ("Vai al sondaggio") -- the per-anchor scan used to turn
+        # that button into a bogus one-item "article".
+        html = (
+            "<html><body><td>Ciao, intanto volevamo ringraziarti ancora una volta "
+            "per la tua registrazione al Post. Se ti va, puoi rispondere a questo "
+            "breve questionario, che ci aiuta a conoscere meglio chi ci legge. "
+            "Ci vorranno pochi minuti: "
+            '<a class="dm_ctaA" href="http://x/sondaggio" target="_blank">'
+            "<span>Vai al sondaggio</span></a> Grazie mille!</td></body></html>"
+        )
+        self.assertEqual(extract_articles(html, "", "Come hai scoperto il Post?", "Il Post"), [])
+
+    def test_survey_cta_alone_is_filtered_even_outside_a_full_survey_email(self):
+        # Defense in depth: even if "Vai al sondaggio" ever turns up as one
+        # link among several genuine ones, the button text alone must never
+        # become an article title.
+        html = (
+            '<html><body><p><a href="http://x/real">A real headline worth '
+            "reading today</a> some more text describing it in full.</p>"
+            '<p><a href="http://x/sondaggio">Vai al sondaggio</a></p>'
+            "</body></html>"
+        )
+        titles = [a["title"] for a in extract_articles(html, "", "Some subject", "Il Post")]
+        self.assertNotIn("Vai al sondaggio", titles)
+
+    def test_newsletter_disclosure_footer_is_not_an_article(self):
+        # Real fragment: the sender's own name ("The Conversation") is a
+        # short, otherwise-unremarkable anchor text sitting inside this exact
+        # disclosure sentence -- checking only the anchor's own text (before
+        # sentence recovery runs) let the recovered full sentence through as
+        # a bogus final "article" in an otherwise-real digest.
+        html = (
+            "<html><body>"
+            '<p><a href="http://x/1">A real headline worth reading today</a> '
+            "some more text describing it in full.</p>"
+            '<p style="color: #202020; font-size: 13px;">'
+            'You’re receiving this newsletter from <a href="http://x/2">The '
+            "Conversation</a><br>Tenancy B, 1 Bartholomew Close, London.</p>"
+            "</body></html>"
+        )
+        titles = [a["title"] for a in extract_articles(html, "", "Some subject", "The Conversation")]
+        self.assertEqual(len(titles), 1)
+        self.assertNotIn("You’re receiving this newsletter from The Conversation", titles)
+
+    def test_english_and_italian_disclosure_variants_are_both_caught(self):
+        for sentence in (
+            "You’re receiving this e-mail because you signed up for the newsletter.",
+            "Ricevi questa newsletter perché ti sei registrato sul nostro sito.",
+        ):
+            with self.subTest(sentence=sentence):
+                self.assertTrue(BORING_RE.search(sentence), sentence)
+
+
+class IssueIdentity(unittest.TestCase):
+    """issue_id groups the articles from one Gmail message -- it must be
+    derived only from the message id, never from subject or timestamp,
+    since subjects repeat across genuinely different issues."""
+
+    def test_same_message_id_always_yields_the_same_issue_id(self):
+        self.assertEqual(stable_issue_id("18a2b3c4d5e6f7"), stable_issue_id("18a2b3c4d5e6f7"))
+
+    def test_different_messages_get_different_issue_ids_even_with_the_same_subject(self):
+        # TLDR reuses "TLDR AI" as a subject fragment issue after issue; two
+        # different messages must never collapse into one issue just because
+        # they'd have shared a subject+date-derived key.
+        self.assertNotEqual(stable_issue_id("message-1"), stable_issue_id("message-2"))
+
+    def test_issue_id_space_is_disjoint_from_article_id_space(self):
+        # Both are 16-hex-char sha1 prefixes; the "issue:" prefix on the
+        # hashed input keeps the two id spaces from ever coinciding.
+        mid = "18a2b3c4d5e6f7"
+        self.assertNotEqual(stable_issue_id(mid), stable_id(mid, "https://example.com/a"))
 
 
 class TLDRPromoFiltering(unittest.TestCase):

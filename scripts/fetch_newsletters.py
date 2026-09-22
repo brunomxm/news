@@ -63,7 +63,16 @@ BORING_RE = re.compile(
     r"^terms of (service|use)$|^cookie policy$|"
     r"\d+% off|for \d+ months?$|"
     r"is one of inc\.'?s best|powered by beehiiv|^curated by|"
-    r"^book a call$|^tutte le newsletter$",
+    r"^book a call$|^tutte le newsletter$|^vai al sondaggio$|"
+    # The self-referential "why you're getting this" disclosure line
+    # ("You're receiving this newsletter/e-mail from/because...") is footer
+    # boilerplate, not an article -- The Conversation's own sender name is a
+    # short, otherwise-unremarkable anchor text ("The Conversation") sitting
+    # right inside this sentence, so only checking the anchor's own text (as
+    # happens before sentence recovery runs) let it through; the recovered
+    # full sentence is what actually needs to be checked against this.
+    r"you.re receiving this (e-?mail|newsletter)|"
+    r"ricevi questa (email|newsletter) perch",
     re.I,
 )
 TITLE_IS_URL_RE = re.compile(r"^https?://", re.I)
@@ -149,6 +158,15 @@ SUBSCRIPTION_CONFIRMATION_RE = re.compile(
     r"confermare (la tua )?iscrizione|conferma (la tua )?iscrizione",
     re.I,
 )
+
+# A reader-engagement survey ("Come hai scoperto il Post?") is the same shape
+# as a subscription confirmation -- one CTA button, no article underneath --
+# just a different genre of non-article email, so it's dropped the same way
+# rather than left to reach the per-anchor scan (which turned its "Vai al
+# sondaggio" button into a bogus one-item "article"). This phrase is specific
+# to a survey *request* ("you can answer this brief questionnaire"), not to
+# anything a genuine essay or digest item would say.
+SURVEY_REQUEST_RE = re.compile(r"rispondere a questo (breve )?questionario", re.I)
 
 # Some newsletters are a single flowing digest/letter with no per-topic
 # headline markup at all -- unlike Il Post's digest style (each item is its
@@ -913,6 +931,8 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
         lead_text
     ):
         return []
+    if SURVEY_REQUEST_RE.search(subject) or SURVEY_REQUEST_RE.search(lead_text):
+        return []
 
     if source_name in FULL_LETTER_SENDERS:
         return [extract_full_letter(soup, plaintext, subject)]
@@ -1092,6 +1112,19 @@ def stable_id(message_id: str, href: str) -> str:
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
 
 
+def stable_issue_id(message_id: str) -> str:
+    """Stable id for the newsletter issue (one Gmail message) an article came
+    from -- derived only from the message id, never from subject or
+    timestamp. Subjects repeat across issues (TLDR's "TLDR AI", Il Post's
+    "Evening Post, le storie di oggi" are the same subject every time), so
+    grouping on subject+date would either merge two unrelated issues that
+    happen to share both, or split one issue if its items ever disagreed on
+    a recomputed timestamp. The message id is the one thing genuinely unique
+    per issue. Prefixed so this id space can never collide with stable_id's
+    (message+link) space, however unlikely that already is."""
+    return hashlib.sha1(f"issue:{message_id}".encode("utf-8")).hexdigest()[:16]
+
+
 def word_count(content_html: str | None) -> int:
     if not content_html:
         return 0
@@ -1205,6 +1238,7 @@ def main():
             all_articles.append(
                 {
                     "id": aid,
+                    "issue_id": stable_issue_id(mid),
                     "source": source_name,
                     "subject": subject,
                     "date": msg_date.isoformat(),

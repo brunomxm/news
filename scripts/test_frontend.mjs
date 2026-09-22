@@ -51,9 +51,9 @@ async function testAsync(name, fn) {
 // Item 1: the Culture section must render every item in it, not cap at 4.
 // ---------------------------------------------------------------------
 
-function loadAppSandbox() {
+function loadAppSandbox(readState) {
   const sandbox = {
-    ReadState: { isRead: () => false },
+    ReadState: readState || { isRead: () => false },
     document: {
       // Used by app.js's stripTags() (hasReadableContent's body check).
       createElement: (tag) => {
@@ -83,6 +83,9 @@ function loadAppSandbox() {
 function makeArticle(i, section) {
   return {
     id: `id-${section}-${i}`,
+    // Unique by default so tests that don't care about grouping get 29
+    // independent single-article units, not one giant accidental issue.
+    issue_id: `issue-${section}-${i}`,
     source: "Test Source",
     title: `Item ${i}`,
     summary: `Summary for item ${i}.`,
@@ -97,7 +100,7 @@ function makeArticle(i, section) {
 test("Culture section renders all 29 items, not just 4", () => {
   const sandbox = loadAppSandbox();
   const items = Array.from({ length: 29 }, (_, i) => makeArticle(i, "Culture"));
-  const html = sandbox.renderSection("Culture", items);
+  const html = sandbox.renderSection("Culture", sandbox.groupIntoUnits(items));
 
   // 1 feature block (lead) + 28 compact rows (<li>) = every item reachable.
   const liCount = (html.match(/<li/g) || []).length;
@@ -110,7 +113,7 @@ test("Culture section renders all 29 items, not just 4", () => {
 test("Culture section header count matches the number of items passed in", () => {
   const sandbox = loadAppSandbox();
   const items = Array.from({ length: 29 }, (_, i) => makeArticle(i, "Culture"));
-  const html = sandbox.renderSection("Culture", items);
+  const html = sandbox.renderSection("Culture", sandbox.groupIntoUnits(items));
   assert.ok(html.includes(">29<"), 'section header should show the count "29"');
 });
 
@@ -145,6 +148,338 @@ test("a card for an article with a real body or summary still links to article.h
   const withSummary = makeArticle(2, "Culture");
   const attrsSummary = sandbox.cardLinkAttrs({ ...withSummary, content_html: null });
   assert.ok(attrsSummary.includes("article.html?id=id-Culture-2"));
+});
+
+// ---------------------------------------------------------------------
+// 2026-09-22 request: newsletter-issue grouping on the homepage.
+// ---------------------------------------------------------------------
+
+// A roundup issue's several stories, all sharing one issue_id -- same
+// source/subject/date, as extraction always sets them (see
+// stable_issue_id's own tests on the Python side).
+function makeIssueArticles(issueId, n, opts = {}) {
+  const date = opts.date || new Date().toISOString();
+  const source = opts.source || "TLDR AI";
+  const subject = opts.subject || "Some roundup subject";
+  return Array.from({ length: n }, (_, i) => ({
+    id: `${issueId}-story-${i}`,
+    issue_id: issueId,
+    source,
+    subject,
+    title: opts.titles ? opts.titles[i] : `Story ${i} (${i + 1} minute read)`,
+    summary: "",
+    link: `https://example.com/${issueId}/${i}`,
+    image: null,
+    date,
+    reading_time_min: i + 1,
+    word_count: 80,
+    content_html: null,
+    section: opts.section || "Technology & AI",
+  }));
+}
+
+test("a roundup's several stories collapse into one issue unit", () => {
+  const sandbox = loadAppSandbox();
+  const stories = makeIssueArticles("issue-1", 5);
+  const units = sandbox.groupIntoUnits(stories);
+  assert.equal(units.length, 1, "5 stories sharing one issue_id must produce exactly 1 unit");
+  assert.equal(units[0].kind, "issue");
+  assert.equal(units[0].stories.length, 5);
+});
+
+test("a single-essay email stays an ordinary article unit, not a one-item accordion", () => {
+  const sandbox = loadAppSandbox();
+  const essay = makeArticle(0, "World & Ideas");
+  const units = sandbox.groupIntoUnits([essay]);
+  assert.equal(units.length, 1);
+  assert.equal(units[0].kind, "article", "a lone issue_id must render as a normal card, not an issue row");
+});
+
+test("grouping is driven by issue_id alone, not by sender name", () => {
+  const sandbox = loadAppSandbox();
+  // Two different senders, same issue_id: an implementation that special-
+  // cased sender names would never produce this, but a correct issue_id-
+  // driven grouper doesn't care what the sender is.
+  const stories = [
+    { ...makeArticle(0, "Culture"), issue_id: "shared", source: "Sender A" },
+    { ...makeArticle(1, "Culture"), issue_id: "shared", source: "Sender B" },
+  ];
+  const units = sandbox.groupIntoUnits(stories);
+  assert.equal(units.length, 1);
+  assert.equal(units[0].kind, "issue");
+});
+
+test("units preserve the original date-sorted order of issues and stories", () => {
+  const sandbox = loadAppSandbox();
+  const now = Date.now();
+  const single1 = { ...makeArticle(0, "Culture"), id: "single-1", issue_id: "single-1", date: new Date(now).toISOString() };
+  const issueStories = makeIssueArticles("issue-mid", 3, { date: new Date(now - 1000).toISOString() });
+  const single2 = { ...makeArticle(1, "Culture"), id: "single-2", issue_id: "single-2", date: new Date(now - 2000).toISOString() };
+  // Already in date-sorted order, as fetch_newsletters.py's main() sorts
+  // the real feed -- groupIntoUnits must not reorder anything.
+  const articles = [single1, ...issueStories, single2];
+  const units = sandbox.groupIntoUnits(articles);
+  assert.equal(units.length, 3);
+  assert.equal(units[0].article.id, "single-1");
+  assert.equal(units[1].kind, "issue");
+  // JSON.stringify rather than assert.deepEqual: the "stories" array is
+  // built inside the vm sandbox (a different V8 realm than this test file),
+  // and Node's assert.deepStrictEqual refuses to treat a same-content array
+  // from one realm as equal to one from another.
+  assert.equal(
+    JSON.stringify(units[1].stories.map((s) => s.id)),
+    JSON.stringify(issueStories.map((s) => s.id))
+  );
+  assert.equal(units[2].article.id, "single-2");
+});
+
+test("hero and long-read picks skip issue units, leaving them in the section flow", () => {
+  const sandbox = loadAppSandbox();
+  const issueStories = makeIssueArticles("issue-first", 4, { section: "Technology & AI" });
+  const essay = { ...makeArticle(0, "World & Ideas"), word_count: 900 };
+  const units = sandbox.groupIntoUnits([...issueStories, essay]);
+
+  const { picked: hero, rest: afterHero } = sandbox.pickFirstArticleUnit(units);
+  assert.equal(hero.id, essay.id, "the leading issue unit must never become the hero");
+  assert.equal(afterHero.length, 1, "the issue unit must remain in the list, unconsumed");
+  assert.equal(afterHero[0].kind, "issue");
+
+  // LONGREAD_WORD_THRESHOLD is a top-level `const` in app.js, so it isn't
+  // exposed on the sandbox object (see READSTATE_SRC's own comment on this);
+  // read it straight out of the source instead of hardcoding a copy that
+  // could silently drift from the real value.
+  const thresholdMatch = readFile("app.js").match(/LONGREAD_WORD_THRESHOLD = (\d+)/);
+  const threshold = Number(thresholdMatch[1]);
+  const { picked: longread } = sandbox.pickFirstArticleUnit(
+    units,
+    (a) => a.word_count >= threshold
+  );
+  assert.equal(longread.id, essay.id, "the leading issue unit must never become the long-read pick either");
+});
+
+test("a section's featured lead skips issue units, same as the page hero", () => {
+  const sandbox = loadAppSandbox();
+  const issueStories = makeIssueArticles("issue-culture", 3, { section: "Culture" });
+  const essay = makeArticle(0, "Culture");
+  const units = sandbox.groupIntoUnits([...issueStories, essay]);
+  const html = sandbox.renderSection("Culture", units);
+  // The essay (an ordinary article) is the feature lead; the issue renders
+  // as a collapsed row alongside it, not as the section's big feature block.
+  assert.ok(html.includes("feature-headline"), html);
+  assert.ok(html.includes("issue-toggle"), html);
+  assert.ok(html.includes(essay.title));
+});
+
+test("the collapsed row shows source, time, story count, and a preview -- not just source and time", () => {
+  const sandbox = loadAppSandbox();
+  const stories = makeIssueArticles("issue-preview", 3, {
+    source: "TLDR Data",
+    titles: ["First real headline here", "Second real headline here", "Third"],
+  });
+  const html = sandbox.issueRow(sandbox.groupIntoUnits(stories)[0]);
+  assert.ok(html.includes("TLDR Data"), "source must be shown");
+  assert.ok(html.includes("3 stories"), "story count must be shown");
+  assert.ok(html.includes("First real headline here"), "a preview of the leading stories must be shown");
+});
+
+test("the issue row is a real button wired for keyboard and screen-reader use", () => {
+  const sandbox = loadAppSandbox();
+  const stories = makeIssueArticles("issue-a11y", 4, { source: "TLDR AI" });
+  const html = sandbox.issueRow(sandbox.groupIntoUnits(stories)[0]);
+  assert.match(html, /<button[^>]*class="issue-toggle"[^>]*aria-expanded="false"/);
+  assert.match(html, /aria-controls="issue-issue-a11y-stories"/);
+  assert.match(html, /id="issue-issue-a11y-stories"[^>]*role="group"/);
+  assert.match(html, /aria-labelledby="issue-issue-a11y-toggle"/);
+  assert.match(html, /<ul[^>]*id="issue-issue-a11y-stories"[^>]* hidden>/, "the panel must start hidden (collapsed)");
+  // The accessible name covers source, time, count and preview even though
+  // the visible headline span is aria-hidden (decorative chevron included).
+  assert.match(html, /aria-label="TLDR AI, [^"]*4 stories[^"]*:/);
+});
+
+test("collapsed by default: only one issue-toggle button, panel starts hidden", () => {
+  const sandbox = loadAppSandbox();
+  const stories = makeIssueArticles("issue-collapsed", 6);
+  const html = sandbox.issueRow(sandbox.groupIntoUnits(stories)[0]);
+  const toggleCount = (html.match(/class="issue-toggle"/g) || []).length;
+  assert.equal(toggleCount, 1);
+  assert.ok(/<ul[^>]*hidden>/.test(html));
+});
+
+test("each story inside an expanded issue keeps its own normal link behavior", () => {
+  const sandbox = loadAppSandbox();
+  // One story with a real body (stays on article.html), one bare teaser
+  // (goes straight to the original) -- issueRow must not flatten this
+  // per-story distinction just because they're grouped.
+  const stories = makeIssueArticles("issue-links", 2);
+  stories[0].content_html = "<p>A full, distinct body paragraph for this story.</p>";
+  stories[1].content_html = null;
+  stories[1].summary = "";
+  const html = sandbox.issueRow(sandbox.groupIntoUnits(stories)[0]);
+  assert.ok(html.includes(`article.html?id=${stories[0].id}`), "story with a real body stays on article.html");
+  assert.ok(html.includes(`data-mark-read="${stories[1].id}"`), "bare teaser links straight to the original");
+  assert.ok(html.includes(`target="_blank"`));
+});
+
+test("each story keeps its own individual read state inside the collapsed group", () => {
+  const stories = makeIssueArticles("issue-read", 3);
+  const sandbox = loadAppSandbox({ isRead: (id) => id === stories[1].id });
+  const html = sandbox.issueRow(sandbox.groupIntoUnits(stories)[0]);
+  // slice(2), not slice(1): the first "<li" split segment is the issue
+  // row's own opening <li class="issue-row" ...>, not a story.
+  const rows = html.split("<li").slice(2);
+  assert.ok(rows[0] && !rows[0].startsWith(' class="is-read"'), "story 0 unread");
+  assert.ok(rows[1] && rows[1].startsWith(' class="is-read"'), "story 1 (the read one) must be dimmed");
+  assert.ok(rows[2] && !rows[2].startsWith(' class="is-read"'), "story 2 unread");
+});
+
+test("aggregate progress is subtle (shown only once something is read) and there is no mark-issue-read action", () => {
+  const stories = makeIssueArticles("issue-progress", 4);
+
+  const sandboxNone = loadAppSandbox({ isRead: () => false });
+  const htmlNoneRead = sandboxNone.issueRow(sandboxNone.groupIntoUnits(stories)[0]);
+  assert.ok(!htmlNoneRead.includes("read</span>"), "no progress text before anything is read");
+  assert.ok(!htmlNoneRead.includes("data-mark-issue-read"), "no separate mark-issue-read action exists");
+  assert.ok(!/mark.{0,20}issue.{0,20}read/i.test(htmlNoneRead));
+
+  const sandboxTwo = loadAppSandbox({ isRead: (id) => id === stories[0].id || id === stories[1].id });
+  const htmlTwoRead = sandboxTwo.issueRow(sandboxTwo.groupIntoUnits(stories)[0]);
+  assert.ok(htmlTwoRead.includes("2/4 read"), htmlTwoRead);
+});
+
+// A minimal, hand-rolled fake DOM -- just enough surface for
+// setupIssueToggle()/setupReadToggle() to run against (closest, classList,
+// getAttribute/setAttribute, a getElementById registry, addEventListener
+// with a `dispatch` test helper) -- rather than pulling in jsdom, which
+// this project deliberately has no dependencies on.
+class FakeElement {
+  constructor(tag, attrs = {}) {
+    this.tag = tag;
+    this.attrs = { ...attrs };
+    this.parent = null;
+    this._hidden = false;
+    this._classes = new Set((attrs.class || "").split(/\s+/).filter(Boolean));
+    this._listeners = {};
+  }
+  get hidden() {
+    return this._hidden;
+  }
+  set hidden(v) {
+    this._hidden = Boolean(v);
+  }
+  get classList() {
+    const set = this._classes;
+    return {
+      add: (c) => set.add(c),
+      remove: (c) => set.delete(c),
+      contains: (c) => set.has(c),
+    };
+  }
+  getAttribute(name) {
+    return name in this.attrs ? this.attrs[name] : null;
+  }
+  setAttribute(name, value) {
+    this.attrs[name] = String(value);
+  }
+  matches(selector) {
+    return selector
+      .split(",")
+      .map((s) => s.trim())
+      .some((s) => (s.startsWith(".") ? this._classes.has(s.slice(1)) : this.tag === s));
+  }
+  closest(selector) {
+    let el = this;
+    while (el) {
+      if (el.matches(selector)) return el;
+      el = el.parent;
+    }
+    return null;
+  }
+  appendChild(child) {
+    child.parent = this;
+    return child;
+  }
+  addEventListener(type, cb) {
+    (this._listeners[type] ||= []).push(cb);
+  }
+  dispatch(type, target) {
+    const event = { target, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } };
+    for (const cb of this._listeners[type] || []) cb(event);
+    return event;
+  }
+}
+
+function loadInteractiveAppSandbox(readState) {
+  const registry = new Map();
+  const feed = new FakeElement("div", { id: "feed" });
+  registry.set("feed", feed);
+  const markReadCalls = [];
+  const markUnreadCalls = [];
+  const sandbox = {
+    ReadState: {
+      isRead: (id) => Boolean(readState && readState[id]),
+      markRead: (id) => markReadCalls.push(id),
+      markUnread: (id) => markUnreadCalls.push(id),
+    },
+    document: {
+      getElementById: (id) => registry.get(id) || null,
+      createElement: () => ({ set innerHTML(_v) {}, get textContent() { return ""; } }),
+    },
+    console,
+  };
+  vm.createContext(sandbox);
+  const src = readFile("app.js").replace(/\nPromise\.all\(\[[\s\S]*$/, "\n");
+  vm.runInContext(src, sandbox, { filename: "app.js" });
+  return { sandbox, feed, registry, markReadCalls, markUnreadCalls };
+}
+
+test("clicking the collapsed row expands it inline; clicking again collapses it", () => {
+  const { sandbox, feed, registry, markReadCalls } = loadInteractiveAppSandbox();
+  sandbox.setupIssueToggle();
+
+  const toggle = new FakeElement("button", {
+    class: "issue-toggle",
+    id: "issue-x-toggle",
+    "aria-expanded": "false",
+    "aria-controls": "issue-x-stories",
+  });
+  const panel = new FakeElement("ul", { id: "issue-x-stories" });
+  panel.hidden = true;
+  registry.set("issue-x-toggle", toggle);
+  registry.set("issue-x-stories", panel);
+
+  feed.dispatch("click", toggle);
+  assert.equal(toggle.getAttribute("aria-expanded"), "true", "first click must expand");
+  assert.equal(panel.hidden, false, "panel must become visible");
+
+  feed.dispatch("click", toggle);
+  assert.equal(toggle.getAttribute("aria-expanded"), "false", "second click must collapse");
+  assert.equal(panel.hidden, true, "panel must hide again");
+
+  assert.equal(markReadCalls.length, 0, "expanding/collapsing must never mark anything read");
+});
+
+test("clicking inside the expanded panel (not the toggle itself) does not toggle it", () => {
+  const { sandbox, feed, registry } = loadInteractiveAppSandbox();
+  sandbox.setupIssueToggle();
+
+  const toggle = new FakeElement("button", {
+    class: "issue-toggle",
+    id: "issue-y-toggle",
+    "aria-expanded": "true",
+    "aria-controls": "issue-y-stories",
+  });
+  const panel = new FakeElement("ul", { id: "issue-y-stories" });
+  panel.hidden = false;
+  registry.set("issue-y-toggle", toggle);
+  registry.set("issue-y-stories", panel);
+
+  // A story link inside the panel: not the toggle, and .closest(".issue-toggle")
+  // must not find one by walking up past the panel (no parent wired here,
+  // matching a real click target unrelated to the toggle).
+  const storyLink = new FakeElement("a", {});
+  feed.dispatch("click", storyLink);
+  assert.equal(toggle.getAttribute("aria-expanded"), "true", "unrelated clicks must not collapse the row");
+  assert.equal(panel.hidden, false);
 });
 
 // ---------------------------------------------------------------------
