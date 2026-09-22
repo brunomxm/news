@@ -282,6 +282,38 @@ test("the collapsed row shows source, time, story count, and a preview -- not ju
   assert.ok(html.includes("First real headline here"), "a preview of the leading stories must be shown");
 });
 
+test("the preview stays compact even when the two leading headlines are both long", () => {
+  // Reported bug: The Conversation's headlines run long, and two of them
+  // joined together wrapped to 6 lines on a phone screen -- the opposite
+  // of the "compact row" this is meant to be.
+  const sandbox = loadAppSandbox();
+  const stories = makeIssueArticles("issue-longpreview", 3, {
+    source: "The Conversation",
+    titles: [
+      "Rana Mitter has his doubts given the difficulties underlying each of the issues as well as the fact that the leaders seem to have fundamentally incompatible agendas on all three topics.",
+      "But there is a more troubling reading, too – and it rings alarm bells for democracy.",
+      "Third",
+    ],
+  });
+  const html = sandbox.issueRow(sandbox.groupIntoUnits(stories)[0]);
+  const headlineMatch = html.match(/class="issue-headline"[^>]*>([\s\S]*?)<span class="issue-chevron"/);
+  assert.ok(headlineMatch, html);
+  assert.ok(headlineMatch[1].length <= 141, `preview text is too long to be "compact": ${headlineMatch[1].length} chars`);
+  assert.ok(headlineMatch[1].endsWith("…"), "an over-long preview must end with an ellipsis");
+});
+
+test("the collapsed headline is never styled or colored like a bare hyperlink", () => {
+  // Reported on a real device: the (aria-hidden, decorative) preview text
+  // rendered blue and underlined, like an unstyled <a> -- even though it
+  // sits inside a <button>, not an anchor. Assert the CSS pins both
+  // properties explicitly rather than leaving them to inheritance/UA
+  // defaults, on both the element that showed the bug and its container.
+  const css = readFile("styles.css");
+  assert.match(css, /\.issue-headline\s*\{[^}]*color:\s*var\(--text\)/s);
+  assert.match(css, /\.issue-headline\s*\{[^}]*text-decoration:\s*none/s);
+  assert.match(css, /\.issue-toggle\s*\{[^}]*color:\s*var\(--text\)/s);
+});
+
 test("an older issue's collapsed row shows its own date, not just today's clock time", () => {
   // Reported bug: a TLDR Data roundup from 24 Aug rendered as "TLDR Data ·
   // 12:23 · 14 stories" -- a bare clock time with no date at all, which

@@ -423,9 +423,13 @@ li.issue-row { border-bottom: 1px solid var(--rule); }
   border: none;
   background: none;
   font-family: inherit;
+  font-size: inherit;
+  color: var(--text);
+  text-decoration: none;
   text-align: left;
   cursor: pointer;
   -webkit-appearance: none;
+  appearance: none;
 }
 .issue-toggle:hover .issue-headline,
 .issue-toggle:focus-visible .issue-headline {
@@ -443,6 +447,13 @@ li.issue-row { border-bottom: 1px solid var(--rule); }
   font-size: 18px;
   line-height: 1.26;
   margin: 4px 0 0;
+  /* Explicit rather than relying on inheritance from .issue-toggle: some
+     mobile browsers apply their own default "unvisited link" styling
+     (blue, underlined) to unstyled text inside a <button> -- reported on
+     a real device even though it isn't reproducible in every engine.
+     Pin both properties directly on the element that actually showed it. */
+  color: var(--text);
+  text-decoration: none;
 }
 @media (min-width: 768px) {
   .issue-headline { font-size: 20px; }

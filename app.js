@@ -156,7 +156,12 @@ function renderUnit(unit, rowFn) {
 // the collapsed row leads with the first couple of stories' own headlines,
 // which is what a reader actually scans a roundup for.
 function issuePreview(unit) {
-  return unit.stories.slice(0, 2).map((a) => a.title).join(" · ");
+  const combined = unit.stories.slice(0, 2).map((a) => a.title).join(" · ");
+  // Capped at a word boundary: two full headlines back to back can run to
+  // several lines on a phone-width screen (The Conversation's often do),
+  // which reads as anything but the "compact" row this is meant to be.
+  if (combined.length <= 140) return combined;
+  return combined.slice(0, 137).replace(/\s+\S*$/, "") + "…";
 }
 
 // Plain "·" rather than the "&middot;" entity used elsewhere in this file:
