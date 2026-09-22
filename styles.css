@@ -431,7 +431,20 @@ li.issue-row { border-bottom: 1px solid var(--rule); }
   -webkit-appearance: none;
   appearance: none;
 }
-.issue-toggle:hover .issue-headline,
+/* Touch devices report a tap as :hover with no way to un-hover short of
+   tapping something else -- without this guard, the underline meant as a
+   mouse-hover affordance gets stuck "on" the moment a phone taps the row
+   to expand it, and stays there, looking like a permanently broken link.
+   Real pointers (mouse/trackpad) keep the hover affordance; touch doesn't
+   get :hover behavior at all, only the (correctly momentary) focus one. */
+@media (hover: hover) and (pointer: fine) {
+  .issue-toggle:hover .issue-headline {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+}
 .issue-toggle:focus-visible .issue-headline {
   text-decoration: underline;
   text-decoration-color: var(--accent);

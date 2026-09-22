@@ -314,6 +314,30 @@ test("the collapsed headline is never styled or colored like a bare hyperlink", 
   assert.match(css, /\.issue-toggle\s*\{[^}]*color:\s*var\(--text\)/s);
 });
 
+test("the hover underline is gated to real pointers, so a tap can't leave it stuck on", () => {
+  // Still reported after the color fix landed: on a touch device, tapping
+  // the row to expand it left the headline permanently underlined --
+  // touchscreens report a tap as :hover with no way to un-hover short of
+  // tapping something else, so an unguarded ".issue-toggle:hover" rule
+  // never turns back off. The hover-only affordance must be scoped to
+  // devices that actually have a real pointer.
+  const css = readFile("styles.css");
+  // The media block wraps exactly one nested rule, so two closing braces
+  // (inner rule, then the block itself) marks its end.
+  const mediaMatch = css.match(
+    /@media \(hover: hover\) and \(pointer: fine\)\s*\{\s*\.issue-toggle:hover \.issue-headline \{[^}]*\}\s*\}/
+  );
+  assert.ok(mediaMatch, "the :hover underline rule must be wrapped in a (hover: hover) media guard");
+  assert.ok(
+    !mediaMatch[0].includes(":focus-visible"),
+    "the keyboard-focus affordance must not be inside the pointer-only guard"
+  );
+  // The keyboard-focus affordance is unaffected by this guard -- it's
+  // :focus-visible, which browsers already withhold on touch/pointer
+  // activation, so keyboard users still get visible feedback regardless.
+  assert.ok(css.includes(".issue-toggle:focus-visible .issue-headline"));
+});
+
 test("an older issue's collapsed row shows its own date, not just today's clock time", () => {
   // Reported bug: a TLDR Data roundup from 24 Aug rendered as "TLDR Data ·
   // 12:23 · 14 stories" -- a bare clock time with no date at all, which
