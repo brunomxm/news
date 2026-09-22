@@ -21,6 +21,14 @@ function timeOfDay(iso) {
   return new Date(iso).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
 }
 
+// Compact "24 Aug" -- every other card's meta line uses relativeTime ("2h
+// ago"/"29d ago"), which carries its own age signal, but an issue row shows
+// a bare clock time ("12:23") with nothing else placing it in time. Without
+// a date, a roundup from weeks ago reads as if it happened at 12:23 today.
+function dateLabel(iso) {
+  return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+}
+
 function dek(article) {
   const s = (article.summary || "").trim();
   if (!s) return "";
@@ -155,7 +163,7 @@ function issuePreview(unit) {
 // this string is later reassigned wholesale via textContent (see
 // refreshIssueProgress), which never decodes HTML entities.
 function issueMetaBase(unit) {
-  return `${timeOfDay(unit.date)} · ${unit.stories.length} stories`;
+  return `${dateLabel(unit.date)} · ${timeOfDay(unit.date)} · ${unit.stories.length} stories`;
 }
 
 function issueRow(unit) {
@@ -166,7 +174,7 @@ function issueRow(unit) {
   const panelId = `issue-${unit.issueId}-stories`;
   const metaBase = issueMetaBase(unit);
   const progress = readCount > 0 ? ` · ${readCount}/${total} read` : "";
-  const label = `${unit.source}, ${timeOfDay(unit.date)}, ${total} stories${
+  const label = `${unit.source}, ${dateLabel(unit.date)}, ${timeOfDay(unit.date)}, ${total} stories${
     readCount > 0 ? `, ${readCount} of ${total} read` : ""
   }: ${issuePreview(unit)}`;
   return `<li class="issue-row${allRead ? " is-read" : ""}" data-issue="${escapeHtml(unit.issueId)}">

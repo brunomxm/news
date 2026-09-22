@@ -282,6 +282,32 @@ test("the collapsed row shows source, time, story count, and a preview -- not ju
   assert.ok(html.includes("First real headline here"), "a preview of the leading stories must be shown");
 });
 
+test("an older issue's collapsed row shows its own date, not just today's clock time", () => {
+  // Reported bug: a TLDR Data roundup from 24 Aug rendered as "TLDR Data ·
+  // 12:23 · 14 stories" -- a bare clock time with no date at all, which
+  // reads as if it happened today at 12:23. Every other card's meta line
+  // uses relativeTime ("29d ago"), which carries its own age signal; the
+  // issue row didn't, so it needs an explicit date instead.
+  const sandbox = loadAppSandbox();
+  const oldDate = new Date("2026-08-24T12:23:00Z").toISOString();
+  const stories = makeIssueArticles("issue-old", 14, { source: "TLDR Data", date: oldDate });
+  const unit = sandbox.groupIntoUnits(stories)[0];
+  const expectedDateLabel = new Date(oldDate).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+
+  const html = sandbox.issueRow(unit);
+  assert.ok(
+    html.includes(expectedDateLabel),
+    `visible meta text must include the date ("${expectedDateLabel}"): ${html}`
+  );
+
+  const ariaLabelMatch = html.match(/aria-label="([^"]*)"/);
+  assert.ok(ariaLabelMatch, "issue-toggle must carry an aria-label");
+  assert.ok(
+    ariaLabelMatch[1].includes(expectedDateLabel),
+    `screen-reader label must include the date too, not just source and time: got "${ariaLabelMatch[1]}"`
+  );
+});
+
 test("the issue row is a real button wired for keyboard and screen-reader use", () => {
   const sandbox = loadAppSandbox();
   const stories = makeIssueArticles("issue-a11y", 4, { source: "TLDR AI" });
