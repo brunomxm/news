@@ -228,7 +228,6 @@ SURVEY_REQUEST_RE = re.compile(r"rispondere a questo (breve )?questionario", re.
 # treatment instead of the per-link digest scan.
 FULL_LETTER_SENDERS = {
     "Francesco Costa",
-    "Reuters Daily Briefing",
     "Reuters",
     # Il Post's "Ok Boomer!" is one essay per issue, not the link roundup its
     # sibling "Evening Post" is: the whole piece lives in two long <td>s, and
@@ -1047,6 +1046,185 @@ def extract_full_letter(soup, plaintext: str, subject: str) -> dict:
     }
 
 
+REUTERS_DAILY_BRIEFING_SENDER = "Reuters Daily Briefing"
+
+# Reuters Daily Briefing's own template labels every unit of content with
+# its own "<type>_block" CSS class (heading_block, paragraph_block,
+# list_block, image_block, text_block, button_block, ...), and -- unlike
+# Francesco Costa's or Il Post's genuinely single-essay newsletters -- it is
+# structurally a multi-story digest: a couple of intro paragraphs, several
+# bulleted headline lists under section labels ("Today's Top News" >
+# "Threats and recrimination"/"In other news", "Business & Markets"), then
+# one or two single-story features at the end ("30,000 Mistakes", "And
+# Finally..."). Running this sender through extract_full_letter (built for
+# the single-essay case) mashed unrelated paragraphs from different
+# sections into one garbled "article" titled with the day's unrelated
+# subject line ("Rebuild or annihilate"), because that path just collects
+# every qualifying <p> tag top-to-bottom with no notion of section
+# boundaries. This sender gets its own block-aware extractor instead. The
+# sponsor ad in this template (e.g. "Sponsored by: Fisher Investments")
+# carries none of these "_block" classes at all, so it's excluded by
+# construction -- nothing here ever looks at it.
+REUTERS_BLOCK_RE = re.compile(r"_block$")
+
+
+def _reuters_block_classes(tag) -> set:
+    return {c for c in (tag.get("class") or []) if REUTERS_BLOCK_RE.search(c)}
+
+
+def _reuters_first_real_link(container) -> str:
+    """The first non-boilerplate http(s) link inside `container` -- used as
+    a bullet/teaser's own link. Skips mailto: links and anything whose own
+    anchor text reads as boilerplate (see BORING_RE), the same standard this
+    codebase applies to every other per-anchor extraction path."""
+    for a in container.find_all("a", href=True):
+        href = a["href"]
+        if not href.startswith("http"):
+            continue
+        if BORING_RE.search(clean_text(a.get_text(" "))):
+            continue
+        return href
+    return ""
+
+
+def _reuters_teaser(container) -> "dict | None":
+    """One bullet/intro-paragraph teaser from `container` (a <li> or <p>):
+    title is its own first sentence (after dropping a leading "Thanks for
+    reading..." signoff, e.g. the intro's own opening line), any further
+    sentences become the body, and the link is the first real anchor inside
+    it. Returns None for anything that reads as pure boilerplate (a
+    self-promotional "sign up for our other newsletter" aside, checked
+    against BORING_RE over the *whole* container text rather than just the
+    title, since the promotional phrase is often not in the first
+    sentence) or that has no usable sentence at all."""
+    full_text = clean_text(get_text_no_glue(container))
+    if not full_text or BORING_RE.search(full_text):
+        return None
+    sentences = [s for s in re.split(r"(?<=[.!?])\s+", full_text) if s.strip()]
+    while sentences and SIGNOFF_RE.search(sentences[0]):
+        sentences.pop(0)
+    if not sentences:
+        return None
+    title = sentences[0]
+    if len(title) < 8:
+        return None
+    if len(title) > 200:
+        title = title[:197].rsplit(" ", 1)[0] + "…"
+    rest = " ".join(sentences[1:]).strip()
+    return {
+        "title": title,
+        "link": _reuters_first_real_link(container),
+        "summary": rest,
+        "image": None,
+        "content_html": f"<p>{html.escape(rest)}</p>" if rest else None,
+    }
+
+
+def extract_reuters_daily_briefing(soup) -> list:
+    blocks = soup.find_all(class_=REUTERS_BLOCK_RE)
+    if not blocks:
+        return []
+
+    articles = []
+
+    # The intro: any paragraph_block(s) before the first heading_block --
+    # real editorial copy (often several unrelated one-line asides in one
+    # or two <p> tags, e.g. "there is a man with one name and one mission:
+    # to visit every Starbucks on the planet"), kept as its own teaser (or
+    # teasers, one per <p>) rather than dropped.
+    for b in blocks:
+        if "heading_block" in _reuters_block_classes(b):
+            break
+        if "paragraph_block" in _reuters_block_classes(b):
+            for p in b.find_all("p"):
+                teaser = _reuters_teaser(p)
+                if teaser:
+                    articles.append(teaser)
+
+    for i, b in enumerate(blocks):
+        if "heading_block" not in _reuters_block_classes(b):
+            continue
+        heading_text = clean_text(b.get_text(" "))
+        if not heading_text:
+            continue
+
+        # The next block that actually carries content, skipping purely
+        # decorative ones (image/text/spacer/divider/html/button) -- a
+        # heading followed directly by another heading (or nothing) has no
+        # content of its own and is skipped.
+        content = None
+        j = i + 1
+        while j < len(blocks):
+            next_classes = _reuters_block_classes(blocks[j])
+            if "list_block" in next_classes or "paragraph_block" in next_classes:
+                content = blocks[j]
+                break
+            if "heading_block" in next_classes:
+                break
+            j += 1
+        if content is None:
+            continue
+
+        if "list_block" in _reuters_block_classes(content):
+            # A section label ("Today's Top News", "Business & Markets", ...)
+            # introducing a bulleted list -- one distinct story per <li>.
+            for li in content.find_all("li"):
+                teaser = _reuters_teaser(li)
+                if teaser:
+                    articles.append(teaser)
+            continue
+
+        # A single feature story ("30,000 Mistakes", "And Finally..."). If
+        # the heading text itself is a real link, it's a genuine per-issue
+        # headline -- use it as-is. A heading with no link of its own (e.g.
+        # the recurring, generic "And Finally..." label) isn't a real
+        # headline at all, so the title is recovered from the story's own
+        # first sentence instead, and the link comes from the "Read more"
+        # button that follows, if there is one.
+        heading_anchor = b.find("a", href=True)
+        heading_link = heading_anchor["href"] if heading_anchor and heading_anchor["href"].startswith("http") else None
+
+        if heading_link:
+            title = heading_text
+            link = heading_link
+        else:
+            teaser = _reuters_teaser(content)
+            if not teaser:
+                continue
+            title, link = teaser["title"], teaser["link"]
+            k = j + 1
+            while k < len(blocks):
+                next_classes = _reuters_block_classes(blocks[k])
+                if "button_block" in next_classes:
+                    button = blocks[k].find("a", href=True)
+                    if button and button["href"].startswith("http"):
+                        link = button["href"]
+                    break
+                if "heading_block" in next_classes:
+                    break
+                k += 1
+
+        content_html = sanitize_fragment(content, title)
+        if body_is_just_the_title(content_html, title):
+            content_html = None
+        summary = (
+            clean_text(BeautifulSoup(content_html, "html.parser").get_text(" "))[:400]
+            if content_html
+            else ""
+        )
+        articles.append(
+            {
+                "title": title,
+                "link": link,
+                "summary": summary,
+                "image": None,
+                "content_html": content_html,
+            }
+        )
+
+    return articles
+
+
 def extract_articles(html: str, plaintext: str, subject: str, source_name: str = ""):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style"]):
@@ -1077,6 +1255,14 @@ def extract_articles(html: str, plaintext: str, subject: str, source_name: str =
         return []
     if SURVEY_REQUEST_RE.search(subject) or SURVEY_REQUEST_RE.search(lead_text):
         return []
+
+    if source_name == REUTERS_DAILY_BRIEFING_SENDER:
+        reuters_articles = extract_reuters_daily_briefing(soup)
+        if reuters_articles:
+            return reuters_articles
+        # The block template changed shape enough that nothing was found --
+        # fall through to the generic per-anchor scan below rather than
+        # silently returning an empty feed for the whole issue.
 
     if source_name in FULL_LETTER_SENDERS:
         return [extract_full_letter(soup, plaintext, subject)]

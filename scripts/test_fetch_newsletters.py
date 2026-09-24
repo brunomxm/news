@@ -22,12 +22,14 @@ from fetch_newsletters import (
     FORWARDED_DATE_RE,
     FORWARDED_SUBJECT_RE,
     FULL_LETTER_SENDERS,
+    REUTERS_DAILY_BRIEFING_SENDER,
     body_is_just_the_title,
     br_split_groups,
     clean_text,
     dedupe_images,
     extract_articles,
     extract_full_letter,
+    extract_reuters_daily_briefing,
     fetch_og_image,
     find_image,
     find_view_online_link,
@@ -432,7 +434,7 @@ class GenuinePermalinkOnly(unittest.TestCase):
             "<p>Thomson Reuters. All rights reserved.</p>"
             "</body></html>"
         )
-        article = extract_articles(html, "", "'Disaster' election in Germany", "Reuters Daily Briefing")[0]
+        article = extract_articles(html, "", "'Disaster' election in Germany", "Reuters")[0]
         self.assertNotIn("REUTERS/Lisi Niesner", article["content_html"])
         self.assertNotIn("limited tracking", article["content_html"])
         self.assertIn("trade shifted", article["content_html"])
@@ -982,6 +984,148 @@ class OgImageFetch(unittest.TestCase):
             result = fetch_og_image("http://example.com/article", cache)
         mock_get.assert_not_called()
         self.assertEqual(result, "http://example.com/og.jpg")
+
+
+class ReutersDailyBriefing(unittest.TestCase):
+    """Reuters Daily Briefing's real template labels every unit of content
+    with its own "<type>_block" class and is structurally a multi-story
+    digest, not a single essay -- extract_full_letter (built for Francesco
+    Costa/Il Post's genuinely single-essay newsletters) mashed unrelated
+    paragraphs from different sections into one garbled article titled with
+    the day's unrelated subject line. This fixture is a trimmed-down but
+    structurally faithful reproduction of the real block layout (captured
+    from a live issue): an intro with two <p>s (one a multi-link recap, one
+    a standalone aside), a "Today's Top News" section with a real bullet and
+    a self-promotional one, a second "Business & Markets" section, a feature
+    story whose own heading is a real link ("30,000 Mistakes"-style), and a
+    closing feature whose heading has no link at all but is followed by a
+    "Read more" button ("And Finally..."-style). The sponsor ad block
+    carries none of these "_block" classes in the real template, so it's
+    represented here by a plain, unclassed div."""
+
+    FIXTURE = """
+    <table class="paragraph_block"><tr><td>
+      <p>Thanks for reading the Daily Briefing.
+        <a href="https://reuters.example/macron">Emmanuel Macron dismisses Donald Trump's claims</a>
+        of securing peace in Gaza, and a Looksmaxxing influencer
+        <a href="https://reuters.example/rape">is charged with rape</a>.</p>
+      <p>Plus, there is a man with one name and one mission:
+        <a href="https://reuters.example/starbucks">to visit every Starbucks on the planet</a>.</p>
+    </td></tr></table>
+    <table class="heading_block"><tr><td><h2>Today's Top News</h2></td></tr></table>
+    <table class="image_block"><tr><td><img src="https://reuters.example/photo1.jpg"></td></tr></table>
+    <table class="list_block"><tr><td><ul>
+      <li>The president's words need no summary from me: he mused
+        <a href="https://reuters.example/un-speech">during his General Assembly speech</a>.
+        Or do I annihilate the Islamic Republic and do it quickly?</li>
+      <li>There is plenty more Reuters coverage from the General Assembly available here.
+        <a href="https://reuters.example/signup">Sign up</a> to receive our Sustainable Switch newsletter.</li>
+    </ul></td></tr></table>
+    <table class="heading_block"><tr><td><h2>Business &amp; Markets</h2></td></tr></table>
+    <table class="list_block"><tr><td><ul>
+      <li>The billionaire family behind H&amp;M
+        <a href="https://reuters.example/hm">is building its stake</a>, fueling speculation.</li>
+    </ul></td></tr></table>
+    <table class="heading_block"><tr><td><h2>
+      <a href="https://reuters.example/30000-mistakes">30,000 Mistakes</a>
+    </h2></td></tr></table>
+    <table class="image_block"><tr><td><img src="https://reuters.example/photo2.jpg"></td></tr></table>
+    <table class="paragraph_block"><tr><td>
+      <p>US states may have added tens of thousands self-declared non-citizens to voter rolls.</p>
+      <p>The cases expose weaknesses in voter registration systems across a dozen states.</p>
+    </td></tr></table>
+    <table class="heading_block"><tr><td><h2>And Finally...</h2></td></tr></table>
+    <table class="image_block"><tr><td><img src="https://reuters.example/photo3.jpg"></td></tr></table>
+    <table class="paragraph_block"><tr><td>
+      <p>America's air-traffic control system runs on outdated telecom systems and decades-old computers.</p>
+      <p>No wonder it keeps failing.</p>
+    </td></tr></table>
+    <table class="button_block"><tr><td><a href="https://reuters.example/read-more">Read more</a></td></tr></table>
+    <div>
+      <p>Sponsored by: Fisher Investments</p>
+      <p>7 Wealth Tips Once Your Portfolio Reaches $1 Million. <a href="https://sponsor.example/learn-more">Learn More</a></p>
+    </div>
+    """
+
+    def _extract(self):
+        soup = BeautifulSoup(self.FIXTURE, "html.parser")
+        return extract_reuters_daily_briefing(soup)
+
+    def test_intro_paragraphs_each_become_their_own_teaser(self):
+        articles = self._extract()
+        titles = [a["title"] for a in articles]
+        self.assertIn(
+            "Emmanuel Macron dismisses Donald Trump's claims of securing peace in Gaza, and a Looksmaxxing influencer is charged with rape.",
+            titles,
+        )
+        self.assertIn(
+            "Plus, there is a man with one name and one mission: to visit every Starbucks on the planet.",
+            titles,
+        )
+        # The generic "thanks for reading" opener must never become a title.
+        self.assertFalse(any(t.lower().startswith("thanks for reading") for t in titles))
+
+    def test_each_bullet_under_a_section_heading_becomes_its_own_article(self):
+        articles = self._extract()
+        titles = [a["title"] for a in articles]
+        self.assertTrue(any("General Assembly speech" in t for t in titles))
+        self.assertTrue(any("H&M" in t or "H&amp;M" in t for t in titles))
+
+    def test_self_promotional_bullet_is_dropped(self):
+        articles = self._extract()
+        titles = " ".join(a["title"] for a in articles)
+        self.assertNotIn("plenty more Reuters coverage", titles)
+
+    def test_feature_story_with_its_own_linked_heading_keeps_that_headline(self):
+        articles = self._extract()
+        match = next((a for a in articles if a["title"] == "30,000 Mistakes"), None)
+        self.assertIsNotNone(match, [a["title"] for a in articles])
+        self.assertEqual(match["link"], "https://reuters.example/30000-mistakes")
+        self.assertIn("voter registration", match["content_html"])
+
+    def test_feature_story_with_no_heading_link_recovers_title_from_body_and_uses_the_read_more_button(self):
+        articles = self._extract()
+        match = next((a for a in articles if "air-traffic control" in a["title"]), None)
+        self.assertIsNotNone(match, [a["title"] for a in articles])
+        # "And Finally..." itself must never be used as the title.
+        self.assertNotEqual(match["title"], "And Finally...")
+        self.assertEqual(match["link"], "https://reuters.example/read-more")
+        self.assertIn("keeps failing", match["content_html"])
+
+    def test_sponsor_ad_is_never_extracted_as_an_article(self):
+        articles = self._extract()
+        joined = " ".join(a["title"] for a in articles)
+        self.assertNotIn("Wealth Tips", joined)
+        self.assertNotIn("Fisher Investments", joined)
+
+    def test_every_article_has_a_real_link(self):
+        articles = self._extract()
+        for a in articles:
+            self.assertTrue(a["link"].startswith("http"), a)
+
+    def test_reuters_daily_briefing_is_no_longer_a_full_letter_sender(self):
+        self.assertNotIn(REUTERS_DAILY_BRIEFING_SENDER, FULL_LETTER_SENDERS)
+
+    def test_extract_articles_dispatches_to_the_block_aware_extractor(self):
+        html = f"<html><body>{self.FIXTURE}</body></html>"
+        articles = extract_articles(html, "", "Rebuild or annihilate", REUTERS_DAILY_BRIEFING_SENDER)
+        # The old behavior produced exactly one garbled article titled with
+        # the subject line; the fixed behavior produces several distinct,
+        # real stories and never uses the subject as a title.
+        self.assertGreater(len(articles), 1)
+        self.assertNotIn("Rebuild or annihilate", [a["title"] for a in articles])
+
+    def test_unrecognisable_template_falls_back_to_the_generic_scan(self):
+        # If Reuters ever changes this template entirely (no "_block"
+        # classes at all), extraction must not silently return nothing --
+        # it should fall back to the ordinary per-anchor scan.
+        html = (
+            "<html><body><div><a href=\"https://reuters.example/x\">"
+            "A real headline with enough words to pass the length check</a></div></body></html>"
+        )
+        articles = extract_articles(html, "", "Some subject", REUTERS_DAILY_BRIEFING_SENDER)
+        self.assertEqual(len(articles), 1)
+        self.assertIn("real headline", articles[0]["title"])
 
 
 if __name__ == "__main__":
