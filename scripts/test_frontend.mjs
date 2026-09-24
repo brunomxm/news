@@ -77,6 +77,15 @@ function loadAppSandbox(readState) {
   // config.js, same as the real page does via <script src="config.js">
   // loading before <script src="app.js">.
   vm.runInContext(readFile("config.js"), sandbox, { filename: "config.js" });
+  // Top-level `const`s evaluated by vm.runInContext become lexical
+  // bindings, not properties of the sandbox object -- functions defined in
+  // this same context can still close over them (that's all app.js needs),
+  // but a test reaching in from outside via `sandbox.SITE_NAME` etc. sees
+  // undefined unless it's explicitly re-exposed like this.
+  vm.runInContext(
+    "this.SITE_NAME = SITE_NAME; this.USER_NAME = USER_NAME; this.DAYPART_GREETINGS = DAYPART_GREETINGS;",
+    sandbox
+  );
   // app.js's bottom-of-file fetch(...) bootstrap would throw without a
   // real fetch/DOM -- strip it out; every function above it is pure/DOM-free
   // and is what we're actually testing.
@@ -851,6 +860,140 @@ test("a real, distinct body is shown normally", () => {
   sandbox.render(article);
   assert.ok(reader.innerHTML.includes("Merz fights for survival"));
   assert.ok(!reader.innerHTML.includes("Full text isn"));
+});
+
+// ---------------------------------------------------------------------
+// Masthead greeting: deterministic, weighted, time-of-day title.
+// ---------------------------------------------------------------------
+
+test("07:30 lands in the morning daypart", () => {
+  const sandbox = loadAppSandbox();
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 7, 30)), "morning");
+});
+
+test("12:30 lands in the afternoon daypart", () => {
+  const sandbox = loadAppSandbox();
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 12, 30)), "afternoon");
+});
+
+test("18:30 lands in the evening daypart", () => {
+  const sandbox = loadAppSandbox();
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 18, 30)), "evening");
+});
+
+test("23:30 lands in the late-night daypart", () => {
+  const sandbox = loadAppSandbox();
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 23, 30)), "late-night");
+});
+
+test("03:00 (after midnight) still lands in the late-night daypart", () => {
+  const sandbox = loadAppSandbox();
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 25, 3, 0)), "late-night");
+});
+
+test("the daypart boundary hours themselves are correctly assigned", () => {
+  const sandbox = loadAppSandbox();
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 4, 59)), "late-night");
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 5, 0)), "morning");
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 11, 59)), "morning");
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 16, 59)), "afternoon");
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 21, 59)), "evening");
+  assert.equal(sandbox.daypartFor(new Date(2026, 8, 24, 22, 0)), "late-night");
+});
+
+test("the picked greeting always comes from that daypart's own pool", () => {
+  const sandbox = loadAppSandbox();
+  for (const [daypart, hour] of [
+    ["morning", 7],
+    ["afternoon", 13],
+    ["evening", 19],
+    ["late-night", 23],
+  ]) {
+    const date = new Date(2026, 8, 24, hour, 30);
+    const text = sandbox.greetingForMasthead(date);
+    const pool = sandbox.DAYPART_GREETINGS[daypart].map((e) => e.text);
+    assert.ok(pool.includes(text), `${text} isn't in the ${daypart} pool`);
+  }
+});
+
+test("refreshing later in the same daypart keeps the same greeting", () => {
+  const sandbox = loadAppSandbox();
+  const early = sandbox.greetingForMasthead(new Date(2026, 8, 24, 7, 30));
+  const later = sandbox.greetingForMasthead(new Date(2026, 8, 24, 11, 45));
+  assert.equal(early, later, "09:15 and later-that-morning must pick the same phrase");
+});
+
+test("a different daypart the same day CAN pick a different phrase (pools don't overlap)", () => {
+  const sandbox = loadAppSandbox();
+  const morning = sandbox.greetingForMasthead(new Date(2026, 8, 24, 7, 30));
+  const afternoon = sandbox.greetingForMasthead(new Date(2026, 8, 24, 13, 0));
+  const morningPool = sandbox.DAYPART_GREETINGS.morning.map((e) => e.text);
+  const afternoonPool = sandbox.DAYPART_GREETINGS.afternoon.map((e) => e.text);
+  assert.ok(morningPool.includes(morning));
+  assert.ok(afternoonPool.includes(afternoon));
+  // The two pools never share a phrase, so this also proves the daypart
+  // actually changed which pool was drawn from.
+  assert.equal(morningPool.some((t) => afternoonPool.includes(t)), false);
+});
+
+test("the same daypart on a different calendar date can pick a different phrase", () => {
+  const sandbox = loadAppSandbox();
+  // Not every day is guaranteed to differ (it's a deterministic hash, not
+  // true randomness) -- but scanning a run of consecutive mornings must
+  // turn up at least one that differs from day 1, or the "occasional
+  // variation" requirement would be silently broken.
+  const first = sandbox.greetingForMasthead(new Date(2026, 8, 1, 7, 30));
+  let sawDifferent = false;
+  for (let day = 2; day <= 28; day++) {
+    if (sandbox.greetingForMasthead(new Date(2026, 8, day, 7, 30)) !== first) {
+      sawDifferent = true;
+      break;
+    }
+  }
+  assert.ok(sawDifferent, "expected at least one other September morning to differ");
+});
+
+test("the default, plain greeting is the most common pick across many days (weighting holds)", () => {
+  const sandbox = loadAppSandbox();
+  const primary = `Good Morning, ${sandbox.USER_NAME}`;
+  let hits = 0;
+  const days = 200;
+  for (let day = 0; day < days; day++) {
+    const date = new Date(2026, 0, 1 + day, 7, 30);
+    if (sandbox.greetingForMasthead(date) === primary) hits++;
+  }
+  // Weighted 60/15/15/10 -- with 200 samples the primary greeting should be
+  // comfortably the plurality, not just an even one-in-four split.
+  assert.ok(hits > days * 0.4, `primary greeting only hit ${hits}/${days} times`);
+});
+
+test("greetingForMasthead never throws, even given a broken Date", () => {
+  const sandbox = loadAppSandbox();
+  // greetingForMasthead is wrapped in try/catch specifically so a clock
+  // edge case can never leave the masthead blank -- an invalid Date (every
+  // getter returns NaN) is the cheapest way to exercise that without
+  // reaching into the module's const bindings from outside (see the
+  // vm.runInContext bridging note above: they aren't reachable to mutate).
+  const result = sandbox.greetingForMasthead(new Date("not a real date"));
+  assert.equal(typeof result, "string");
+  assert.ok(result.length > 0);
+});
+
+test("renderMasthead sets the wordmark to a time-of-day greeting, not the bare site name", () => {
+  const sandbox = loadAppSandbox();
+  const registry = new Map();
+  registry.set("wordmark", { set textContent(v) { this._t = v; }, get textContent() { return this._t; } });
+  registry.set("sticky-wordmark", { set textContent(v) { this._t = v; }, get textContent() { return this._t; } });
+  registry.set("masthead-date", { set textContent(v) { this._t = v; }, get textContent() { return this._t; } });
+  registry.set("masthead-count", { set textContent(v) { this._t = v; }, get textContent() { return this._t; } });
+  registry.set("jumpline", { set innerHTML(v) { this._h = v; }, get innerHTML() { return this._h; }, querySelectorAll: () => [] });
+  sandbox.document.getElementById = (id) => registry.get(id) || null;
+
+  sandbox.renderMasthead([{ section: "Culture", date: new Date().toISOString() }], null);
+  const wordmark = registry.get("wordmark").textContent;
+  const allPhrases = Object.values(sandbox.DAYPART_GREETINGS).flatMap((pool) => pool.map((e) => e.text));
+  assert.ok(allPhrases.includes(wordmark), `"${wordmark}" isn't one of the configured greetings`);
+  assert.equal(registry.get("sticky-wordmark").textContent, sandbox.SITE_NAME);
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);

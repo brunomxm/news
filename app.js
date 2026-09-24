@@ -31,6 +31,68 @@ function dateLabel(iso) {
   return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short" });
 }
 
+// Daypart boundaries, in the browser's own local hours -- never a fixed
+// timezone. "Late night" is the wraparound case (22:00-04:59 spans
+// midnight); every other range is a plain half-open [start, end) hour test.
+function daypartFor(date) {
+  const h = date.getHours();
+  if (h >= 5 && h < 12) return "morning";
+  if (h >= 12 && h < 17) return "afternoon";
+  if (h >= 17 && h < 22) return "evening";
+  return "late-night";
+}
+
+// Deterministic string hash (FNV-1a) -- used only to turn "local date +
+// daypart" into a stable pseudo-random pick, never true runtime randomness.
+// Two calls with the same key always agree, so refreshing mid-morning (or
+// reopening the tab later that same morning) keeps the same phrase; a new
+// calendar day or a different daypart can hash to a different one.
+function hashString(s) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+
+// YYYY-MM-DD in the browser's own local calendar, not UTC -- toISOString()
+// would shift the date near midnight in timezones ahead of UTC, silently
+// changing which phrase gets picked right when a new day starts.
+function localDateKey(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+// Weighted pick from a daypart's phrase pool, keyed by `seed` (local date +
+// daypart) so the result is stable for as long as both stay the same.
+function pickWeighted(pool, seed) {
+  const total = pool.reduce((sum, entry) => sum + entry.weight, 0);
+  let r = hashString(seed) % total;
+  for (const entry of pool) {
+    if (r < entry.weight) return entry.text;
+    r -= entry.weight;
+  }
+  return pool[0].text; // unreachable given the modulo above; a safe fallback
+}
+
+// The masthead's dynamic, time-of-day title -- "Good Morning, Bruno" and
+// its occasional variants (see config.js's DAYPART_GREETINGS). Falls back
+// to the plain publication name on any failure (missing config, clock
+// unavailable, ...) rather than ever leaving the masthead blank.
+function greetingForMasthead(date) {
+  try {
+    const daypart = daypartFor(date);
+    const pool = DAYPART_GREETINGS[daypart];
+    if (!pool || !pool.length) return SITE_NAME;
+    return pickWeighted(pool, `${localDateKey(date)}:${daypart}`);
+  } catch {
+    return SITE_NAME;
+  }
+}
+
 function dek(article) {
   const s = (article.summary || "").trim();
   if (!s) return "";
@@ -395,7 +457,11 @@ function renderSection(name, units) {
 }
 
 function renderMasthead(articles, generatedAt) {
-  document.getElementById("wordmark").textContent = SITE_NAME;
+  // The greeting always reads the visitor's own current clock -- unlike
+  // `now` below (the feed's own generated_at, used for the date/item-count
+  // line), a greeting keyed to when the feed was last fetched would say
+  // "Good Morning" to someone opening the page at midnight.
+  document.getElementById("wordmark").textContent = greetingForMasthead(new Date());
   document.getElementById("sticky-wordmark").textContent = SITE_NAME;
   const now = generatedAt ? new Date(generatedAt) : new Date();
   const dateStr = now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }).toUpperCase();

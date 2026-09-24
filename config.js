@@ -1,4 +1,40 @@
 const SITE_NAME = "The Daily";
+// Doubles as the fallback masthead title -- rendered as-is whenever the
+// time-of-day greeting below can't be computed for any reason.
+
+// The one place the reader's name is configured -- change it here, not in
+// the phrase pools themselves, so it never needs editing in more than one
+// spot. See app.js's greetingForMasthead() for how these are used: a
+// deterministic (local date + daypart) pick, weighted per entry, never
+// true runtime randomness.
+const USER_NAME = "Bruno";
+
+const DAYPART_GREETINGS = {
+  morning: [
+    { text: `Good Morning, ${USER_NAME}`, weight: 60 },
+    { text: "Your Morning Edition", weight: 15 },
+    { text: `Start Here, ${USER_NAME}`, weight: 15 },
+    { text: "While You Were Sleeping", weight: 10 },
+  ],
+  afternoon: [
+    { text: `Good Afternoon, ${USER_NAME}`, weight: 60 },
+    { text: "The Day So Far", weight: 20 },
+    { text: "Here's Where Things Stand", weight: 10 },
+    { text: "Afternoon Edition", weight: 10 },
+  ],
+  evening: [
+    { text: `Good Evening, ${USER_NAME}`, weight: 60 },
+    { text: "The Day in Review", weight: 15 },
+    { text: "Before the Day Ends", weight: 15 },
+    { text: `Tonight, ${USER_NAME}`, weight: 10 },
+  ],
+  "late-night": [
+    { text: "Late Edition", weight: 50 },
+    { text: "Before Tomorrow", weight: 20 },
+    { text: "One Last Look", weight: 15 },
+    { text: `Still Up, ${USER_NAME}?`, weight: 15 },
+  ],
+};
 
 // Single editorial-rules config for the frontend: section order, how long an
 // article has to be to earn the long-read band, and the deterministic source
