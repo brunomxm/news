@@ -75,9 +75,6 @@ const SOURCE_PRIORITY = {
   "The AI Musicpreneur": 2,
   "TLDR": 1,
   "TLDR AI": 1,
-  "TLDR Hardware": 1,
-  "TLDR Founders": 1,
-  "TLDR Product": 1,
 };
 const DEFAULT_SOURCE_PRIORITY = 1;
 
@@ -88,9 +85,6 @@ const DEFAULT_SOURCE_PRIORITY = 1;
 const SOURCE_TYPE = {
   "TLDR": "radar",
   "TLDR AI": "radar",
-  "TLDR Hardware": "radar",
-  "TLDR Founders": "radar",
-  "TLDR Product": "radar",
   "Reuters": "radar",
   "Reuters Daily Briefing": "radar",
   "Stratechery": "analysis",
