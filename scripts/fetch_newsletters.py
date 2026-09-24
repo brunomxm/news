@@ -1087,19 +1087,103 @@ def _reuters_first_real_link(container) -> str:
     return ""
 
 
-def _reuters_teaser(container) -> "dict | None":
-    """One bullet/intro-paragraph teaser from `container` (a <li> or <p>):
-    title is its own first sentence (after dropping a leading "Thanks for
-    reading..." signoff, e.g. the intro's own opening line), any further
-    sentences become the body, and the link is the first real anchor inside
-    it. Returns None for anything that reads as pure boilerplate (a
-    self-promotional "sign up for our other newsletter" aside, checked
-    against BORING_RE over the *whole* container text rather than just the
-    title, since the promotional phrase is often not in the first
-    sentence) or that has no usable sentence at all."""
-    full_text = clean_text(get_text_no_glue(container))
-    if not full_text or BORING_RE.search(full_text):
+# Reuters' own newsletter click-tracking redirect
+# (newslink.reuters.com/click/<id>/<urlsafe-base64 of the real target
+# URL>/<suffix>) base64-encodes the actual reuters.com article URL right in
+# its own path. Decoding it recovers the article's real slug -- e.g.
+# ".../tehran-hints-hormuz-talks-with-us-leaders-gather-un-2026-09-22/" --
+# which reads far closer to a real headline than any commentary sentence
+# the newsletter wrote around the link, and (just as importantly) is the
+# article's own stable identity: two different bullets/paragraphs linking
+# to the same decoded target are the same story, however differently the
+# newsletter's own prose describes each one.
+REUTERS_CLICK_LINK_RE = re.compile(r"https?://newslink\.reuters\.com/click/[^/]+/([^/]+)/")
+REUTERS_TITLE_MINOR_WORDS = {
+    "a", "an", "the", "of", "in", "on", "at", "to", "for", "and", "or",
+    "but", "with", "from", "as", "by", "is", "are", "its",
+}
+REUTERS_TITLE_ACRONYMS = {
+    "us", "uk", "eu", "un", "ai", "ceo", "ipo", "gdp", "fbi", "cia",
+    "nba", "nfl", "opec", "nato", "un's",
+}
+# A trailing "-YYYY-MM-DD" is Reuters' own publish-date suffix on every
+# article slug, not part of the headline.
+REUTERS_SLUG_DATE_RE = re.compile(r"-\d{4}-\d{2}-\d{2}$")
+
+
+def _decode_reuters_click_target(href: str) -> "str | None":
+    """The real reuters.com article URL behind a newslink.reuters.com click
+    redirect (tracking query params stripped), or None for anything that
+    isn't that exact shape, doesn't base64-decode cleanly, or doesn't
+    decode to a real reuters.com URL -- this is a narrow, verified-against-
+    the-real-template decode, not a guess, so it fails closed rather than
+    ever returning a mangled string."""
+    m = REUTERS_CLICK_LINK_RE.match(href)
+    if not m:
         return None
+    b64 = m.group(1) + "=" * (-len(m.group(1)) % 4)
+    try:
+        decoded = base64.urlsafe_b64decode(b64).decode("utf-8", errors="strict")
+    except Exception:
+        return None
+    if not decoded.startswith("https://www.reuters.com/"):
+        return None
+    return decoded.split("?", 1)[0]
+
+
+def _reuters_title_from_slug(target_url: str) -> "str | None":
+    """A readable headline guess from a decoded reuters.com article URL's
+    own slug, e.g. ".../tehran-hints-hormuz-talks-with-us-leaders-gather-
+    un-2026-09-22/" -> "Tehran Hints Hormuz Talks With US Leaders Gather
+    UN". Used only as a fallback when the newsletter's own prose around a
+    link is commentary rather than a real headline (see
+    _is_suspicious_reuters_title) or when several distinct stories are
+    bundled into one recap sentence -- never as the first choice when a
+    real heading/anchor headline already exists. Returns None for a slug
+    with too few words to trust as a real headline (a bare category page,
+    e.g. "/world/united-nations/", not a specific story)."""
+    path = urlparse(target_url).path.rstrip("/")
+    slug = path.rsplit("/", 1)[-1] if path else ""
+    slug = REUTERS_SLUG_DATE_RE.sub("", slug)
+    words = [w for w in slug.split("-") if w]
+    if len(words) < 3:
+        return None
+    titled = []
+    for i, word in enumerate(words):
+        lower = word.lower()
+        if lower in REUTERS_TITLE_ACRONYMS:
+            titled.append(lower.upper())
+        elif i > 0 and lower in REUTERS_TITLE_MINOR_WORDS:
+            titled.append(lower)
+        else:
+            titled.append(lower.capitalize())
+    return " ".join(titled)
+
+
+# A real Reuters headline is a plain declarative statement -- it never
+# quotes a source with quotation marks, and it isn't written in the
+# newsletter editor's own first-person voice. Commentary bullets that
+# frame a quote ("The president's words need no summary from me: 'Will a
+# deal be made...' he mused...") read exactly like that: quote-heavy,
+# often self-referential, often long. This is a narrow, structural signal
+# (the presence of quote marks / a self-reference), not an attempt to
+# judge writing style in general, and it's used only to decide whether to
+# *prefer* a decoded slug title over the sentence-based one -- when no
+# slug title is available, the sentence-based candidate is still used (see
+# _reuters_teaser), so a suspicious-but-undecodable sentence never gets
+# silently dropped.
+REUTERS_SUSPICIOUS_TITLE_RE = re.compile(r"[“”\"]|no summary from me|\bhe mused\b|\bshe mused\b")
+
+
+def _is_suspicious_reuters_title(text: str) -> bool:
+    return len(text) > 160 or bool(REUTERS_SUSPICIOUS_TITLE_RE.search(text))
+
+
+def _reuters_sentence_title(full_text: str) -> "tuple[str, str] | None":
+    """(title, rest) from `full_text`'s own sentences: title is the first
+    sentence after dropping a leading "Thanks for reading..." signoff
+    (e.g. the intro's own opening line), rest is everything after it.
+    Returns None if there's no usable sentence at all."""
     sentences = [s for s in re.split(r"(?<=[.!?])\s+", full_text) if s.strip()]
     while sentences and SIGNOFF_RE.search(sentences[0]):
         sentences.pop(0)
@@ -1110,14 +1194,93 @@ def _reuters_teaser(container) -> "dict | None":
         return None
     if len(title) > 200:
         title = title[:197].rsplit(" ", 1)[0] + "…"
-    rest = " ".join(sentences[1:]).strip()
-    return {
-        "title": title,
-        "link": _reuters_first_real_link(container),
-        "summary": rest,
-        "image": None,
-        "content_html": f"<p>{html.escape(rest)}</p>" if rest else None,
-    }
+    return title, " ".join(sentences[1:]).strip()
+
+
+def _reuters_teasers(container, seen_targets: set) -> list:
+    """One or more bullet/intro-paragraph teasers from `container` (a <li>
+    or <p>). `seen_targets` is the set of already-emitted stories' decoded
+    reuters.com article URLs, shared across the whole extraction call, and
+    is both read (to skip a story already covered elsewhere) and written
+    (to mark whatever this call emits) -- callers must process containers
+    in priority order (specific bulleted stories before the terser intro
+    recap) so that a fuller, better-titled story wins over a duplicate.
+
+    A container linking to exactly one distinct article is one story: the
+    title is that story's own sentence-based headline, unless it reads as
+    commentary framing a quote (see _is_suspicious_reuters_title) and a
+    decoded slug title is available, in which case the slug title becomes
+    the title and the original sentence-based text becomes the summary
+    instead -- this is the "the president's words need no summary from
+    me..." case.
+
+    A container linking to *several* distinct articles (a section-intro
+    recap sentence bundling multiple headlines together, e.g. "Emmanuel
+    Macron dismisses Donald Trump's claims..., legal experts say the
+    White House media ban likely won't stand up in court, and a
+    Looksmaxxing influencer is charged with rape") is not one story at
+    all -- it's decomposed into one slug-titled unit per distinct target
+    instead of emitted as a single fake combined article. A target with no
+    usable slug title in this case is skipped outright rather than guessed
+    at from its share of a multi-clause sentence, which the regex sentence
+    splitter can't reliably separate.
+
+    Returns None for anything that reads as pure boilerplate (a
+    self-promotional "sign up for our other newsletter" aside, checked
+    against BORING_RE over the *whole* container text rather than just the
+    first sentence, since the promotional phrase is often further in)."""
+    full_text = clean_text(get_text_no_glue(container))
+    if not full_text or BORING_RE.search(full_text):
+        return []
+
+    targets = {}  # decoded target url -> first anchor seen for it, in order
+    for a in container.find_all("a", href=True):
+        target = _decode_reuters_click_target(a["href"])
+        key = target or a["href"]
+        if key not in targets:
+            targets[key] = a
+
+    if len(targets) > 1:
+        teasers = []
+        for target, _anchor in targets.items():
+            if not target.startswith("https://www.reuters.com/") or target in seen_targets:
+                continue
+            slug_title = _reuters_title_from_slug(target)
+            if not slug_title:
+                continue
+            seen_targets.add(target)
+            teasers.append(
+                {"title": slug_title, "link": target, "summary": "", "image": None, "content_html": None}
+            )
+        return teasers
+
+    recovered = _reuters_sentence_title(full_text)
+    if not recovered:
+        return []
+    title, rest = recovered
+
+    link = next(iter(targets), "") or _reuters_first_real_link(container)
+    target = link if link.startswith("https://www.reuters.com/") else None
+    if target and target in seen_targets:
+        return []
+
+    if target and _is_suspicious_reuters_title(title):
+        slug_title = _reuters_title_from_slug(target)
+        if slug_title:
+            rest = f"{title} {rest}".strip()
+            title = slug_title
+
+    if target:
+        seen_targets.add(target)
+    return [
+        {
+            "title": title,
+            "link": link,
+            "summary": rest,
+            "image": None,
+            "content_html": f"<p>{html.escape(rest)}</p>" if rest else None,
+        }
+    ]
 
 
 def extract_reuters_daily_briefing(soup) -> list:
@@ -1126,24 +1289,17 @@ def extract_reuters_daily_briefing(soup) -> list:
         return []
 
     articles = []
+    seen_targets = set()
 
-    # The intro: any paragraph_block(s) before the first heading_block --
-    # real editorial copy (often several unrelated one-line asides in one
-    # or two <p> tags, e.g. "there is a man with one name and one mission:
-    # to visit every Starbucks on the planet"), kept as its own teaser (or
-    # teasers, one per <p>) rather than dropped.
-    for b in blocks:
-        if "heading_block" in _reuters_block_classes(b):
-            break
-        if "paragraph_block" in _reuters_block_classes(b):
-            for p in b.find_all("p"):
-                teaser = _reuters_teaser(p)
-                if teaser:
-                    articles.append(teaser)
-
+    # The intro paragraph_block(s) before the first heading_block are
+    # handled in a second pass, after this loop -- see below -- so a
+    # specific bulleted/feature story always claims a shared target
+    # before the terser intro recap would (via seen_targets).
     for i, b in enumerate(blocks):
-        if "heading_block" not in _reuters_block_classes(b):
+        classes = _reuters_block_classes(b)
+        if "heading_block" not in classes:
             continue
+
         heading_text = clean_text(b.get_text(" "))
         if not heading_text:
             continue
@@ -1169,9 +1325,7 @@ def extract_reuters_daily_briefing(soup) -> list:
             # A section label ("Today's Top News", "Business & Markets", ...)
             # introducing a bulleted list -- one distinct story per <li>.
             for li in content.find_all("li"):
-                teaser = _reuters_teaser(li)
-                if teaser:
-                    articles.append(teaser)
+                articles.extend(_reuters_teasers(li, seen_targets))
             continue
 
         # A single feature story ("30,000 Mistakes", "And Finally..."). If
@@ -1185,13 +1339,18 @@ def extract_reuters_daily_briefing(soup) -> list:
         heading_link = heading_anchor["href"] if heading_anchor and heading_anchor["href"].startswith("http") else None
 
         if heading_link:
+            # A heading that carries its own link is already a genuine
+            # per-issue headline (e.g. "30,000 Mistakes") -- the highest-
+            # priority title source, never second-guessed by any fallback
+            # heuristic below.
             title = heading_text
             link = heading_link
         else:
-            teaser = _reuters_teaser(content)
-            if not teaser:
+            recovered = _reuters_sentence_title(clean_text(get_text_no_glue(content)))
+            if not recovered:
                 continue
-            title, link = teaser["title"], teaser["link"]
+            title, _rest = recovered
+            link = ""
             k = j + 1
             while k < len(blocks):
                 next_classes = _reuters_block_classes(blocks[k])
@@ -1203,6 +1362,28 @@ def extract_reuters_daily_briefing(soup) -> list:
                 if "heading_block" in next_classes:
                     break
                 k += 1
+
+            # Same rule as an ordinary bullet (see _reuters_teasers): only
+            # a body sentence that reads like commentary rather than a
+            # headline gets swapped for the linked story's own decoded
+            # slug title -- a clean sentence (most "And Finally..."
+            # stories, which have no embedded quote or self-reference) is
+            # left as-is, since it usually reads better than a slug.
+            if _is_suspicious_reuters_title(title):
+                button_target = _decode_reuters_click_target(link)
+                if button_target:
+                    slug_title = _reuters_title_from_slug(button_target)
+                    if slug_title:
+                        title = slug_title
+
+        target = _decode_reuters_click_target(link) or (
+            link if link.startswith("https://www.reuters.com/") else None
+        )
+        if target:
+            if target in seen_targets:
+                continue
+            seen_targets.add(target)
+            link = target
 
         content_html = sanitize_fragment(content, title)
         if body_is_just_the_title(content_html, title):
@@ -1221,6 +1402,19 @@ def extract_reuters_daily_briefing(soup) -> list:
                 "content_html": content_html,
             }
         )
+
+    # The intro: any paragraph_block(s) before the first heading_block --
+    # real editorial copy, processed last (see seen_targets above) so a
+    # story already covered by a proper bulleted headline doesn't also
+    # show up here as a duplicate, while a genuinely unique aside (e.g.
+    # "there is a man with one name and one mission: to visit every
+    # Starbucks on the planet") still gets its own teaser.
+    for b in blocks:
+        if "heading_block" in _reuters_block_classes(b):
+            break
+        if "paragraph_block" in _reuters_block_classes(b):
+            for p in b.find_all("p"):
+                articles.extend(_reuters_teasers(p, seen_targets))
 
     return articles
 

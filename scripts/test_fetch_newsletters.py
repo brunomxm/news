@@ -8,6 +8,7 @@ Run with:
     scripts/venv/bin/python scripts/test_fetch_newsletters.py
 """
 
+import base64
 import sys
 import unittest
 from pathlib import Path
@@ -23,6 +24,9 @@ from fetch_newsletters import (
     FORWARDED_SUBJECT_RE,
     FULL_LETTER_SENDERS,
     REUTERS_DAILY_BRIEFING_SENDER,
+    _decode_reuters_click_target,
+    _is_suspicious_reuters_title,
+    _reuters_title_from_slug,
     body_is_just_the_title,
     br_split_groups,
     clean_text,
@@ -986,48 +990,97 @@ class OgImageFetch(unittest.TestCase):
         self.assertEqual(result, "http://example.com/og.jpg")
 
 
+def _reuters_click_link(target_url: str) -> str:
+    """Build a real-shaped newslink.reuters.com click-tracking redirect
+    around `target_url`, the same shape _decode_reuters_click_target
+    parses in production -- so fixtures exercise the actual decode path
+    instead of silently no-op'ing on a plain, undecodable test URL."""
+    b64 = base64.urlsafe_b64encode(target_url.encode()).decode().rstrip("=")
+    return f"https://newslink.reuters.com/click/12345.6789/{b64}/deadbeef"
+
+
+# Real reuters.com article URLs (fabricated but realistically shaped, each
+# with a >=3-word slug so _reuters_title_from_slug has something to work
+# with), reused across the fixture below so a target can deliberately be
+# linked from more than one place to test deduplication.
+IRAN_URL = "https://www.reuters.com/world/middle-east/tehran-hints-hormuz-talks-with-us-leaders-gather-un-2026-09-22/"
+MEDIA_BAN_URL = "https://www.reuters.com/legal/government/news-outlets-ask-judge-end-trumps-media-ban-2026-09-22/"
+RAPE_CHARGE_URL = "https://www.reuters.com/business/media-telecom/looksmaxxing-influencer-charged-with-rape-2026-09-22/"
+HM_URL = "https://www.reuters.com/business/retail-consumer/hm-founding-family-builds-stake-2026-09-23/"
+THIRTY_K_URL = "https://www.reuters.com/legal/government/thirty-thousand-mistakes-2026-09-23/"
+AIR_TRAFFIC_URL = "https://www.reuters.com/business/media-telecom/us-air-traffic-vulnerabilities-exposed-2026-09-23/"
+CLEAN_STORY_URL = "https://www.reuters.com/world/asia-pacific/some-clean-headline-example-story-2026-09-23/"
+STARBUCKS_URL = "https://www.reuters.com/lifestyle/culture-current/one-mans-decades-long-quest-to-visit-every-starbucks-2026-09-22/"
+
+
 class ReutersDailyBriefing(unittest.TestCase):
     """Reuters Daily Briefing's real template labels every unit of content
     with its own "<type>_block" class and is structurally a multi-story
-    digest, not a single essay -- extract_full_letter (built for Francesco
-    Costa/Il Post's genuinely single-essay newsletters) mashed unrelated
-    paragraphs from different sections into one garbled article titled with
-    the day's unrelated subject line. This fixture is a trimmed-down but
-    structurally faithful reproduction of the real block layout (captured
-    from a live issue): an intro with two <p>s (one a multi-link recap, one
-    a standalone aside), a "Today's Top News" section with a real bullet and
-    a self-promotional one, a second "Business & Markets" section, a feature
-    story whose own heading is a real link ("30,000 Mistakes"-style), and a
-    closing feature whose heading has no link at all but is followed by a
-    "Read more" button ("And Finally..."-style). The sponsor ad block
-    carries none of these "_block" classes in the real template, so it's
-    represented here by a plain, unclassed div."""
+    digest, not a single essay. Two follow-on problems on top of that base
+    template-awareness (see extract_reuters_daily_briefing/_reuters_teasers):
 
-    FIXTURE = """
+    1. Individual bullets are often written as newsletter-editor commentary
+       framing a quote ("The president's words need no summary from me:
+       'Will a deal be made...' he mused during his General Assembly
+       speech.") rather than as a headline -- the commentary was becoming
+       the title. Reuters' own click-tracking links
+       (newslink.reuters.com/click/<id>/<base64 of the real target
+       URL>/<suffix>) base64-encode the real reuters.com article underneath,
+       and that URL's own slug reads far closer to a real headline, so a
+       *suspicious* sentence-based title (quote marks, "no summary from
+       me", too long) is swapped for the decoded slug title, with the
+       original commentary moved to summary instead.
+
+    2. A section-intro recap sentence can bundle several distinct stories'
+       headlines into one sentence ("Emmanuel Macron dismisses Donald
+       Trump's claims..., legal experts say the White House media ban
+       likely won't stand up in court, and a Looksmaxxing influencer is
+       charged with rape."), which used to become one fake combined
+       article. A sentence linking to 2+ distinct decoded targets is now
+       decomposed into one slug-titled unit per target instead.
+
+    Both fixes share one `seen_targets` set across a whole extraction call,
+    so a story a bulleted section already covers properly is never also
+    emitted (worse) a second time from the terser intro recap.
+
+    This fixture is a trimmed-down but structurally faithful reproduction
+    of the real block layout (captured from a live issue), using
+    real-shaped click-tracking links throughout so the decode path is
+    genuinely exercised, not a fixture-only no-op."""
+
+    FIXTURE = f"""
     <table class="paragraph_block"><tr><td>
       <p>Thanks for reading the Daily Briefing.
-        <a href="https://reuters.example/macron">Emmanuel Macron dismisses Donald Trump's claims</a>
-        of securing peace in Gaza, and a Looksmaxxing influencer
-        <a href="https://reuters.example/rape">is charged with rape</a>.</p>
+        <a href="{_reuters_click_link(IRAN_URL)}">Emmanuel Macron dismisses Donald Trump's claims</a>
+        of securing peace in Gaza, legal experts say the White House
+        <a href="{_reuters_click_link(MEDIA_BAN_URL)}">media ban</a>
+        likely won't stand up in court, and a Looksmaxxing influencer
+        <a href="{_reuters_click_link(RAPE_CHARGE_URL)}">is charged with rape</a>.</p>
       <p>Plus, there is a man with one name and one mission:
-        <a href="https://reuters.example/starbucks">to visit every Starbucks on the planet</a>.</p>
+        <a href="{_reuters_click_link(STARBUCKS_URL)}">to visit every Starbucks on the planet</a>.</p>
     </td></tr></table>
     <table class="heading_block"><tr><td><h2>Today's Top News</h2></td></tr></table>
     <table class="image_block"><tr><td><img src="https://reuters.example/photo1.jpg"></td></tr></table>
     <table class="list_block"><tr><td><ul>
-      <li>The president's words need no summary from me: he mused
-        <a href="https://reuters.example/un-speech">during his General Assembly speech</a>.
-        Or do I annihilate the Islamic Republic and do it quickly?</li>
+      <li>The president&#8217;s words need no summary from me: &#8220;Will a deal
+        be made with Iran that lets them rebuild and create a far greater
+        country than it ever was before?&#8221; he mused
+        <a href="{_reuters_click_link(IRAN_URL)}">during his General Assembly speech</a>.
+        <span>&#8220;Or do I</span> <span>annihilate the Islamic Republic and do it quickly?&#8221;</span></li>
+      <li>A clean, ordinary Reuters headline sentence with no quotes at all
+        describing <a href="{_reuters_click_link(CLEAN_STORY_URL)}">a normal linked story</a> plainly.</li>
+      <li>No link in this one at all, just plain commentary text that should
+        still become a reasonable article instead of being dropped outright.</li>
       <li>There is plenty more Reuters coverage from the General Assembly available here.
         <a href="https://reuters.example/signup">Sign up</a> to receive our Sustainable Switch newsletter.</li>
     </ul></td></tr></table>
     <table class="heading_block"><tr><td><h2>Business &amp; Markets</h2></td></tr></table>
     <table class="list_block"><tr><td><ul>
       <li>The billionaire family behind H&amp;M
-        <a href="https://reuters.example/hm">is building its stake</a>, fueling speculation.</li>
+        <a href="{_reuters_click_link(HM_URL)}">is building its stake</a>, fueling speculation.</li>
     </ul></td></tr></table>
     <table class="heading_block"><tr><td><h2>
-      <a href="https://reuters.example/30000-mistakes">30,000 Mistakes</a>
+      <a href="{_reuters_click_link(THIRTY_K_URL)}">30,000 Mistakes</a>
     </h2></td></tr></table>
     <table class="image_block"><tr><td><img src="https://reuters.example/photo2.jpg"></td></tr></table>
     <table class="paragraph_block"><tr><td>
@@ -1040,7 +1093,7 @@ class ReutersDailyBriefing(unittest.TestCase):
       <p>America's air-traffic control system runs on outdated telecom systems and decades-old computers.</p>
       <p>No wonder it keeps failing.</p>
     </td></tr></table>
-    <table class="button_block"><tr><td><a href="https://reuters.example/read-more">Read more</a></td></tr></table>
+    <table class="button_block"><tr><td><a href="{_reuters_click_link(AIR_TRAFFIC_URL)}">Read more</a></td></tr></table>
     <div>
       <p>Sponsored by: Fisher Investments</p>
       <p>7 Wealth Tips Once Your Portfolio Reaches $1 Million. <a href="https://sponsor.example/learn-more">Learn More</a></p>
@@ -1051,46 +1104,101 @@ class ReutersDailyBriefing(unittest.TestCase):
         soup = BeautifulSoup(self.FIXTURE, "html.parser")
         return extract_reuters_daily_briefing(soup)
 
-    def test_intro_paragraphs_each_become_their_own_teaser(self):
+    def test_commentary_framing_a_quote_is_moved_to_summary_and_the_real_headline_becomes_the_title(self):
+        # Item 1: a linked real headline with editorial commentary/a quote
+        # wrapped around it -- the decoded slug headline must become the
+        # title, and the original commentary (quote included) must survive
+        # somewhere in the summary rather than being discarded.
         articles = self._extract()
-        titles = [a["title"] for a in articles]
-        self.assertIn(
-            "Emmanuel Macron dismisses Donald Trump's claims of securing peace in Gaza, and a Looksmaxxing influencer is charged with rape.",
-            titles,
-        )
-        self.assertIn(
-            "Plus, there is a man with one name and one mission: to visit every Starbucks on the planet.",
-            titles,
-        )
-        # The generic "thanks for reading" opener must never become a title.
-        self.assertFalse(any(t.lower().startswith("thanks for reading") for t in titles))
+        match = next((a for a in articles if a["link"] == IRAN_URL), None)
+        self.assertIsNotNone(match, [a["title"] for a in articles])
+        self.assertNotIn("no summary from me", match["title"])
+        self.assertIn("Tehran", match["title"])
+        self.assertIn("no summary from me", match["summary"])
+        self.assertIn("annihilate", match["summary"])
 
-    def test_each_bullet_under_a_section_heading_becomes_its_own_article(self):
+    def test_quote_split_across_inline_spans_stays_one_article_not_two(self):
+        # Item 2: the closing quote is split across two adjacent <span>s in
+        # the same <li> as the opening commentary -- this must never
+        # produce a second, fake article out of the split-off half.
         articles = self._extract()
-        titles = [a["title"] for a in articles]
-        self.assertTrue(any("General Assembly speech" in t for t in titles))
-        self.assertTrue(any("H&M" in t or "H&amp;M" in t for t in titles))
+        matches = [a for a in articles if a["link"] == IRAN_URL]
+        self.assertEqual(len(matches), 1, matches)
+
+    def test_generic_and_finally_heading_never_becomes_the_title_when_a_clean_body_sentence_exists(self):
+        # Item 3: "And Finally..." itself must never be used as a title --
+        # regardless of whether a linked headline is reachable elsewhere,
+        # since this heading never carries its own link at all.
+        articles = self._extract()
+        match = next((a for a in articles if a["link"] == AIR_TRAFFIC_URL), None)
+        self.assertIsNotNone(match, [a["title"] for a in articles])
+        self.assertNotEqual(match["title"], "And Finally...")
+        self.assertIn("air-traffic control", match["title"])
+
+    def test_section_intro_recap_bundling_several_stories_is_not_emitted_as_one_fake_article(self):
+        # Item 4: the intro's first <p> links to three genuinely different
+        # stories in one sentence -- none of those three targets may be
+        # covered by ONE combined article; each must either appear as its
+        # own distinct unit or (per the dedup test below) be skipped because
+        # a fuller bulleted version already covers it.
+        articles = self._extract()
+        titles_by_link = {a["link"]: a["title"] for a in articles}
+        # The recap sentence's own full run-on text must never be a title.
+        self.assertFalse(
+            any("Emmanuel Macron dismisses" in t and "Looksmaxxing" in t for t in titles_by_link.values())
+        )
+        self.assertIn(MEDIA_BAN_URL, titles_by_link)
+        self.assertIn(RAPE_CHARGE_URL, titles_by_link)
+
+    def test_intro_fragment_is_deduped_against_a_fuller_bulleted_story_for_the_same_target(self):
+        # The intro's "Emmanuel Macron dismisses..." clause and the
+        # "Threats and recrimination"-style bullet both link to IRAN_URL;
+        # only the fuller, better-titled bulleted version may survive.
+        articles = self._extract()
+        matches = [a for a in articles if a["link"] == IRAN_URL]
+        self.assertEqual(len(matches), 1, matches)
+        self.assertIn("Tehran", matches[0]["title"])
+
+    def test_normal_linked_headline_with_no_commentary_parses_normally(self):
+        # Item 5: a clean bullet with no quotes/commentary keeps its own
+        # sentence-based title unchanged -- the slug fallback must not
+        # kick in when the sentence itself already reads fine.
+        articles = self._extract()
+        match = next((a for a in articles if a["link"] == CLEAN_STORY_URL), None)
+        self.assertIsNotNone(match, [a["title"] for a in articles])
+        self.assertIn("clean, ordinary Reuters headline sentence", match["title"])
+
+    def test_fallback_when_no_link_is_present_still_emits_a_reasonable_article(self):
+        # Item 6: a bullet with no anchor at all must still become an
+        # article (sentence-based title, empty link) rather than being
+        # dropped outright.
+        articles = self._extract()
+        match = next((a for a in articles if "No link in this one at all" in a["title"]), None)
+        self.assertIsNotNone(match, [a["title"] for a in articles])
+        self.assertEqual(match["link"], "")
+
+    def test_no_article_duplicates_its_own_title_in_summary_or_body(self):
+        # Item 7.
+        articles = self._extract()
+        for a in articles:
+            if a["summary"]:
+                self.assertNotEqual(a["title"].strip(), a["summary"].strip(), a)
+            if a["content_html"]:
+                self.assertNotEqual(
+                    clean_text(a["title"]), clean_text(BeautifulSoup(a["content_html"], "html.parser").get_text(" ")), a
+                )
 
     def test_self_promotional_bullet_is_dropped(self):
         articles = self._extract()
         titles = " ".join(a["title"] for a in articles)
         self.assertNotIn("plenty more Reuters coverage", titles)
 
-    def test_feature_story_with_its_own_linked_heading_keeps_that_headline(self):
+    def test_feature_story_with_its_own_linked_heading_keeps_that_headline_verbatim(self):
         articles = self._extract()
         match = next((a for a in articles if a["title"] == "30,000 Mistakes"), None)
         self.assertIsNotNone(match, [a["title"] for a in articles])
-        self.assertEqual(match["link"], "https://reuters.example/30000-mistakes")
+        self.assertEqual(match["link"], THIRTY_K_URL)
         self.assertIn("voter registration", match["content_html"])
-
-    def test_feature_story_with_no_heading_link_recovers_title_from_body_and_uses_the_read_more_button(self):
-        articles = self._extract()
-        match = next((a for a in articles if "air-traffic control" in a["title"]), None)
-        self.assertIsNotNone(match, [a["title"] for a in articles])
-        # "And Finally..." itself must never be used as the title.
-        self.assertNotEqual(match["title"], "And Finally...")
-        self.assertEqual(match["link"], "https://reuters.example/read-more")
-        self.assertIn("keeps failing", match["content_html"])
 
     def test_sponsor_ad_is_never_extracted_as_an_article(self):
         articles = self._extract()
@@ -1098,10 +1206,10 @@ class ReutersDailyBriefing(unittest.TestCase):
         self.assertNotIn("Wealth Tips", joined)
         self.assertNotIn("Fisher Investments", joined)
 
-    def test_every_article_has_a_real_link(self):
+    def test_no_duplicate_titles_across_the_whole_issue(self):
         articles = self._extract()
-        for a in articles:
-            self.assertTrue(a["link"].startswith("http"), a)
+        titles = [a["title"] for a in articles]
+        self.assertEqual(len(titles), len(set(titles)), titles)
 
     def test_reuters_daily_briefing_is_no_longer_a_full_letter_sender(self):
         self.assertNotIn(REUTERS_DAILY_BRIEFING_SENDER, FULL_LETTER_SENDERS)
@@ -1126,6 +1234,54 @@ class ReutersDailyBriefing(unittest.TestCase):
         articles = extract_articles(html, "", "Some subject", REUTERS_DAILY_BRIEFING_SENDER)
         self.assertEqual(len(articles), 1)
         self.assertIn("real headline", articles[0]["title"])
+
+
+class ReutersLinkDecoding(unittest.TestCase):
+    """Unit-level coverage for the click-link decoder and slug-title
+    generator underneath ReutersDailyBriefing's title fallback, independent
+    of the full block-walking fixture above."""
+
+    def test_decodes_a_real_shaped_click_link_to_its_target(self):
+        href = _reuters_click_link(IRAN_URL)
+        self.assertEqual(_decode_reuters_click_target(href), IRAN_URL.split("?", 1)[0])
+
+    def test_strips_tracking_query_params_from_the_decoded_target(self):
+        tracked = IRAN_URL.rstrip("/") + "/?utm_source=Sailthru&utm_medium=Newsletter"
+        href = _reuters_click_link(tracked)
+        self.assertEqual(_decode_reuters_click_target(href), IRAN_URL.split("?", 1)[0])
+
+    def test_non_click_link_shape_returns_none(self):
+        self.assertIsNone(_decode_reuters_click_target("https://www.reuters.com/world/some-story/"))
+
+    def test_click_link_to_a_non_reuters_target_returns_none(self):
+        href = _reuters_click_link("https://example.com/not-reuters/")
+        self.assertIsNone(_decode_reuters_click_target(href))
+
+    def test_slug_title_from_a_real_looking_url(self):
+        title = _reuters_title_from_slug(IRAN_URL)
+        self.assertEqual(title, "Tehran Hints Hormuz Talks with US Leaders Gather UN")
+
+    def test_slug_title_strips_the_trailing_publish_date(self):
+        title = _reuters_title_from_slug(IRAN_URL)
+        self.assertNotIn("2026", title)
+
+    def test_slug_title_returns_none_for_a_bare_category_page(self):
+        self.assertIsNone(_reuters_title_from_slug("https://www.reuters.com/world/united-nations/"))
+
+    def test_suspicious_title_flags_quoted_commentary(self):
+        self.assertTrue(
+            _is_suspicious_reuters_title(
+                'The president’s words need no summary from me: “Will a deal be made?”'
+            )
+        )
+
+    def test_suspicious_title_flags_extremely_long_sentences(self):
+        self.assertTrue(_is_suspicious_reuters_title("A " + "very " * 40 + "long sentence."))
+
+    def test_suspicious_title_does_not_flag_an_ordinary_clean_sentence(self):
+        self.assertFalse(
+            _is_suspicious_reuters_title("The billionaire family behind H&M is building its stake.")
+        )
 
 
 if __name__ == "__main__":
