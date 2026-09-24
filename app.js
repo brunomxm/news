@@ -246,7 +246,7 @@ function heroBlock(a) {
   const isRead = ReadState.isRead(a.id);
   const hasImage = Boolean(a.image);
   const media = hasImage
-    ? `<div class="hero-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
+    ? `<div class="hero-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.hero-media').style.display='none'"></div>`
     : "";
   const d = dek(a);
   return `<article class="hero${hasImage ? "" : " hero-text"}${isRead ? " is-read" : ""}" data-section="${escapeHtml(a.section)}">
@@ -267,7 +267,7 @@ function secondaryBlock(a) {
   const isRead = ReadState.isRead(a.id);
   const hasImage = Boolean(a.image);
   const thumb = hasImage
-    ? `<div class="secondary-thumb"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
+    ? `<div class="secondary-thumb"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.secondary-thumb').style.display='none'"></div>`
     : "";
   const d = hasImage ? "" : dek(a);
   return `<article class="secondary${hasImage ? "" : " secondary-text"}${isRead ? " is-read" : ""}">
@@ -288,7 +288,7 @@ function featureBlock(a) {
   const isRead = ReadState.isRead(a.id);
   const hasImage = Boolean(a.image);
   const media = hasImage
-    ? `<div class="feature-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
+    ? `<div class="feature-media"><img src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.feature-media').style.display='none'"></div>`
     : "";
   const d = hasImage ? "" : dek(a);
   return `<article class="feature${hasImage ? "" : " feature-text"}${isRead ? " is-read" : ""}">
@@ -310,12 +310,24 @@ function compactRow(a) {
   </a></li>`;
 }
 
-function radarRow(a) {
+// The "Latest dispatches" rail beside the hero (see render()) -- same data
+// as the old full-width "Latest" section, just a narrower treatment: a
+// small red-label source eyebrow, an optional thumbnail, and a compact
+// serif headline. Roundup issues still go through issueRow (renderUnit
+// dispatches to it regardless of the row function passed in).
+function dispatchRow(a) {
   const isRead = ReadState.isRead(a.id);
-  return `<li class="${isRead ? "is-read" : ""}"><a ${cardLinkAttrs(a)}>
-    <span class="label-meta radar-meta">${escapeHtml(a.source)} &middot; ${timeOfDay(a.date)}${readGlyph(a, isRead)}</span>
-    <span class="radar-headline">${escapeHtml(a.title)}</span>
-  </a></li>`;
+  const thumb = a.image
+    ? `<img class="dispatch-thumb" src="${escapeHtml(a.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
+    : "";
+  return `<article class="dispatch${isRead ? " is-read" : ""}">
+    <a ${cardLinkAttrs(a)}>
+      <div class="dispatch-eyebrow label-meta">${escapeHtml(a.source)}</div>
+      ${thumb}
+      <h3 class="dispatch-headline">${escapeHtml(a.title)}</h3>
+      <div class="label-meta dispatch-time">${metaLine(a, { readingTime: true })}${readGlyph(a, isRead)}</div>
+    </a>
+  </article>`;
 }
 
 function longreadBand(a) {
@@ -350,9 +362,7 @@ function unitStoryCount(units) {
 function renderSection(name, units) {
   if (!units.length) return "";
   let body = "";
-  if (name === "Latest") {
-    body = `<ul class="radar-list">${units.map((u) => renderUnit(u, radarRow)).join("")}</ul>`;
-  } else if (name === "World & Ideas") {
+  if (name === "World & Ideas") {
     const { picked: lead, rest } = pickFirstArticleUnit(units);
     const leadHtml = lead ? secondaryBlock(lead) : "";
     body = `${leadHtml}<ul class="compact-list">${rest.map((u) => renderUnit(u, compactRow)).join("")}</ul>`;
@@ -433,8 +443,22 @@ function render(data) {
     (bySection[u.section] ||= []).push(u);
   }
 
-  let html = hero ? heroBlock(hero) : "";
+  // Chronicle's composition puts the hero and the "Latest" wire items side
+  // by side (dominant story left, dispatch rail right) instead of stacking
+  // Latest as its own full-width section underneath -- same data, same
+  // hero-selection/grouping logic, just a narrower row template for what
+  // lands in the rail (see dispatchRow).
+  const latestUnits = bySection["Latest"] || [];
+  const dispatchHtml = latestUnits.length
+    ? `<aside class="dispatch-rail" id="sec-latest" data-section="Latest">
+        <div class="side-title label-meta">Latest<span class="side-title-count">${unitStoryCount(latestUnits)}</span></div>
+        <div class="dispatch-list">${latestUnits.map((u) => renderUnit(u, dispatchRow)).join("")}</div>
+      </aside>`
+    : "";
+
+  let html = `<div class="news-grid"><div class="lead-col">${hero ? heroBlock(hero) : ""}</div>${dispatchHtml}</div>`;
   for (const name of SECTION_ORDER) {
+    if (name === "Latest") continue; // rendered as the dispatch rail above
     html += renderSection(name, bySection[name] || []);
     if (name === "Technology & AI" && longread) {
       html += longreadBand(longread);

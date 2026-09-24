@@ -90,7 +90,7 @@ function render(article) {
         ? `<p class="reader-empty">Full text isn’t available here — read it on the original site below.</p>`
         : `<p class="reader-empty">Full text isn’t available here.</p>`;
   const hero = article.image
-    ? `<div class="reader-hero"><img src="${escapeHtml(article.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
+    ? `<div class="reader-hero"><img src="${escapeHtml(article.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.reader-hero').style.display='none'"></div>`
     : "";
   const bylineParts = [dateLabel(article.date), timeOfDay(article.date)];
   if (article.reading_time_min) bylineParts.push(`${article.reading_time_min} MIN READ`);
@@ -116,6 +116,7 @@ function render(article) {
   main.querySelectorAll(".reader-body img").forEach((img) => {
     img.loading = "lazy";
     img.referrerPolicy = "no-referrer";
+    img.addEventListener("error", () => img.remove(), { once: true });
   });
 
   const markLink = main.querySelector(".reader-mark-unread");

@@ -1,29 +1,30 @@
 :root {
-  --bg: #F7F4EF;
-  --bg-alt: #F0EBE3;
-  --text: #16130F;
-  --text-dek: #3B342B;
-  --text-muted: #6E675E;
-  --rule: #DCD4C8;
-  --rule-strong: #C8BFB0;
-  --rule-heavy: #16130F;
-  --accent: #8A2B20;
-  --image-bg: #E8E1D6;
+  --bg: #F5F2E9;
+  --bg-alt: #E8E6DB;
+  --text: #242720;
+  --text-dek: #4B4B41;
+  --text-muted: #77776C;
+  --rule: #DAD7C9;
+  --rule-strong: #C7C5BA;
+  --rule-heavy: #242720;
+  --accent: #AA3E2B;
+  --image-bg: #E8E6DB;
 
-  /* Restrained per-section accents -- see config.js's SOURCE_TYPE/section
-     mapping for which sources land in which section. Muted on purpose:
-     these are rule segments and hover states, never fills or badges. */
-  --accent-latest: #8A2B20;      /* muted oxblood/brick */
-  --accent-world: #8A2B20;       /* same family as Latest -- both wire/world */
-  --accent-tech: #33506E;        /* muted cobalt / deep blue */
-  --accent-culture: #4E3355;     /* dark plum / aubergine */
-  --accent-music: #93602C;       /* burnt ochre / muted amber */
+  /* One editorial red, matching the Chronicle prototype -- every section
+     points at the same accent. Kept as its own variable (rather than
+     hardcoding var(--accent) everywhere) so a future per-section palette
+     is a one-line change, not a find-and-replace. */
+  --accent-latest: var(--accent);
+  --accent-world: var(--accent);
+  --accent-tech: var(--accent);
+  --accent-culture: var(--accent);
+  --accent-music: var(--accent);
 
-  --font-serif: "Source Serif 4", "Source Serif Pro", Charter, "Iowan Old Style", Georgia, serif;
-  --font-sans: "Libre Franklin", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Iowan Old Style", serif;
+  --font-sans: "DM Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
 
   --page-margin: 20px;
-  --max-content: 1200px;
+  --max-content: 1280px;
   --max-measure: 660px;
   --max-measure-wide: 760px;
 }
@@ -31,12 +32,12 @@
 * { box-sizing: border-box; }
 
 /* Any element carrying data-section (.section, .hero, .longread-band, the
-   jumpline links) sets --section-accent for itself and everything nested
-   inside it -- a custom property inherits down the tree, so a compact row
-   inside <section data-section="Culture"> picks it up without needing the
-   attribute on every descendant. Falls back to --accent (Latest/World's
-   oxblood) wherever a var(--section-accent, var(--accent)) reference is used
-   outside any data-section scope. */
+   dispatch rail, the jumpline links) sets --section-accent for itself and
+   everything nested inside it -- a custom property inherits down the tree,
+   so a compact row inside <section data-section="Culture"> picks it up
+   without needing the attribute on every descendant. Falls back to
+   --accent wherever a var(--section-accent, var(--accent)) reference is
+   used outside any data-section scope. */
 [data-section="Latest"] { --section-accent: var(--accent-latest); }
 [data-section="World & Ideas"] { --section-accent: var(--accent-world); }
 [data-section="Technology & AI"] { --section-accent: var(--accent-tech); }
@@ -56,6 +57,11 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
+/* Editorial photography reads as one grayscale system throughout, matching
+   the Chronicle prototype -- color images next to grayscale ones would read
+   as an inconsistency, not a choice. */
+img { filter: grayscale(1); }
+
 .rule { border: none; margin: 0; }
 .rule-1 { border-top: 1px solid var(--rule); }
 .rule-1-strong { border-top: 1px solid var(--rule-strong); }
@@ -64,19 +70,19 @@ a { color: inherit; text-decoration: none; }
 
 .label-source {
   font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 11px;
+  font-weight: 700;
+  font-size: 10px;
   line-height: 1.2;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--text);
+  color: var(--section-accent, var(--accent));
 }
 .label-meta {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.2;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -92,15 +98,16 @@ a { color: inherit; text-decoration: none; }
 .label-nav {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.2;
   letter-spacing: 0.10em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 @media (min-width: 768px) {
-  .label-nav { font-size: 12px; }
+  .label-nav { font-size: 11px; }
 }
+.mast-count { color: var(--accent); }
 
 .loading, .empty {
   color: var(--text-muted);
@@ -115,7 +122,7 @@ a { color: inherit; text-decoration: none; }
   top: 0; left: 0; right: 0;
   height: 44px;
   background: var(--bg);
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule-heavy);
   display: none;
   align-items: center;
   justify-content: space-between;
@@ -128,12 +135,12 @@ a { color: inherit; text-decoration: none; }
 .sticky-wordmark {
   font-family: var(--font-serif);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
 }
 .sticky-section {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.10em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -146,122 +153,196 @@ a { color: inherit; text-decoration: none; }
 .masthead {
   max-width: var(--max-content);
   margin: 0 auto;
-  padding: 0 var(--page-margin);
+  padding: 0 24px;
 }
 .masthead-top {
   text-align: center;
-  padding: 20px 0 10px;
+  padding: 18px 0 8px;
 }
 .wordmark {
   font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: 26px;
+  font-weight: 800;
+  font-size: 43px;
+  letter-spacing: -0.035em;
   line-height: 1;
-  letter-spacing: -0.01em;
 }
 @media (min-width: 768px) {
-  .wordmark { font-size: 46px; }
-  .masthead-top { padding: 32px 0 16px; }
+  .wordmark { font-size: 66px; letter-spacing: -0.045em; }
+  .masthead-top { padding: 26px 0 14px; }
+}
+@media (min-width: 1450px) {
+  .wordmark { font-size: 78px; letter-spacing: -0.06em; }
 }
 .masthead-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
+  padding: 14px 0 10px;
+  border-bottom: 1px solid var(--rule-strong);
+  font-size: 8px;
+  letter-spacing: 0.10em;
+}
+@media (min-width: 768px) {
+  .masthead-info { font-size: 10px; letter-spacing: 0.14em; padding: 15px 0 12px; }
 }
 .jumpline {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 18px;
-  padding: 16px 0 24px;
+  justify-content: space-between;
+  gap: 4px 0;
+  padding: 11px 0;
+  border-top: 2px solid var(--rule-heavy);
+  border-bottom: 1px solid var(--rule-heavy);
 }
-.jumpline a { color: var(--text-muted); }
+.jumpline a { color: var(--text); font-weight: 700; }
 .jumpline a:hover,
 .jumpline a.active { color: var(--section-accent, var(--accent)); }
 .section-hidden { display: none; }
 @media (min-width: 768px) {
-  .jumpline { justify-content: center; gap: 0 36px; padding: 14px 0; }
+  .jumpline { justify-content: center; gap: 0 34px; padding: 13px 0; border-top-width: 3px; }
 }
 
 /* ---------- Feed layout ---------- */
 main#feed {
   max-width: var(--max-content);
   margin: 0 auto;
-  padding: 0 var(--page-margin) 40px;
+  padding: 26px 20px 40px;
+}
+@media (min-width: 768px) {
+  main#feed { padding: 30px 24px 56px; }
+}
+
+/* ---------- Hero + dispatch rail ---------- */
+.news-grid { display: block; }
+@media (min-width: 900px) {
+  .news-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 0 32px;
+    align-items: start;
+  }
+  .lead-col { border-right: 1px solid var(--rule-strong); padding-right: 32px; }
 }
 
 .section {
-  padding-top: 56px;
+  padding-top: 48px;
 }
 @media (min-width: 768px) {
-  .section { padding-top: 80px; }
+  .section { padding-top: 64px; }
 }
 .section-header {
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  border-top: 2px solid var(--rule-heavy);
-  padding-top: 6px;
-}
-.section-header::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: 0;
-  width: 24px;
-  height: 2px;
-  background: var(--section-accent, var(--accent));
+  border-top: 3px solid var(--rule-heavy);
+  padding-top: 7px;
 }
 .section-title { margin: 0; }
 .section-count { }
-.section-body { padding-top: 16px; }
+.section-body { padding-top: 18px; }
 @media (min-width: 768px) {
-  .section-body { padding-top: 20px; }
+  .section-body { padding-top: 22px; }
 }
 
 /* ---------- Hero ---------- */
-.hero { padding-bottom: 40px; border-bottom: 3px solid var(--rule-heavy); margin-bottom: 8px; }
+.hero { padding-bottom: 8px; }
+@media (min-width: 900px) {
+  .hero { padding-bottom: 0; }
+}
+.hero .label-source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero .label-source::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--section-accent, var(--accent));
+  flex: none;
+}
+.hero .label-source { order: 1; }
 .hero-media {
   aspect-ratio: 3 / 2;
   background: var(--image-bg);
-  margin-bottom: 12px;
+  margin-top: 12px;
   overflow: hidden;
+  order: 5;
 }
-.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
 .hero-headline {
   font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: 32px;
+  font-weight: 800;
+  font-size: 34px;
   line-height: 1.06;
-  letter-spacing: -0.012em;
-  margin: 6px 0 8px;
+  letter-spacing: -0.025em;
+  margin: 12px 0 10px;
+  order: 2;
 }
 @media (min-width: 768px) {
-  .hero-headline { font-size: 50px; }
+  .hero-headline { font-size: 46px; }
+}
+@media (min-width: 1450px) {
+  .hero-headline { font-size: 52px; }
 }
 /* A. Big text feature -- no media box at all when there's no editorial
-   image (see heroBlock in app.js): extra top spacing and a larger headline
-   fill the space a placeholder box would otherwise fake. */
-.hero-text .label-source { margin-top: 12px; display: inline-block; }
-.hero-text .hero-headline { font-size: 36px; margin: 10px 0 12px; }
+   image (see heroBlock in app.js): a larger headline fills the space a
+   placeholder box would otherwise fake. */
+.hero-text .hero-headline { font-size: 38px; margin-top: 8px; }
 @media (min-width: 768px) {
-  .hero-text .label-source { margin-top: 20px; }
-  .hero-text .hero-headline { font-size: 56px; }
+  .hero-text .hero-headline { font-size: 58px; }
 }
 .hero-dek {
-  font-family: var(--font-serif);
-  font-style: italic;
+  font-family: Georgia, var(--font-serif), serif;
+  font-style: normal;
   font-weight: 400;
-  font-size: 17px;
-  line-height: 1.45;
+  font-size: 16px;
+  line-height: 1.55;
   color: var(--text-dek);
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   max-width: var(--max-measure-wide);
+  order: 3;
 }
 @media (min-width: 768px) {
-  .hero-dek { font-size: 18px; }
+  .hero-dek { font-size: 17px; }
 }
+.hero a {
+  display: flex;
+  flex-direction: column;
+}
+.hero .label-meta { order: 4; }
+
+/* ---------- Dispatch rail (the "Latest" section beside the hero) ---------- */
+.dispatch-rail { margin-top: 24px; }
+@media (min-width: 900px) {
+  .dispatch-rail { margin-top: 0; }
+}
+.side-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--rule-heavy);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.side-title-count { color: var(--text-muted); }
+.dispatch-list { list-style: none; margin: 0; padding: 0; }
+.dispatch { border-bottom: 1px solid var(--rule); padding-bottom: 16px; margin-bottom: 16px; }
+.dispatch:last-child { border-bottom: none; }
+.dispatch a { display: block; }
+.dispatch-eyebrow { color: var(--section-accent, var(--accent)); margin-bottom: 8px; }
+.dispatch-thumb { width: 100%; height: 112px; object-fit: cover; display: block; margin-bottom: 8px; background: var(--image-bg); }
+.dispatch-headline {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+.dispatch-time { display: block; }
 
 /* ---------- Secondary ---------- */
 .secondary { padding: 20px 0; }
@@ -277,20 +358,21 @@ main#feed {
 .secondary-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .secondary-headline {
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 22px;
   line-height: 1.16;
-  letter-spacing: -0.008em;
-  margin: 4px 0 4px;
+  letter-spacing: -0.015em;
+  margin: 6px 0 6px;
 }
 @media (min-width: 768px) {
-  .secondary-headline { font-size: 26px; }
+  .secondary-headline { font-size: 27px; }
 }
 .secondary-dek {
-  font-size: 17px;
-  line-height: 1.3;
+  font-family: Georgia, var(--font-serif), serif;
+  font-size: 16px;
+  line-height: 1.45;
   color: var(--text-dek);
-  margin: 0 0 6px;
+  margin: 0 0 8px;
 }
 /* D. Text-only secondary -- no thumbnail to anchor the eye, so a stronger
    top rule and extra padding do that work instead, and the dek (added only
@@ -304,21 +386,13 @@ main#feed {
 ul.compact-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
 ul.compact-list li { border-bottom: 1px solid var(--rule); }
 ul.compact-list a { display: block; padding: 16px 0; min-height: 44px; }
-.compact-thumb {
-  float: right;
-  width: 56px; height: 56px;
-  background: var(--image-bg);
-  margin-left: 16px;
-  overflow: hidden;
-}
-.compact-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .compact-headline {
   display: block;
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 18px;
-  line-height: 1.26;
-  margin-bottom: 4px;
+  line-height: 1.24;
+  margin-bottom: 5px;
 }
 @media (min-width: 768px) {
   .compact-headline { font-size: 20px; }
@@ -327,7 +401,7 @@ ul.compact-list a { display: block; padding: 16px 0; min-height: 44px; }
 a:hover .compact-headline,
 a:hover .secondary-headline,
 a:hover .hero-headline,
-a:hover .radar-headline,
+a:hover .dispatch-headline,
 a:hover .feature-headline {
   text-decoration: underline;
   text-decoration-color: var(--section-accent, var(--accent));
@@ -336,110 +410,57 @@ a:hover .feature-headline {
 }
 a:active { background: var(--bg-alt); }
 
-/* ---------- Radar ---------- */
-ul.radar-list { list-style: none; margin: 0; padding: 0; }
-ul.radar-list li { padding: 7px 0; }
-ul.radar-list a { display: block; min-height: 44px; }
-.radar-meta { display: block; margin-bottom: 2px; }
-.radar-headline {
-  display: block;
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 17px;
-  line-height: 1.30;
-}
-@media (min-width: 768px) {
-  .radar-headline { font-size: 18px; }
-}
-
 /* ---------- Feature (Culture) ---------- */
 .feature { padding: 20px 0 24px; }
+.feature .label-source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.feature .label-source::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--section-accent, var(--accent));
+  flex: none;
+}
 .feature-media {
   aspect-ratio: 3 / 2;
   background: var(--image-bg);
-  margin-bottom: 12px;
+  margin: 10px 0 12px;
   overflow: hidden;
 }
 .feature-media img { width: 100%; height: 100%; object-fit: cover; }
 .feature-headline {
   font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 22px;
+  font-weight: 700;
+  font-size: 23px;
   line-height: 1.16;
-  margin: 4px 0 6px;
+  letter-spacing: -0.012em;
+  margin: 6px 0 8px;
 }
 @media (min-width: 768px) {
-  .feature-headline { font-size: 26px; }
+  .feature-headline { font-size: 28px; }
 }
 .feature-dek {
-  font-size: 17px;
-  line-height: 1.3;
-  color: var(--text-dek);
-  margin: 0 0 6px;
-}
-/* Same idea as .secondary-text: no image, so the dek and extra whitespace
-   carry the composition instead of a flat headline-then-meta block. */
-.feature-text { padding-bottom: 28px; }
-.feature-text .feature-headline { margin-top: 8px; }
-
-/* ---------- Long read band ---------- */
-.longread-band {
-  background: var(--bg-alt);
-  border-top: 3px solid var(--rule-heavy);
-  border-bottom: 3px solid var(--rule-heavy);
-  padding: 32px var(--page-margin);
-  margin: 56px calc(-1 * var(--page-margin));
-}
-@media (min-width: 768px) {
-  .longread-band { margin: 80px 0; padding: 32px; }
-}
-.longread-tag {
-  color: var(--section-accent, var(--accent));
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-.longread-headline {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 26px;
-  line-height: 1.12;
-  letter-spacing: -0.011em;
-  margin: 8px 0 8px;
-}
-@media (min-width: 768px) {
-  .longread-headline { font-size: 34px; }
-}
-.longread-dek {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 17px;
+  font-family: Georgia, var(--font-serif), serif;
+  font-size: 16px;
   line-height: 1.45;
   color: var(--text-dek);
   margin: 0 0 8px;
 }
+/* Same idea as .secondary-text: no image, so the dek and extra whitespace
+   carry the composition instead of a flat headline-then-meta block. */
+.feature-text { padding-bottom: 28px; }
+.feature-text .feature-headline { margin-top: 10px; }
 
-/* ---------- Desktop grid (secondaries / compact grids) ---------- */
+/* ---------- Desktop grid (dense radar-style listing) ---------- */
 @media (min-width: 768px) {
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
-  .grid-2 .secondary { border-top: none; padding: 0; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 24px; }
-  .grid-3 ul.compact-list { border-top: 1px solid var(--rule); }
-  .layout-hero-rail {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) 1px minmax(0, 1fr);
-    gap: 0 24px;
-  }
-  .layout-hero-rail .rail-divider { background: var(--rule-strong); }
-  .layout-hero-rail .hero { border-bottom: none; padding-bottom: 0; }
-  .layout-feature-compacts { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
   ul.compact-grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-flow: row;
-    column-gap: 24px;
+    column-gap: 28px;
     border-top: none;
   }
   ul.compact-grid-3 li {
@@ -449,8 +470,47 @@ ul.radar-list a { display: block; min-height: 44px; }
   ul.compact-grid-3 li:nth-child(-n+3) { border-top: none; }
 }
 
+/* ---------- Long read band ---------- */
+.longread-band {
+  background: var(--bg-alt);
+  border-top: 3px solid var(--rule-heavy);
+  border-bottom: 3px solid var(--rule-heavy);
+  padding: 32px var(--page-margin);
+  margin: 48px calc(-1 * 20px);
+}
+@media (min-width: 768px) {
+  .longread-band { margin: 64px 0; padding: 34px; }
+}
+.longread-tag {
+  color: var(--section-accent, var(--accent));
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.longread-headline {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 27px;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 10px 0 8px;
+}
+@media (min-width: 768px) {
+  .longread-headline { font-size: 35px; }
+}
+.longread-dek {
+  font-family: Georgia, var(--font-serif), serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-dek);
+  margin: 0 0 8px;
+}
+
 /* ---------- Issue row (a roundup email collapsed to one row) ---------- */
 li.issue-row { border-bottom: 1px solid var(--rule); }
+.dispatch-list li.issue-row { border-bottom: 1px solid var(--rule); padding-bottom: 4px; margin-bottom: 8px; }
 .issue-toggle {
   display: block;
   width: 100%;
@@ -468,6 +528,7 @@ li.issue-row { border-bottom: 1px solid var(--rule); }
   -webkit-appearance: none;
   appearance: none;
 }
+.dispatch-list .issue-toggle { padding: 0 0 16px; }
 /* Touch devices report a tap as :hover with no way to un-hover short of
    tapping something else -- without this guard, the underline meant as a
    mouse-hover affordance gets stuck "on" the moment a phone taps the row
@@ -493,10 +554,10 @@ li.issue-row { border-bottom: 1px solid var(--rule); }
 .issue-headline {
   display: block;
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 18px;
   line-height: 1.26;
-  margin: 4px 0 0;
+  margin: 5px 0 0;
   /* Explicit rather than relying on inheritance from .issue-toggle: some
      mobile browsers apply their own default "unvisited link" styling
      (blue, underlined) to unstyled text inside a <button> -- reported on
@@ -505,6 +566,7 @@ li.issue-row { border-bottom: 1px solid var(--rule); }
   color: var(--text);
   text-decoration: none;
 }
+.dispatch-list .issue-headline { font-size: 19px; }
 @media (min-width: 768px) {
   .issue-headline { font-size: 20px; }
 }
@@ -527,11 +589,13 @@ ul.issue-stories a { display: block; padding: 12px 0; min-height: 44px; }
 li.issue-row.is-read .issue-headline { color: var(--text-muted); }
 
 /* ---------- Read state ---------- */
+/* Subtle only: a muted headline plus the small check mark readGlyph() adds
+   next to the metadata -- no badges, no strike-through. */
 .is-read .hero-headline,
 .is-read .secondary-headline,
 .is-read .feature-headline,
 .is-read .compact-headline,
-.is-read .radar-headline,
+.is-read .dispatch-headline,
 .is-read .longread-headline {
   color: var(--text-muted);
 }
@@ -543,8 +607,9 @@ li.issue-row.is-read .issue-headline { color: var(--text-muted); }
 }
 .is-read .hero-media img,
 .is-read .secondary-thumb img,
-.is-read .feature-media img {
-  filter: grayscale(35%) opacity(0.82);
+.is-read .feature-media img,
+.is-read .dispatch-thumb {
+  opacity: 0.7;
 }
 .read-mark {
   display: inline-block;
@@ -562,14 +627,14 @@ li.issue-row.is-read .issue-headline { color: var(--text-muted); }
 .endmark {
   max-width: var(--max-content);
   margin: 0 auto;
-  padding: 24px var(--page-margin) 64px;
+  padding: 22px 24px 56px;
   text-align: center;
-  border-top: 3px solid var(--rule-heavy);
+  border-top: 1px solid var(--rule-strong);
 }
 .endmark span {
   font-family: var(--font-sans);
-  font-size: 13px;
-  letter-spacing: 0.06em;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -582,7 +647,7 @@ li.issue-row.is-read .issue-headline { color: var(--text-muted); }
 
 /* ---------- Article reader page ---------- */
 .reader-page {
-  max-width: 700px;
+  max-width: 680px;
   margin: 0 auto;
   padding: 32px var(--page-margin) 64px;
 }
@@ -591,27 +656,36 @@ li.issue-row.is-read .issue-headline { color: var(--text-muted); }
   margin-bottom: 20px;
 }
 .reader-source {
-  display: inline-block;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--rule-heavy);
-  margin-bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--rule-heavy);
+  margin-bottom: 18px;
+}
+.reader-source::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  flex: none;
 }
 .reader-headline {
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 30px;
   line-height: 1.12;
-  letter-spacing: -0.011em;
-  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
 }
 @media (min-width: 768px) {
-  .reader-headline { font-size: 40px; }
+  .reader-headline { font-size: 42px; }
 }
 .reader-dek {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 19px;
-  line-height: 1.45;
+  font-family: Georgia, var(--font-serif), serif;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 1.5;
   color: var(--text-dek);
   margin: 0 0 16px;
 }
@@ -647,7 +721,7 @@ li.issue-row.is-read .issue-headline { color: var(--text-muted); }
 }
 .reader-body h1, .reader-body h2, .reader-body h3, .reader-body h4 {
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 22px;
   line-height: 1.25;
   margin: 32px 0 8px;
@@ -677,8 +751,9 @@ li.issue-row.is-read .issue-headline { color: var(--text-muted); }
   padding-top: 16px;
   border-top: 1px solid var(--rule);
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 12px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--accent);
 }

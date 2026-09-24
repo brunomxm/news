@@ -1,11 +1,13 @@
 # The Daily
 
-A personal, finite, editorial reading page assembled from newsletters — the
-"Broadsheet Quiet" direction: warm paper background, serif headlines, hairline
-rules, no cards, no images by default. Static site (`index.html` /
-`styles.css` / `app.js`), no build step, reads `data/articles.json`. Headlines
-open an internal reader page (`article.html` / `reader.js`) that shows the
-newsletter's own sanitized HTML, with "Read the original" as a fallback link.
+A personal, finite, editorial reading page assembled from newsletters — a
+print-inspired "Chronicle" design: warm paper background, Playfair Display
+headlines, DM Sans metadata, grayscale editorial photography, a single
+restrained brick-red accent, no cards, no build step. Static site
+(`index.html` / `styles.css` / `app.js`), reads `data/articles.json`.
+Headlines open an internal reader page (`article.html` / `reader.js`) that
+shows the newsletter's own sanitized HTML, with "Read the original" as a
+fallback link.
 
 The publication name is set in one place: `config.js`.
 
@@ -38,14 +40,20 @@ The publication name is set in one place: `config.js`.
 
 ## Homepage composition
 
-One sitewide hero (the most recent article overall), then each non-empty
-section in a fixed order, each with its own template — pure headline list for
-Latest, one secondary story + compacts for World & Ideas, a 3-column compact
-grid for Technology & AI, a feature + compacts for Culture, compacts (+ an
-optional long read) for Music & Industry. A section with zero items simply
-doesn't render — the page is finite and adapts to what's actually in the
-mailbox that day, rather than forcing a fixed shape. Any article whose body
-exceeds ~300 words is pulled out as a distinct "long read" band.
+A hero + "Latest dispatches" rail sit side by side at the top: the hero is
+picked deterministically (`config.js`'s `SOURCE_PRIORITY`/`SOURCE_TYPE`/
+`TYPE_HERO_BONUS` — a strong analysis/long-form source can outrank a newer
+but slighter item; image availability only nudges, never decides), and the
+rail is the `Latest` section's wire items. Below that, each remaining
+non-empty section renders in a fixed order with its own template — one
+secondary story + compacts for World & Ideas, a 3-column compact grid (plus
+an analysis-source lead pulled out for breathing room) for Technology & AI, a
+feature + compacts for Culture, compacts for Music & Industry. A section with
+zero items simply doesn't render — the page is finite and adapts to what's
+actually in the mailbox that day, rather than forcing a fixed shape. Any
+article whose body exceeds ~300 words is pulled out as a distinct "long read"
+band. A missing/broken image never leaves an empty box — the container is
+hidden and the layout falls back to a text-only composition.
 
 ## Scheduled refresh
 
@@ -61,15 +69,20 @@ type is **Internal** (tied to the musixmatch.com Workspace), so the usual
 
 ## Design system
 
-Implements the "Broadsheet Quiet" spec: 10 CSS custom properties for color
-(no other colors anywhere), Source Serif 4 for headlines/body/deks, Libre
-Franklin for metadata/labels, zero border-radius and zero box-shadow anywhere
-including images, a hairline rule system instead of containers, and an oxblood
-accent used only for the section-rule segment, the long-read tag, link hover,
-and the closing end-mark. Dark mode is intentionally deferred (colors are
-already CSS variables, so it's a future token swap, not a refactor). Fonts
-are loaded from Google Fonts rather than self-hosted, as a pragmatic
-simplification — see the implementation notes below for other deviations.
+A handful of CSS custom properties for color (paper `#F5F2E9`, ink `#242720`,
+muted `#77776C`, one editorial red `#AA3E2B` — no other colors anywhere),
+Playfair Display for headlines, DM Sans for metadata/labels, zero
+border-radius and zero box-shadow anywhere, a hairline rule system instead of
+containers, and the red used only for the eyebrow dot, section-rule segment,
+long-read tag, link hover, and the closing end-mark. Article photography is
+rendered fully grayscale sitewide (`img { filter: grayscale(1) }`) for one
+consistent editorial look regardless of source. Per-section accent colors are
+wired through CSS variables (`--accent-latest`, `--accent-tech`, ...) but all
+currently point at the same red, matching the source design; repointing one
+section to a different color is a one-line change. Dark mode is intentionally
+deferred (colors are already CSS variables, so it's a future token swap, not
+a refactor). Fonts are loaded from Google Fonts rather than self-hosted, as a
+pragmatic simplification.
 
 ## Local preview
 
