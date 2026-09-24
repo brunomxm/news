@@ -57,11 +57,6 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
-/* Editorial photography reads as one grayscale system throughout, matching
-   the Chronicle prototype -- color images next to grayscale ones would read
-   as an inconsistency, not a choice. */
-img { filter: grayscale(1); }
-
 .rule { border: none; margin: 0; }
 .rule-1 { border-top: 1px solid var(--rule); }
 .rule-1-strong { border-top: 1px solid var(--rule-strong); }

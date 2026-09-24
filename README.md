@@ -2,7 +2,7 @@
 
 A personal, finite, editorial reading page assembled from newsletters — a
 print-inspired "Chronicle" design: warm paper background, Playfair Display
-headlines, DM Sans metadata, grayscale editorial photography, a single
+headlines, DM Sans metadata, full-color editorial photography, a single
 restrained brick-red accent, no cards, no build step. Static site
 (`index.html` / `styles.css` / `app.js`), reads `data/articles.json`.
 Headlines open an internal reader page (`article.html` / `reader.js`) that
@@ -74,9 +74,8 @@ muted `#77776C`, one editorial red `#AA3E2B` — no other colors anywhere),
 Playfair Display for headlines, DM Sans for metadata/labels, zero
 border-radius and zero box-shadow anywhere, a hairline rule system instead of
 containers, and the red used only for the eyebrow dot, section-rule segment,
-long-read tag, link hover, and the closing end-mark. Article photography is
-rendered fully grayscale sitewide (`img { filter: grayscale(1) }`) for one
-consistent editorial look regardless of source. Per-section accent colors are
+long-read tag, link hover, and the closing end-mark. Article photography
+keeps its original colors. Per-section accent colors are
 wired through CSS variables (`--accent-latest`, `--accent-tech`, ...) but all
 currently point at the same red, matching the source design; repointing one
 section to a different color is a one-line change. Dark mode is intentionally
